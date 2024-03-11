@@ -1,0 +1,18 @@
+.p-inputtext {
+    padding: 0.0rem 0.0rem;
+    &:not(:has(.p-component)) {
+        padding: 0.25rem 0.75rem;
+    }
+
+    &:enabled:focus {
+        box-shadow: 0 0 0 0 #268fff80;
+    }
+}
+
+.p-component,
+.p-input-icon-left,
+.p-input-icon-right {
+
+    width: 100%;
+
+}

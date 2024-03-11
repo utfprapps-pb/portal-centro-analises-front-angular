@@ -1,0 +1,7 @@
+<div class="form-group">
+    <label [for]="name" *ngIf="!!label">{{label}}</label>
+
+    <div>
+        <input pInputText [id]="name" [placeholder]="placeholder" [disabled]="disabled" [(ngModel)]="innerValue" />
+    </div>
+</div>

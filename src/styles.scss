@@ -1,2 +1,41 @@
 @import "primeng/resources/themes/bootstrap4-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
+
+.row {
+    margin-left : 0 !important;
+    margin-right: 0 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.small-text {
+    font-size  : 12px;
+    color      : var(--surface-600);
+    font-weight: bold;
+    line-height: 1;
+}
+
+p.link.small-text {
+    color: var(--blue-300);
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+p {
+    display: inline-block;
+}
+
+.w-100 {
+    min-width: 100%;
+}
+
+.h-100 {
+    min-width: 100%;
+}
+
+.text-right {
+    text-align: right;
+}
