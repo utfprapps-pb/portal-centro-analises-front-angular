@@ -1,5 +1,5 @@
-@import "primeng/resources/themes/bootstrap4-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
+@import 'primeng/resources/primeng.css';
+@import 'primeng/resources/themes/bootstrap4-light-blue/theme.css';
 
 .row {
     margin-left : 0 !important;
@@ -19,23 +19,41 @@
 
 p.link.small-text {
     color: var(--blue-300);
+
     &:hover {
         text-decoration: underline;
     }
 }
 
 p {
-    display: inline-block;
+    display       : inline-block;
+    vertical-align: top;
+}
+
+.form-label {
+    margin-bottom: inherit;
 }
 
 .w-100 {
     min-width: 100%;
 }
 
+.w-100vw {
+    min-width: 100vw;
+}
+
 .h-100 {
-    min-width: 100%;
+    min-height: 100%;
+}
+
+.h-100vh {
+    min-height: 100vh;
 }
 
 .text-right {
     text-align: right;
+}
+
+.bold {
+    font-weight: bold;
 }

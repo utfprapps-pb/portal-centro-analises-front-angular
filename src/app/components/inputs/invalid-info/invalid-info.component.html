@@ -1,0 +1,12 @@
+<i #info class="text-danger fa fa-circle-exclamation" *ngIf="!!causes" (mouseenter)="pop.show($event)"
+    (mouseleave)="pop.hide()"></i>
+
+<p-overlayPanel #pop>
+    <table>
+        <tbody>
+            <tr *ngFor="let cause of causes">
+                <td>{{cause}}</td>
+            </tr>
+        </tbody>
+    </table>
+</p-overlayPanel>

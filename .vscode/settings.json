@@ -1,8 +1,8 @@
 {
-    "html.format.wrapLineLength": 150,
+    "html.format.wrapLineLength": 110,
     "editor.rulers": [
         {
-            "column": 150,
+            "column": 110,
             "color": "#5f5f5f"
         }
     ]

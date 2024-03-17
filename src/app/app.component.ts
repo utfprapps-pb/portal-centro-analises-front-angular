@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { AuthService } from './login/auth.service';
 import { ResizeService } from './utils/resize.service';
@@ -10,10 +10,12 @@ import { ResizeService } from './utils/resize.service';
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
     public static showSideBar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     public static isMobile: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+    private subscriptions: Subscription[] = [];
 
     constructor(
         private readonly authService: AuthService,
@@ -30,22 +32,17 @@ export class AppComponent implements OnInit {
             AppComponent.showSideBar.next(width < 720);
             AppComponent.isMobile.next(width < 720)
         });
-
         this.router.events.subscribe(event => {
-            if (event instanceof NavigationStart) {
-                // A rota foi alterada, faça o que desejar aqui
-                console.log('Rota alterada:', event.url);
-            }
             if (event instanceof NavigationEnd) {
-                // A rota foi alterada, faça o que desejar aqui
-                console.log('Rota alterada:', event.url);
+                if (!this.authService.isUserAuthenticated()) {
+                    this.authService.logout();
+                    return;
+                }
             }
         });
-
-        if (!this.authService.isUserAuthenticated()) {
-            this.router.navigate(['/login'])
-            return;
-        }
     }
 
+    public ngOnDestroy(): void {
+        this.subscriptions.forEach(it => it.unsubscribe());
+    }
 }
