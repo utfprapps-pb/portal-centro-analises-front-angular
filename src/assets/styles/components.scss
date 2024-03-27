@@ -3,7 +3,7 @@
     border-bottom: 1px solid var(--bs-form-invalid-color);
 
     &.valid {
-        border-left-color: var(--bs-form-valid-color);
+        border-left-color  : var(--bs-form-valid-color);
         border-bottom-color: var(--bs-form-valid-color);
     }
 }
@@ -13,8 +13,40 @@ input-password:has(input.required) {
         border-bottom: 1px solid var(--bs-form-invalid-color);
     }
 }
+
 input-password:has(input.required.valid) {
     p-inputgroupaddon {
         border-bottom-color: var(--bs-form-valid-color);
     }
+}
+
+p-inputnumber.form-control {
+    padding: 0;
+
+    & span {
+        width: 100%;
+    }
+
+    & .p-inputnumber-clear-icon {
+        width: fit-content !important;
+    }
+}
+
+input-number,
+input-currency {
+    &:has(invalid-info:not(:empty)) {
+        & .p-inputnumber-clear-icon {
+            right: 30px;
+        }
+    }
+}
+
+.swal2-toast-shown .swal2-container {
+    width: 450px !important;
+}
+
+.swal2-popup.swal2-toast .swal2-actions {
+    justify-content: center !important;
+    margin: 0px !important;
+    padding: 0px !important;
 }

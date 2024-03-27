@@ -1,22 +1,42 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { Subscription } from 'rxjs';
 import { LoginService } from '../../login/login/login.service';
+import { ObjectUtils } from '../../utils/object-utils';
 import { CompCtrlDirective } from '../compctrl/compctrl.directive';
+import { ToasterService } from '../toaster/toaster.service';
+import { ToastrService } from '../toastr.service';
 import { FormBaseComponent } from './form-base.component';
 
 @Injectable()
-export abstract class FormComponent {
+export abstract class FormComponent implements OnDestroy {
 
     public abstract formView: FormBaseComponent;
+    public abstract pageTitle: string;
 
     public loginService: LoginService;
+    public toasterService: ToasterService;
+    public toastrService: ToastrService;
+    public router: Router;
+    public route: ActivatedRoute;
 
     private disabledElements: any[] = [];
+
+    public subscriptions: Subscription[] = [];
 
     constructor(
         protected readonly injector: Injector,
     ) {
         this.loginService = injector.get(LoginService);
+        this.toasterService = injector.get(ToasterService);
+        this.toastrService = injector.get(ToastrService);
+        this.router = injector.get(Router);
+        this.route = injector.get(ActivatedRoute);
+    }
+
+    public ngOnDestroy(): void {
+        this.subscriptions.forEach(it => it.unsubscribe());
     }
 
     public getFieldsCompCtrl(): CompCtrlDirective[] {
@@ -101,47 +121,48 @@ export abstract class FormComponent {
         return mapResult;
     }
 
-    public validateForm(showAlert: boolean = true): boolean {
-        const validForm: Map<string, boolean> = this.validForm();
+    public validateForm(): boolean {
+        return this.validForm().size == 0;
+    }
 
-        const titleAlert = 'Campos obrigatórios não Preenchidos';
-        const bodyAlert = new Array<string>();
+    public hasErrorMapped(error: any): boolean {
+        return ObjectUtils.isNotEmpty(error) &&
+            ((ObjectUtils.isNotEmpty(error.error) && !!error.error.mapped) ||
+                (!!error.mapped));
+    }
 
-        bodyAlert.push('<div style="max-height: 700px;">');
-        bodyAlert.push('<table style="max-height: 700px;" class="table table-responsive table-striped m-b-0">');
-        bodyAlert.push('<thead>');
-        bodyAlert.push('<tr>');
-        bodyAlert.push('<th style="width: 40px;">#</th>');
-        bodyAlert.push(`<th>${titleAlert}</th>`);
-        bodyAlert.push('</tr>');
-        bodyAlert.push('</thead>');
-        bodyAlert.push('<tbody>');
-
-        let indexError = 0;
-
-        for (const [compCtrl, valid] of validForm) {
-            if (!valid) {
-                indexError++;
+    public errorHandler(error: any, title?: string): void {
+        if (!this.hasErrorMapped(error)) {
+            return;
+        } else {
+            if (ObjectUtils.isEmpty(title)) {
+                title = this.pageTitle;
             }
-            if (showAlert && !valid) {
-                bodyAlert.push('<tr>');
-                bodyAlert.push('<td style="width: 40px;" class="text-center">' + indexError + '</td>');
-                bodyAlert.push('<td class="text-left">' + compCtrl + '</td>');
-                bodyAlert.push('</tr>');
+
+            let message: string = '';
+            let errosCompCtrl: any = null;
+            if ((ObjectUtils.isNotEmpty(error.error) && !!error.error.mapped)) {
+                message = error.error.message;
+                errosCompCtrl = error.error.erros;
+            } else {
+                message = error.message;
+                errosCompCtrl = error.errors;
             }
+
+            if (ObjectUtils.isNotEmpty(message)) {
+                this.toastrService.showError(title, message);
+            } else if (ObjectUtils.isNotEmpty(errosCompCtrl)) {
+                for (const key in errosCompCtrl) {
+                    const index = this.getFieldsCompCtrl()
+                        .findIndex(it => it.compCtrl == key || it.compCtrl.toLocaleLowerCase().replaceAll(' ', '') == key);
+                    if (index != -1) {
+                        this.formView.contentFieldsCompCtrlForm.get(index).invalidate(errosCompCtrl[key]);
+                    }
+                }
+            } else {
+                console.error('Erro não mapeado:', error);
+            }
+
         }
-
-        bodyAlert.push('</tbody>');
-        bodyAlert.push('</table>');
-        bodyAlert.push('</div>');
-
-        if (showAlert && indexError > 0 && bodyAlert.toString().includes('</td>')) {
-            // Todo: Exibir mensagem de erro;
-            console.log(bodyAlert.join(''))
-            // alert(bodyAlert.join(' '));
-            // this.toasterService.simplePop(Toaster3Type.WARNING, bodyAlert.join(' '));
-        }
-
-        return (indexError === 0);
     }
 }

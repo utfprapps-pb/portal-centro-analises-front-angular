@@ -1,30 +1,35 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, flatMap, of } from 'rxjs';
 
+import { HttpClientService } from '../../core/services/httpclient.service';
 import { GenericService } from '../../generics/generic.service';
 import { Login } from './model/login.model';
+import { PasswordRecover } from './model/password-recover.model';
+import { RegisterUser } from './model/register-user.model';
 
 @Injectable({
     providedIn: 'root'
 })
-export class LoginService extends GenericService {
+export class LoginService extends GenericService<PasswordRecover | RegisterUser> {
 
     constructor(
-        protected override http: HttpClient
+        protected override http: HttpClientService,
     ) {
-        super(http, null)
+        super(http, '/users')
     }
 
-    public login(login: Login): Observable<any> {
-        return this.http.post(`${this.path}/login`, login, { observe: 'body' }).pipe(
-            flatMap((entity: any) => {
-                if (entity) {
-                    return of(entity);
-                } else {
-                    return null;
-                }
-            })
-        );
+    public login(login: Login): Promise<any> {
+        return this.http.post('/login', login);
+    }
+
+    public recoverPassword(recover: PasswordRecover): Promise<any> {
+        return this.http.post(`${this.path}/recover-password`, recover);
+    }
+
+    public sendCodeRecoverPassword(email: string): Promise<any> {
+        return this.http.post(`${this.path}/send-code-recover-password/email/${email}`, null);
+    }
+
+    public requestValidation(email: string): Promise<any> {
+        return this.http.post(`${this.path}/request_verification`, { email: email });
     }
 }

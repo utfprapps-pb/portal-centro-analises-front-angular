@@ -15,6 +15,13 @@ export class CompCtrlDirective implements OnInit {
     private _disabled: boolean = false;
     private _required: boolean = false;
 
+    get valid() {
+        return this._valid;
+    }
+    set valid(value: boolean) {
+        this._valid = value;
+    }
+
     constructor(public model: NgModel,
         public readonly convertUtilsService: ConvertUtilsService,
         @Optional() @Self() public compCtrlContainer: CompCtrlContainer) {
@@ -94,6 +101,13 @@ export class CompCtrlDirective implements OnInit {
         return this._valid;
     }
 
+    public invalidate(cause: string): void {
+        this._valid = false;
+        this.setFocus();
+        this.setClassInvalid()
+        this.compCtrlContainer.setInvalidCause([cause]);
+    }
+
     private verify(value: any): string[] {
         let causes: string[] = [];
         const preenchido: boolean = (!this._required) ? true : ObjectUtils.isNotEmpty(value);
@@ -107,14 +121,14 @@ export class CompCtrlDirective implements OnInit {
         return causes.length > 0 ? causes : null;
     }
 
-    private setClassValid() {
+    public setClassValid() {
         this.compCtrlContainer.removeClass('required-invalid');
 
         this.compCtrlContainer.removeClass('valid');
         this.compCtrlContainer.addClass('valid');
     }
 
-    private setClassInvalid() {
+    public setClassInvalid() {
         this.compCtrlContainer.removeClass('valid');
 
         this.compCtrlContainer.removeClass('required-invalid');

@@ -1,10 +1,10 @@
 import { Directive, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { Guid } from '../../../utils/models/guid';
 import { ObjectUtils } from '../../../utils/object-utils';
 import { CompCtrlContainer } from '../../compctrl/compctrl.container';
 import { ConvertUtilsService } from './../../../utils/convert-utils.service';
-import { Guid } from './../../../utils/guid';
 
 @Directive()
 export abstract class InputBaseComponent extends CompCtrlContainer implements ControlValueAccessor {

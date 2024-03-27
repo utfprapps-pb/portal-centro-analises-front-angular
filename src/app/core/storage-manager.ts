@@ -1,3 +1,5 @@
+import { ObjectUtils } from "../utils/object-utils";
+
 export class StorageManager {
 
     private static readonly useBase64: boolean = true;
@@ -28,6 +30,10 @@ export class StorageManager {
 
     static setItem(key: string, value: string): void {
         localStorage.setItem(key, this.useBase64 ? btoa(value) : value);
+    }
+
+    static has(key: string): boolean {
+        return ObjectUtils.isNotEmpty(localStorage.getItem(key));
     }
 
 }

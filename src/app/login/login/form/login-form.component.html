@@ -3,54 +3,148 @@
         <div class="login-panel">
             <div class="row justify-content-center">
                 <div class="col-16 col-sm-12 col-md-8 login-card bg-white p-3"
-                    [ngClass]="{'w-100': isMobile, 'h-100vh': isMobile}">
+                    [ngClass]="{'w-100': page_settings.isMobile, 'h-100vh': page_settings.isMobile}">
                     <div class="display-grid h-100">
                         <div>
                             <div class="text-center">
-                                <h3>Bem vindo!</h3>
-                                <b>Digite seus dados para continuar</b>
+                                <h3>{{title}}</h3>
+                                <b>{{subtitle}}</b>
                             </div>
                         </div>
-                        <div>
-                            <div class="my-auto">
-                                <input-text label="Email" compCtrl required [(ngModel)]="object.email"
-                                    [minlength]="4" [maxlength]="255"></input-text>
-                                <div class="row">
-                                    <div class="col-24 p-0">
-                                        <p class="small-text pt-1">
-                                            Instituição: professores.utfpr.edu.br / utfpr.edu.br /
-                                            alunos.utfpr.edu.br<br>
-                                            Externo: qualquer e-mail permitido.
-                                        </p>
+                        <ng-container *ngIf="template == 'login'">
+                            <div>
+                                <div class="my-auto">
+                                    <input-email label="Email" compCtrl required [(ngModel)]="object.email"
+                                        [minlength]="4" [maxlength]="255"></input-email>
+                                    <div class="row">
+                                        <div class="col-24 p-0">
+                                            <p class="small-text pt-1">
+                                                Instituição: professores.utfpr.edu.br / utfpr.edu.br /
+                                                alunos.utfpr.edu.br<br>
+                                                Externo: qualquer e-mail permitido.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="my-auto">
+                                    <input-password label="Senha" compCtrl required [minlength]="6"
+                                        [maxlength]="254" [(ngModel)]="object.password"></input-password>
+                                    <div class="row">
+                                        <div class="col-12 p-0">
+                                            <p class="small-text pt-1 link cursor-pointer"
+                                                (click)="changeTemplate('password')">
+                                                Esqueci minha senha
+                                            </p>
+                                        </div>
+                                        <div class="col-12 p-0 text-right">
+                                            <p class="small-text pt-1 link cursor-pointer"
+                                                (click)="changeTemplate('confirm')">
+                                                Reenviar e-mail de validação
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="my-auto">
-                                <input-password label="Senha" compCtrl required [minlength]="6"
-                                    [maxlength]="254" [(ngModel)]="object.password"></input-password>
-                                <div class="row">
-                                    <div class="col-12 p-0">
-                                        <p class="small-text pt-1 link cursor-pointer">
-                                            Esqueci minha senha
-                                        </p>
+                        </ng-container>
+                        <ng-container *ngIf="template == 'password'">
+                            <div>
+                                <div class="my-auto">
+                                    <input-email label="Email" compCtrl required
+                                        [(ngModel)]="passwordRecover.email" [minlength]="4"
+                                        [maxlength]="255"></input-email>
+                                    <div class="row">
+                                        <div class="col-24 p-0">
+                                            <p class="small-text pt-1">
+                                                Instituição: professores.utfpr.edu.br / utfpr.edu.br /
+                                                alunos.utfpr.edu.br<br>
+                                                Externo: qualquer e-mail permitido.
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="col-12 p-0 text-right">
-                                        <p class="small-text pt-1 link cursor-pointer">
-                                            Reenviar e-mail de validação
-                                        </p>
+                                </div>
+                                <div class="my-auto">
+                                    <input-number label="Código" compCtrl required [maxlength]="6"
+                                        [(ngModel)]="passwordRecover.code"></input-number>
+                                    <div class="row">
+                                        <div class="col-12 p-0">
+                                            <p class="small-text pt-1 link cursor-pointer"
+                                                (click)="requestEmailCode()">
+                                                Solicitar código por email
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="my-auto">
+                                    <input-password label="Nova Senha" compCtrl required [minlength]="6"
+                                        [maxlength]="254" [(ngModel)]="passwordRecover.newPassword"
+                                        [equals]="passwordConfirm">
+                                    </input-password>
+                                    <input-password label="Confirmação da Senha" compCtrl required
+                                        [minlength]="6" [maxlength]="254" [(ngModel)]="passwordConfirm"
+                                        [equals]="passwordRecover.newPassword">
+                                    </input-password>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="template == 'confirm'">
+                            <div>
+                                <div class="my-auto">
+                                    <input-email label="Email" compCtrl required [(ngModel)]="object.email"
+                                        [minlength]="4" [maxlength]="255"></input-email>
+                                    <div class="row">
+                                        <div class="col-24 p-0">
+                                            <p class="small-text pt-1">
+                                                Instituição: professores.utfpr.edu.br / utfpr.edu.br /
+                                                alunos.utfpr.edu.br<br>
+                                                Externo: qualquer e-mail permitido.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </ng-container>
+                        <ng-container *ngIf="template == 'register'">
+                            <div>
+                                <div class="my-auto">
+                                    <input-text label="Nome Completo" compCtrl required
+                                        [(ngModel)]="newUser.name" [minlength]="6" [maxlength]="255">
+                                    </input-text>
+                                </div>
+                                <div class="my-auto">
+                                    <input-email label="Email" compCtrl required [(ngModel)]="newUser.email"
+                                        [minlength]="4" [maxlength]="255">
+                                    </input-email>
+                                </div>
+                                <div class="my-auto">
+                                    <input-password label="Nova Senha" compCtrl required [minlength]="6"
+                                        [maxlength]="254" [(ngModel)]="newUser.password"
+                                        [equals]="passwordConfirm">
+                                    </input-password>
+                                    <input-password label="Confirmação da Senha" compCtrl required
+                                        [minlength]="6" [maxlength]="254" [(ngModel)]="passwordConfirm"
+                                        [equals]="newUser.password">
+                                    </input-password>
+                                </div>
+                            </div>
+                        </ng-container>
                         <div class="mt-auto">
                             <div class="row mt-4">
                                 <div class="col-24 p-0 text-center">
                                     <button class="w-100 btn btn-lg btn-primary"
-                                        (click)="onClickEntrar()">Entrar</button>
-                                    <p class="small-text link cursor-pointer mt-2 mb-0">
-                                        Ainda não tem Conta?<br>
-                                        Clique aqui para se registrar!
-                                    </p>
+                                        (click)="onClickButton()">{{buttonText}}</button>
+                                    <ng-container *ngIf="template == 'login'; else footerReturn">
+                                        <p class="small-text link cursor-pointer mt-2 mb-0"
+                                            (click)="changeTemplate('register')">
+                                            Ainda não tem Conta?<br>
+                                            Clique aqui para se registrar!
+                                        </p>
+                                    </ng-container>
+                                    <ng-template #footerReturn>
+                                        <p class="small-text link cursor-pointer mt-2 mb-0"
+                                            (click)="changeTemplate('login')">
+                                            Voltar para tela de Entrada
+                                        </p>
+                                    </ng-template>
                                 </div>
                             </div>
                         </div>

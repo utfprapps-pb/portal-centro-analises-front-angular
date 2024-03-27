@@ -1,6 +1,6 @@
 import { Component, ContentChildren, ElementRef, Injector, QueryList, ViewChildren } from '@angular/core';
 
-import { Stack } from '../../utils/stack';
+import { Stack } from '../../utils/models/stack';
 import { CompCtrlDirective } from '../compctrl/compctrl.directive';
 
 @Component({

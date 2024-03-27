@@ -1,24 +1,37 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClientService } from '../core/services/httpclient.service';
+import { ObjectUtils } from '../utils/object-utils';
 
-import { environment } from '../../environments/environment';
 
-export abstract class GenericService {
+export abstract class GenericService<T> {
 
     private _path: string;
 
     get path() {
-        if (this._path != null) {
-            return `${environment.apiUrl}/${this._path}`
+        if (ObjectUtils.isEmpty(this._path)) {
+            return '';
         } else {
-            return `${environment.apiUrl}`
+            let retorno = this._path;
+            if (this._path.startsWith('/')) {
+                retorno = this._path;
+            } else {
+                retorno = `/${this._path}`
+            }
+            if (retorno.endsWith('/')) {
+                retorno = retorno.substring(0, retorno.length - 1);
+            }
+            return retorno;
         }
     }
 
     constructor(
-        protected http: HttpClient,
+        protected http: HttpClientService,
         protected url: string,
     ) {
-        this._path = url;
+        this._path = url || '';
+    }
+
+    public save(object: T): Promise<any> {
+        return this.http.post(`${this.path}/save`, object);
     }
 
 }

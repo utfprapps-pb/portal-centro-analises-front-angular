@@ -10,7 +10,6 @@
     }
 }
 
-.p-component,
 .p-input-icon-left,
 .p-input-icon-right {
     & :not(.p-overlaypanel) {
@@ -40,5 +39,9 @@ p-progressspinner {
 
 .p-overlaypanel .p-overlaypanel-content {
     padding: 0.5rem;
+    font-size: 12px;
+}
+
+.p-toast {
     font-size: 12px;
 }

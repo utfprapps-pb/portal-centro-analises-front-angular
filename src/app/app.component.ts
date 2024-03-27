@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
+import pageSettings from '../app/core/constants/page-settings';
 import { AuthService } from './login/auth.service';
 import { ResizeService } from './utils/resize.service';
 
@@ -12,31 +13,30 @@ import { ResizeService } from './utils/resize.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-    public static showSideBar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public static isMobile: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
     private subscriptions: Subscription[] = [];
 
     constructor(
         private readonly authService: AuthService,
         private readonly router: Router,
-        private readonly resizeService: ResizeService,
+        private readonly resizeService: ResizeService
     ) { }
 
     public ngOnInit(): void {
-        this.authService.showSideBar.subscribe(
-            mostrar => AppComponent.showSideBar.next(mostrar)
-        );
-
         this.resizeService.screenWidth$.subscribe(width => {
-            AppComponent.showSideBar.next(width < 720);
-            AppComponent.isMobile.next(width < 720)
+            pageSettings.isMobile = (width < 720);
         });
         this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
-                if (!this.authService.isUserAuthenticated()) {
-                    this.authService.logout();
-                    return;
+                let url: string = event.url;
+                if (event.url.includes('?')) {
+                    url = url.substring(0, url.indexOf('?'));
+                }
+                if (this.authService.isUserAuthenticated()) {
+                    if (url == '/' || url == '/entrar') {
+                        this.router.navigate(['/inicio'], { replaceUrl: true });
+                    }
+                } else {
+                    this.router.navigate(['/entrar'], { replaceUrl: true });
                 }
             }
         });
@@ -45,4 +45,5 @@ export class AppComponent implements OnInit, OnDestroy {
     public ngOnDestroy(): void {
         this.subscriptions.forEach(it => it.unsubscribe());
     }
+
 }

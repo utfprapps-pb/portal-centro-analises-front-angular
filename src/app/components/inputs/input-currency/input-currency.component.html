@@ -1,0 +1,11 @@
+<div class="form-group">
+    <label [for]="id" *ngIf="!!label" class="form-label bold">{{label}}</label>
+
+    <div class="position-relative">
+        <p-inputNumber #input mode="decimal" [useGrouping]="false" [class]="class" [id]="id"
+            [name]="name" autocomplete="off" [maxlength]="maxlength" [placeholder]="placeholder"
+            [disabled]="disabled" [showClear]="showClear" [(ngModel)]="innerValue"
+            [max]="max" [min]="min" [minFractionDigits]="2" [maxFractionDigits]="precision"/>
+        <invalid-info #invalid class="float-icon invalid-info" [causes]="invalidCause"></invalid-info>
+    </div>
+</div>
