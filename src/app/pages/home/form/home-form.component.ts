@@ -13,8 +13,6 @@ export class HomeFormComponent extends FormComponent implements OnInit, OnDestro
     @ViewChild('formView') public override formView: FormBaseComponent;
     public override pageTitle: string = "Página Inicial";
 
-    public isMobile: boolean = false;
-
     constructor(
         protected override readonly injector: Injector,
     ) {

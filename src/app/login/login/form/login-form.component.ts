@@ -20,13 +20,12 @@ export class LoginFormComponent extends FormComponent {
 
     @ViewChild('formView') public override formView: FormBaseComponent;
     public override pageTitle: string = "Login";
+    public pageSettings = pageSettings;
 
     public template: 'login' | 'password' | 'confirm' | 'register' = 'login'
     public title: string;
     public subtitle: string;
     public buttonText: string;
-
-    public isMobile: boolean = false;
 
     public object: Login = new Login();
     public passwordRecover: PasswordRecover;
@@ -50,10 +49,6 @@ export class LoginFormComponent extends FormComponent {
                 this.router.navigate(['/entrar'], { replaceUrl: true });
             }
         });
-    }
-
-    get page_settings() {
-        return pageSettings;
     }
 
     public changeTemplate(template: 'login' | 'password' | 'confirm' | 'register'): void {
@@ -136,6 +131,7 @@ export class LoginFormComponent extends FormComponent {
                 this.releaseForm()
                 StorageManager.setItem(Constants.TOKEN, data.token);
                 StorageManager.setItem(Constants.USER, JSON.stringify(data.user));
+                this.router.navigate(['/inicio'], { replaceUrl: true });
             }, error => {
                 this.releaseForm();
                 if (this.hasErrorMapped(error)) {
@@ -212,7 +208,4 @@ export class LoginFormComponent extends FormComponent {
         }
     }
 
-    private navegarParaInicio(): void {
-
-    }
 }

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import pageSettings from '../app/core/constants/page-settings';
@@ -26,16 +26,22 @@ export class AppComponent implements OnInit, OnDestroy {
             pageSettings.isMobile = (width < 720);
         });
         this.router.events.subscribe(event => {
-            if (event instanceof NavigationEnd) {
+            if (event instanceof NavigationStart) {
                 let url: string = event.url;
-                if (event.url.includes('?')) {
-                    url = url.substring(0, url.indexOf('?'));
-                }
-                if (this.authService.isUserAuthenticated()) {
+                const usuarioAutenticado = this.authService.isUserAuthenticated();
+                pageSettings.showHeader = !usuarioAutenticado;
+                if (usuarioAutenticado) {
                     if (url == '/' || url == '/entrar') {
                         this.router.navigate(['/inicio'], { replaceUrl: true });
                     }
-                } else {
+                }
+            }
+            if (event instanceof NavigationEnd) {
+                let url: string = event.url;
+                if (url.includes('?')) {
+                    url = url.substring(0, url.indexOf('?'));
+                }
+                if (!this.authService.isUserAuthenticated()) {
                     this.router.navigate(['/entrar'], { replaceUrl: true });
                 }
             }

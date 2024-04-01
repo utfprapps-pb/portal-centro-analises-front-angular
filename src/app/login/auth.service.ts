@@ -1,29 +1,53 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, ReplaySubject, catchError, of, shareReplay, tap } from 'rxjs';
+import { Observable, ReplaySubject, Subscription, catchError, fromEvent, of, shareReplay, take, tap } from 'rxjs';
 
+import { ToasterType } from '../components/toaster/toaster.type';
 import { Constants } from '../core/constants/constants';
+import { ObjectUtils } from '../utils/object-utils';
+import { ToasterService } from './../components/toaster/toaster.service';
 import { StorageManager } from './../core/storage-manager';
 import { UserLogin } from './login/model/user-login.model';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
 
     public showSideBar = new EventEmitter<boolean>();
 
-    private authenticationState = new ReplaySubject<UserLogin | null>(1);
+    private authenticationState: ReplaySubject<UserLogin | null> = new ReplaySubject<UserLogin | null>(1);
     private accountIdentity: UserLogin | null = null;
     private accountCache$?: Observable<UserLogin | null> = null;
+    private localStorageChanges: Subscription;
 
     constructor(
         private readonly router: Router,
+        private readonly toasterService: ToasterService,
     ) {
+        this.localStorageChanges = fromEvent<StorageEvent>(window, 'storage').subscribe(it => {
+            if (it.key == null) {
+                this.logout();
+            } else {
+                const preventKeys: string[] = [Constants.USER, Constants.TOKEN, Constants.LAST_PAGE];
+                if (preventKeys.indexOf(it.key) != -1) {
+                    this.toasterService.simplePop(ToasterType.ERROR, 'Você não pode fazer isso!!');
+                    localStorage.setItem(it.key, it.oldValue);
+                }
+            }
+        })
+    }
 
+    ngOnDestroy(): void {
+        this.localStorageChanges.unsubscribe();
     }
 
     public isUserAuthenticated(): boolean {
+        if (this.accountIdentity == null && ObjectUtils.isNotEmpty(this.getToken())) {
+            this.identity(true);
+            this.accountCache$.pipe(take(1)).subscribe();
+            this.authenticationState.pipe(take(1)).subscribe();
+        }
         return this.accountIdentity != null;
     }
 
@@ -32,10 +56,16 @@ export class AuthService {
     }
 
     public logout(): void {
-        localStorage.removeItem(Constants.TOKEN);
-        if (this.router.url != '/entrar') {
-            this.router.navigate(['/entrar'])
-        }
+        this.limpaStorage();
+        this.authenticationState.next(null);
+        this.accountIdentity = null;
+        this.router.navigate(['/entrar'], { replaceUrl: true })
+    }
+
+    private limpaStorage(): void {
+        StorageManager.removeItem(Constants.TOKEN);
+        StorageManager.removeItem(Constants.USER);
+        StorageManager.removeItem(Constants.LAST_PAGE);
     }
 
     public getUserLogged(): UserLogin {
@@ -54,9 +84,7 @@ export class AuthService {
                 }),
                 tap(async (account: UserLogin | null) => {
                     if (account) {
-                        console.log('identity', account)
                         this.authenticate(account);
-
                     } else {
                         this.logout();
                     }
