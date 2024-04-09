@@ -1,0 +1,8 @@
+<p-progressSpinner *ngIf="facades.size()" ariaLabel="loading" animationDuration="3"></p-progressSpinner>
+<div class="container-fluid py-1">
+    <form-base #formBase>
+        <div class="p-2">
+            <ng-content></ng-content>
+        </div>
+    </form-base>
+</div>

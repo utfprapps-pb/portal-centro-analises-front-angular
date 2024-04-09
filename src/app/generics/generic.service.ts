@@ -2,7 +2,7 @@ import { HttpClientService } from '../core/services/httpclient.service';
 import { ObjectUtils } from '../utils/object-utils';
 
 
-export abstract class GenericService<T> {
+export abstract class GenericService {
 
     private _path: string;
 
@@ -28,10 +28,6 @@ export abstract class GenericService<T> {
         protected url: string,
     ) {
         this._path = url || '';
-    }
-
-    public save(object: T): Promise<any> {
-        return this.http.post(`${this.path}/save`, object);
     }
 
 }

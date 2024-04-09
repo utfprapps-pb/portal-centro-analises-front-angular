@@ -11,7 +11,12 @@ export const routes: Routes = [
     },
     {
         path: 'entrar',
-        loadChildren: () => import('./login/login/login.module').then(m => m.LoginModule),
+        loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
+    },
+    {
+        path: 'perfil',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule),
     },
     {
         path: 'inicio',

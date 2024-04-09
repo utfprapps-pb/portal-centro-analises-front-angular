@@ -1,26 +1,25 @@
 import { Component, Injector, ViewChild } from '@angular/core';
 import { take } from 'rxjs';
 
-import { FormComponent } from '../../../components/form-base/form-base';
-import { FormBaseComponent } from '../../../components/form-base/form-base.component';
-import { Constants } from '../../../core/constants/constants';
-import pageSettings from '../../../core/constants/page-settings';
-import { StorageManager } from '../../../core/storage-manager';
-import { ObjectUtils } from '../../../utils/object-utils';
+import { FormBase } from '../../components/form-base/form-base';
+import { FormBaseComponent } from '../../components/form-base/form-base.component';
+import { Constants } from '../../core/constants/constants';
+import { StorageManager } from '../../core/managers/storage-manager';
+import { ObjectUtils } from '../../utils/object-utils';
+import { LoginService } from '../login.service';
 import { Login } from '../model/login.model';
 import { PasswordRecover } from '../model/password-recover.model';
 import { RegisterUser } from '../model/register-user.model';
+
 
 @Component({
     selector: 'app-login',
     templateUrl: './login-form.component.html',
     styleUrl: './login-form.component.scss'
 })
-export class LoginFormComponent extends FormComponent {
+export class LoginFormComponent extends FormBase {
 
     @ViewChild('formView') public override formView: FormBaseComponent;
-    public override pageTitle: string = "Login";
-    public pageSettings = pageSettings;
 
     public template: 'login' | 'password' | 'confirm' | 'register' = 'login'
     public title: string;
@@ -35,10 +34,12 @@ export class LoginFormComponent extends FormComponent {
 
     constructor(
         protected override readonly injector: Injector,
+        protected override readonly service: LoginService,
     ) {
-        super(injector);
+        super(injector, service);
         this.changeTemplate('login');
         this.route.queryParams.pipe(take(1)).subscribe(params => {
+            console.log('params', params);
             if (ObjectUtils.isNotEmpty(params)) {
                 const success: boolean = params['success'] == 'true';
                 if (success) {
@@ -191,13 +192,13 @@ export class LoginFormComponent extends FormComponent {
     private onClickRegisterNewUser(): void {
         if (this.validateForm()) {
             this.blockForm();
-            this.loginService.save(this.newUser).then(data => {
+            this.loginService.createNewUser(this.newUser).then((data: any) => {
                 this.toastrService.showSuccess(this.pageTitle, "Usuário cadastrado com Sucesso!");
                 this.changeTemplate('login');
                 this.object.email = this.newUser.email;
                 this.object.password = this.newUser.password;
                 this.releaseForm()
-            }, error => {
+            }, (error: any) => {
                 this.releaseForm();
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);

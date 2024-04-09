@@ -1,0 +1,48 @@
+<form-crud #formView [pageTitle]="'Perfil'">
+
+    <div class="row">
+        <div class="col-24">
+            <h1 class="m-0">Perfil</h1>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-24">
+            <input-text label="Nome" compCtrl disabled required [(ngModel)]="object.name" [minlength]="4"
+                [maxlength]="255">
+            </input-text>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24">
+            <input-email label="Email" compCtrl disabled required [(ngModel)]="object.email" [minlength]="4"
+                [maxlength]="255">
+            </input-email>
+        </div>
+    </div>
+
+    <hr>
+    <div class="row">
+        <div class="col-24">
+            <h1 class="m-0">Alterar Senha</h1>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-24">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24">
+
+        </div>
+    </div>
+
+
+</form-crud>

@@ -1,4 +1,7 @@
 <div>
     <p-toast [life]="3000"></p-toast>
+    <HeaderComponent *ngIf="pageSettings.showHeader"></HeaderComponent>
+
+
     <router-outlet></router-outlet>
 </div>

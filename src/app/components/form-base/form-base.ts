@@ -2,37 +2,48 @@ import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
-import { LoginService } from '../../login/login/login.service';
+import pageSettings from '../../core/constants/page-settings';
+import { AuthService } from '../../core/services/auth.service';
+import { ToastrService } from '../../core/services/toastr.service';
+import { ToasterService } from '../../core/toaster/toaster.service';
+import { GenericService } from '../../generics/generic.service';
+import { LoginService } from '../../login/login.service';
 import { ObjectUtils } from '../../utils/object-utils';
 import { CompCtrlDirective } from '../compctrl/compctrl.directive';
-import { ToasterService } from '../toaster/toaster.service';
-import { ToastrService } from '../toastr.service';
 import { FormBaseComponent } from './form-base.component';
 
 @Injectable()
-export abstract class FormComponent implements OnDestroy {
+export abstract class FormBase implements OnDestroy {
 
     public abstract formView: FormBaseComponent;
-    public abstract pageTitle: string;
+
+    public pageSettings = pageSettings;
 
     public loginService: LoginService;
     public toasterService: ToasterService;
     public toastrService: ToastrService;
     public router: Router;
     public route: ActivatedRoute;
+    public authentication: AuthService;
 
     private disabledElements: any[] = [];
 
     public subscriptions: Subscription[] = [];
 
+    get pageTitle() {
+        return this.formView?.pageTitle;
+    }
+
     constructor(
         protected readonly injector: Injector,
+        protected readonly service: GenericService,
     ) {
         this.loginService = injector.get(LoginService);
         this.toasterService = injector.get(ToasterService);
         this.toastrService = injector.get(ToastrService);
         this.router = injector.get(Router);
         this.route = injector.get(ActivatedRoute);
+        this.authentication = injector.get(AuthService);
     }
 
     public ngOnDestroy(): void {

@@ -1,3 +1,11 @@
+@import "../../../node_modules/primeng/resources/themes/bootstrap4-light-blue/theme.css";
+@import "../../../node_modules/primeng/resources/primeng.min.css";
+@import "./bootstrap/bootstrap.css";
+@import "./bootstrap/bootstrap-grid.css";
+@import "./bootstrap/bootstrap-reboot.css";
+@import "./bootstrap/bootstrap-utilities.css";
+
+
 .p-inputtext {
     padding: 0.0rem 0.0rem;
 
@@ -38,10 +46,35 @@ p-progressspinner {
 }
 
 .p-overlaypanel .p-overlaypanel-content {
-    padding: 0.5rem;
+    padding  : 0.5rem;
     font-size: 12px;
 }
 
 .p-toast {
     font-size: 12px;
+}
+
+.p-menubar {
+        background   : var(--bs-500);
+    border-radius: 0px;
+    & .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content {
+        background-color: var(--green-400);
+    }
+    & .p-menuitem:not(.p-highlight):not(.p-disabled):hover > .p-menuitem-content {
+        background-color: var(--green-300);
+    }
+}
+
+.p-menuitem>.p-menuitem-content .p-menuitem-link {
+    padding: 0.5rem;
+}
+
+.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-content .p-menuitem-link {
+    & .p-menuitem-text, .p-menuitem-icon {
+        color: var(--bs-emphasis-color);
+    }
+}
+
+.p-tieredmenu.p-tieredmenu-overlay {
+    background-color: var(--green-50);
 }

@@ -10,9 +10,9 @@ import { ToastModule } from 'primeng/toast';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ComponentsModule } from './components/components.module';
-import { AuthInterceptor } from './core/interceptors/auth-handler.interceptor';
-import { ErrorHandlerInterceptor } from './core/interceptors/error-handler.interceptor';
-import { AuthService } from './login/auth.service';
+import { AuthInterceptor } from './core/handlers/auth-handler.interceptor';
+import { ErrorHandlerInterceptor } from './core/handlers/error-handler.interceptor';
+import { AuthService } from './core/services/auth.service';
 
 @NgModule({
     declarations: [

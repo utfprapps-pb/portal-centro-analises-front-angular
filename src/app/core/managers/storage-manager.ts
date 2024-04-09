@@ -1,4 +1,4 @@
-import { ObjectUtils } from '../utils/object-utils';
+import { ObjectUtils } from '../../utils/object-utils';
 
 export class StorageManager {
 

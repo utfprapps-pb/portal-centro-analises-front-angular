@@ -3,13 +3,13 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ToasterType } from '../../components/toaster/toaster.type';
-import { AuthService } from '../../login/auth.service';
 import { ObjectUtils } from '../../utils/object-utils';
 import { Constants } from '../constants/constants';
 import { Roles } from '../enums/roles.enum';
-import { StorageManager } from '../storage-manager';
-import { ToasterService } from './../../components/toaster/toaster.service';
+import { StorageManager } from '../managers/storage-manager';
+import { AuthService } from '../services/auth.service';
+import { ToasterService } from '../toaster/toaster.service';
+import { ToasterType } from '../toaster/toaster.type';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {

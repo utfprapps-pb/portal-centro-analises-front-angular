@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { ToastrService } from '../../components/toastr.service';
-import { AuthService } from '../../login/auth.service';
 import { ObjectUtils } from '../../utils/object-utils';
-import { CompCtrlException } from '../exceptions/compctrl-exception';
-import { GenericException } from '../exceptions/generic-exception';
+import { CompCtrlException } from '../errors/compctrl-exception';
+import { GenericException } from '../errors/generic-exception';
+import { AuthService } from '../services/auth.service';
+import { ToastrService } from '../services/toastr.service';
 
 @Injectable({ providedIn: 'root' })
 export class ErrorHandlerInterceptor implements HttpInterceptor {

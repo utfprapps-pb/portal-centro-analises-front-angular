@@ -1,6 +1,6 @@
 let pageSettings = {
     isMobile: false,
-    showHeader: true,
+    showHeader: false,
 }
 
 export default pageSettings;

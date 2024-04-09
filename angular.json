@@ -31,7 +31,6 @@
                         ],
                         "styles": [
                             "node_modules/primeng/resources/themes/bootstrap4-light-blue/theme.css",
-                            "node_modules/primeng/resources/primeng.min.css",
                             "src/assets/styles/components.scss",
                             "src/assets/styles/prime.scss",
                             "src/assets/styles/screen.scss",

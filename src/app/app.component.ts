@@ -3,7 +3,7 @@ import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import pageSettings from '../app/core/constants/page-settings';
-import { AuthService } from './login/auth.service';
+import { AuthService } from './core/services/auth.service';
 import { ResizeService } from './utils/resize.service';
 
 @Component({
@@ -14,6 +14,7 @@ import { ResizeService } from './utils/resize.service';
 export class AppComponent implements OnInit, OnDestroy {
 
     private subscriptions: Subscription[] = [];
+    public pageSettings = pageSettings;
 
     constructor(
         private readonly authService: AuthService,
@@ -29,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
             if (event instanceof NavigationStart) {
                 let url: string = event.url;
                 const usuarioAutenticado = this.authService.isUserAuthenticated();
-                pageSettings.showHeader = !usuarioAutenticado;
+                pageSettings.showHeader = usuarioAutenticado;
                 if (usuarioAutenticado) {
                     if (url == '/' || url == '/entrar') {
                         this.router.navigate(['/inicio'], { replaceUrl: true });
