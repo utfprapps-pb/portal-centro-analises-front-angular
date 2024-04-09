@@ -5,10 +5,10 @@ import { FormBase } from '../../components/form-base/form-base';
 import { FormBaseComponent } from '../../components/form-base/form-base.component';
 import { Constants } from '../../core/constants/constants';
 import { StorageManager } from '../../core/managers/storage-manager';
+import { RecoverPasswordDTO } from '../../dtos/recover-password.dto';
 import { ObjectUtils } from '../../utils/object-utils';
 import { LoginService } from '../login.service';
 import { Login } from '../model/login.model';
-import { PasswordRecover } from '../model/password-recover.model';
 import { RegisterUser } from '../model/register-user.model';
 
 
@@ -27,7 +27,7 @@ export class LoginFormComponent extends FormBase {
     public buttonText: string;
 
     public object: Login = new Login();
-    public passwordRecover: PasswordRecover;
+    public passwordRecover: RecoverPasswordDTO;
     public passwordConfirm: string = null;
 
     public newUser: RegisterUser;
@@ -39,7 +39,6 @@ export class LoginFormComponent extends FormBase {
         super(injector, service);
         this.changeTemplate('login');
         this.route.queryParams.pipe(take(1)).subscribe(params => {
-            console.log('params', params);
             if (ObjectUtils.isNotEmpty(params)) {
                 const success: boolean = params['success'] == 'true';
                 if (success) {
@@ -64,7 +63,7 @@ export class LoginFormComponent extends FormBase {
                 this.title = 'Esqueci minha senha';
                 this.subtitle = '';
                 this.buttonText = 'Solicitar nova Senha';
-                this.passwordRecover = new PasswordRecover();
+                this.passwordRecover = new RecoverPasswordDTO();
                 this.passwordRecover.email = this.object.email;
                 break;
             case 'confirm':

@@ -20,6 +20,7 @@ export class InputPasswordComponent extends InputBaseComponent {
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
     @Input('equals') equals: string = null;
+    @Input('allowToggle') allowToggle: boolean = true;
 
     public fieldType: 'text' | 'password' = 'password';
 

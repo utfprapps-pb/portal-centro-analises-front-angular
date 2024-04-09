@@ -15,4 +15,8 @@ export class FormCrudComponent extends FormBaseComponent {
         super(injector);
     }
 
+    public showButtons(button: string): boolean {
+        return true;
+    }
+
 }

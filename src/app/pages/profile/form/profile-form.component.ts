@@ -2,7 +2,8 @@ import { Component, Injector, ViewChild } from '@angular/core';
 
 import { FormCrud } from '../../../components/form-crud/form-crud';
 import { FormCrudComponent } from '../../../components/form-crud/form-crud.component';
-import { User } from '../model/user.model';
+import { ChangePasswordDTO } from '../../../dtos/change-password.dto';
+import { UserDTO } from '../../../dtos/user.dto';
 import { ProfileService } from '../profile.service';
 
 @Component({
@@ -10,10 +11,13 @@ import { ProfileService } from '../profile.service';
     templateUrl: './profile-form.component.html',
     styleUrl: './profile-form.component.scss'
 })
-export class ProfileFormComponent extends FormCrud<User> {
+export class ProfileFormComponent extends FormCrud<UserDTO> {
 
     @ViewChild('formView') public formView: FormCrudComponent;
 
+    public changePassword: ChangePasswordDTO = new ChangePasswordDTO();
+
+    public passwordConfirm: string = null;
 
     constructor(
         protected override readonly injector: Injector,
@@ -23,6 +27,5 @@ export class ProfileFormComponent extends FormCrud<User> {
         this.object.name = this.authentication.getUserLogged().displayName;
         this.object.email = this.authentication.getUserLogged().email;
     }
-
 
 }

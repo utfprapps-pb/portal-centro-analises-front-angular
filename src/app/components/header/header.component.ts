@@ -3,7 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { TieredMenu } from 'primeng/tieredmenu';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
-import { UserLogin } from '../../login/model/user-login.model';
+import { UserLoginDTO } from '../../dtos/user-login-dto';
 
 @Component({
     selector: 'HeaderComponent',
@@ -16,7 +16,7 @@ export class HeaderComponent implements OnDestroy {
 
     public items: MenuItem[] = [];
     private subscriptions: Subscription[] = [];
-    public user: UserLogin = null;
+    public user: UserLoginDTO = null;
     public profileItens: MenuItem[] = [
         {
             label: 'Meu Perfil',
@@ -71,7 +71,7 @@ export class HeaderComponent implements OnDestroy {
             }
         ];
 
-        this.subscriptions.push(authentication.authenticationState.subscribe((user: UserLogin) => {
+        this.subscriptions.push(authentication.authenticationState.subscribe((user: UserLoginDTO) => {
             this.user = user;
         }))
     }

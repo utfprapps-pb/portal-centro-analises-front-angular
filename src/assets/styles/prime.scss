@@ -55,13 +55,15 @@ p-progressspinner {
 }
 
 .p-menubar {
-        background   : var(--bs-500);
+    background   : var(--green-300);
     border-radius: 0px;
-    & .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus > .p-menuitem-content {
+
+    & .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus>.p-menuitem-content {
         background-color: var(--green-400);
     }
-    & .p-menuitem:not(.p-highlight):not(.p-disabled):hover > .p-menuitem-content {
-        background-color: var(--green-300);
+
+    & .p-menuitem:not(.p-highlight):not(.p-disabled):hover>.p-menuitem-content {
+        background-color: var(--green-200);
     }
 }
 
@@ -69,8 +71,10 @@ p-progressspinner {
     padding: 0.5rem;
 }
 
-.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-content .p-menuitem-link {
-    & .p-menuitem-text, .p-menuitem-icon {
+.p-menubar .p-menubar-root-list>.p-menuitem>.p-menuitem-content .p-menuitem-link {
+
+    & .p-menuitem-text,
+    .p-menuitem-icon {
         color: var(--bs-emphasis-color);
     }
 }

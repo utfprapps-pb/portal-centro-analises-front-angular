@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClientService } from '../../core/services/httpclient.service';
+import { UserDTO } from '../../dtos/user.dto';
 import { GenericCrudService } from '../../generics/generic-crud.service';
-import { User } from './model/user.model';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ProfileService extends GenericCrudService<User> {
+export class ProfileService extends GenericCrudService<UserDTO> {
 
     constructor(
         protected override http: HttpClientService,
     ) {
-        super(http, '/users', User)
+        super(http, '/users', UserDTO)
     }
 
 }

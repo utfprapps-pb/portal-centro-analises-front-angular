@@ -2,7 +2,7 @@ import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, ReplaySubject, Subscription, catchError, fromEvent, of, shareReplay, take, tap } from 'rxjs';
 
-import { UserLogin } from '../../login/model/user-login.model';
+import { UserLoginDTO } from '../../dtos/user-login-dto';
 import { ObjectUtils } from '../../utils/object-utils';
 import { Constants } from '../constants/constants';
 import { StorageManager } from '../managers/storage-manager';
@@ -17,9 +17,9 @@ export class AuthService implements OnDestroy {
 
     public showSideBar = new EventEmitter<boolean>();
 
-    public authenticationState: ReplaySubject<UserLogin | null> = new ReplaySubject<UserLogin | null>(1);
-    private accountIdentity: UserLogin | null = null;
-    public accountCache$?: Observable<UserLogin | null> = null;
+    public authenticationState: ReplaySubject<UserLoginDTO | null> = new ReplaySubject<UserLoginDTO | null>(1);
+    private accountIdentity: UserLoginDTO | null = null;
+    public accountCache$?: Observable<UserLoginDTO | null> = null;
     private localStorageChanges: Subscription;
 
     constructor(
@@ -82,7 +82,7 @@ export class AuthService implements OnDestroy {
         StorageManager.removeItem(Constants.LAST_PAGE);
     }
 
-    public getUserLogged(): UserLogin {
+    public getUserLogged(): UserLoginDTO {
         const user = StorageManager.getItem(Constants.USER) || null;
         if (user != null && user != undefined && user != 'null' && user != 'undefined') {
             return JSON.parse(user) || null;
@@ -90,13 +90,13 @@ export class AuthService implements OnDestroy {
         return null;
     }
 
-    public identity(force?: boolean): Observable<UserLogin | null> {
+    public identity(force?: boolean): Observable<UserLoginDTO | null> {
         if (force || !this.accountCache$ || !this.isUserAuthenticated()) {
             this.accountCache$ = of(this.getUserLogged()).pipe(
                 catchError(() => {
                     return of(null);
                 }),
-                tap(async (account: UserLogin | null) => {
+                tap(async (account: UserLoginDTO | null) => {
                     if (account) {
                         this.authenticate(account);
                     } else {
@@ -109,7 +109,7 @@ export class AuthService implements OnDestroy {
         return this.accountCache$;
     }
 
-    private authenticate(identity: UserLogin | null): void {
+    private authenticate(identity: UserLoginDTO | null): void {
         this.accountIdentity = identity;
         this.authenticationState.next(this.accountIdentity);
     }

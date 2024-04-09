@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClientService } from '../core/services/httpclient.service';
+import { RecoverPasswordDTO } from '../dtos/recover-password.dto';
+import { RequestCodeEmailDTO } from '../dtos/request-email-code.dto';
 import { GenericService } from '../generics/generic.service';
 import { Login } from './model/login.model';
-import { PasswordRecover } from './model/password-recover.model';
 import { RegisterUser } from './model/register-user.model';
 
 @Injectable({
@@ -25,7 +26,7 @@ export class LoginService extends GenericService {
         return this.http.post('/login', login);
     }
 
-    public recoverPassword(recover: PasswordRecover): Promise<any> {
+    public recoverPassword(recover: RecoverPasswordDTO): Promise<any> {
         return this.http.post(`${this.path}/recover-password`, recover);
     }
 
@@ -34,6 +35,8 @@ export class LoginService extends GenericService {
     }
 
     public requestValidation(email: string): Promise<any> {
-        return this.http.post(`${this.path}/request-verification`, { email: email });
+        const request: RequestCodeEmailDTO = new RequestCodeEmailDTO()
+        request.email = email;
+        return this.http.post(`${this.path}/request-verification`, request);
     }
 }
