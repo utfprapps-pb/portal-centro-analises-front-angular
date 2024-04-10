@@ -54,11 +54,17 @@ p-progressspinner {
     font-size: 12px;
 }
 
+.p-submenu-list {
+    border-radius: 4px;
+    background-color: var(--green-50);
+}
+
 .p-menubar {
     background   : var(--green-300);
     border-radius: 0px;
 
-    & .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus>.p-menuitem-content {
+    & .p-menuitem:not(.p-highlight):not(.p-disabled).p-focus>.p-menuitem-content,
+    & .p-menuitem.p-highlight>.p-menuitem-content {
         background-color: var(--green-400);
     }
 
@@ -81,4 +87,8 @@ p-progressspinner {
 
 .p-tieredmenu.p-tieredmenu-overlay {
     background-color: var(--green-50);
+}
+
+.p-progress-spinner-svg {
+    scale: 3;
 }

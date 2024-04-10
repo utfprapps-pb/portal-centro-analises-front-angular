@@ -1,5 +1,6 @@
 import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConvertUtilsService } from './../../utils/convert-utils.service';
 
 import { Subscription } from 'rxjs';
 import pageSettings from '../../core/constants/page-settings';
@@ -25,6 +26,7 @@ export abstract class FormBase implements OnDestroy {
     public router: Router;
     public route: ActivatedRoute;
     public authentication: AuthService;
+    public convertUtilsService: ConvertUtilsService;
 
     private disabledElements: any[] = [];
 
@@ -44,6 +46,7 @@ export abstract class FormBase implements OnDestroy {
         this.router = injector.get(Router);
         this.route = injector.get(ActivatedRoute);
         this.authentication = injector.get(AuthService);
+        this.convertUtilsService = injector.get(ConvertUtilsService);
     }
 
     public ngOnDestroy(): void {
@@ -76,8 +79,12 @@ export abstract class FormBase implements OnDestroy {
         *[contenteditable]`;
     }
 
+    protected getFormBaseToDisable(): any {
+        return this.formView.formBase.first.nativeElement;
+    }
+
     public disableForm(value: boolean = true) {
-        let aux: any[] = this.formView.formBase.first.nativeElement.querySelectorAll(this.getFocusableElementstring());
+        let aux: any[] = this.getFormBaseToDisable().querySelectorAll(this.getFocusableElementstring());
         aux = Array.prototype.slice.call(aux);
         for (const aux of this.disabledElements) {
             aux.disabled = false;
@@ -173,7 +180,6 @@ export abstract class FormBase implements OnDestroy {
             } else {
                 console.error('Erro não mapeado:', error);
             }
-
         }
     }
 }

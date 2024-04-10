@@ -1,12 +1,12 @@
 <p-progressSpinner *ngIf="facades.size()" ariaLabel="loading" animationDuration="3"></p-progressSpinner>
-<div class="container-fluid py-1">
+<div class="container-fluid pt-1" [ngStyle]="{'padding-bottom': showFooter() ? '3.75rem' : '0.25rem'}">
     <form-base #formBase>
-        <div class="p-2 py-3">
+        <div class="p-2 py-3 mt-2">
             <ng-content></ng-content>
         </div>
     </form-base>
 </div>
-<div class="footer">
-    <button *ngIf="showButtons('salvar')" class="btn btn-md btn-primary me-2">Salvar</button>
-    <button *ngIf="showButtons('cancelar')" class="btn btn-md btn-secondary">Cancelar</button>
+<div class="footer px-3" *ngIf="showFooter()">
+    <button *ngIf="showButtons('salvar')" class="btn btn-md btn-primary me-2" (click)="onClickSalvar()">Salvar</button>
+    <button *ngIf="showButtons('cancelar')" class="btn btn-md btn-secondary" (click)="onClickCancelar()">Cancelar</button>
 </div>

@@ -13,7 +13,6 @@ export class AuthInterceptor implements HttpInterceptor {
     ) { }
 
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
         if (!request || !request.url) {
             return next.handle(request);
         }
@@ -22,7 +21,7 @@ export class AuthInterceptor implements HttpInterceptor {
         if (authtoken) {
             request = request.clone({
                 setHeaders: {
-                    Authorization: authtoken
+                    Authorization: `Bearer ${authtoken}`
                 },
             });
         }

@@ -115,7 +115,11 @@ export class AuthService implements OnDestroy {
     }
 
     public hasAnyAuthority(authorities: string[]): boolean {
-        return authorities.indexOf(this.getUserLogged().role) != -1;
+        if (ObjectUtils.isNotEmpty(authorities)) {
+            return authorities.indexOf(this.getUserLogged().role) != -1;
+        } else {
+            return true;
+        }
     }
 
 }

@@ -15,8 +15,28 @@ export class FormCrudComponent extends FormBaseComponent {
         super(injector);
     }
 
+    public showFooter(): boolean {
+        return true;
+    }
+
     public showButtons(button: string): boolean {
         return true;
     }
+
+    public async onClickSalvar(): Promise<void> { }
+
+    public async onClickCancelar(): Promise<void> { }
+
+    public exitOnSave(): boolean {
+        return true;
+    }
+
+    public async onBeforeSave(object: any): Promise<void> { }
+
+    public async onSave(object: any): Promise<void> { }
+
+    public async onAfterSave(object: any): Promise<void> { }
+
+
 
 }

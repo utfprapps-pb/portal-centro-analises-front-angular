@@ -28,4 +28,27 @@ export class ProfileFormComponent extends FormCrud<UserDTO> {
         this.object.email = this.authentication.getUserLogged().email;
     }
 
+
+    public override async onSave(object: any): Promise<void> {
+        object = this.convertUtilsService.cloneObject(this.changePassword);
+        if (this.validateForm()) {
+            this.blockForm();
+            await this.onBeforeSave(object);
+            this.service.changePassword(object).then(async (data) => {
+                await this.onAfterSave(object);
+                this.toastrService.showSuccess(this.pageTitle, 'Registro salvo com sucesso!');
+                this.releaseForm();
+                if (this.exitOnSave()) {
+                    this.onCancel();
+                }
+            }, error => {
+                this.releaseForm();
+                if (this.hasErrorMapped(error)) {
+                    this.errorHandler(error);
+                } else {
+                    this.toastrService.showError(this.pageTitle, 'Erro ao salvar Registro!');
+                }
+            });
+        }
+    }
 }

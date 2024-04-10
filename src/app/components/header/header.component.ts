@@ -24,10 +24,6 @@ export class HeaderComponent implements OnDestroy {
             routerLink: 'perfil'
         },
         {
-            label: 'Config. Email',
-            icon: 'fa fa-envelope'
-        },
-        {
             separator: true,
         },
         {
@@ -50,24 +46,6 @@ export class HeaderComponent implements OnDestroy {
                 command(event) {
                     console.log(event)
                 },
-            },
-            {
-                label: 'Edit',
-                icon: 'fa fa-pencil',
-                disabled: true
-            },
-            {
-                label: 'Users',
-                icon: 'fa fa-user',
-                visible: false,
-            },
-            {
-                label: 'Events',
-                icon: 'fa fa-calendar',
-            },
-            {
-                label: 'Quit',
-                icon: 'fa fa-power-off',
             }
         ];
 

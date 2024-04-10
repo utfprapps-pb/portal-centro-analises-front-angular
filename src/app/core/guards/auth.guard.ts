@@ -29,27 +29,34 @@ export class AuthGuard implements CanActivate {
         return this.authService.identity().pipe(map(
             (account) => {
                 if (account) {
-                    if ((Roles.ROLE_ADMIN == account.role) || ObjectUtils.isEmpty(authorities)) {
-                        return true;
+                    let allowAccess: boolean = false;
+                    if (ObjectUtils.isEmpty(authorities) || (Roles.ROLE_ADMIN == account.role)) {
+                        allowAccess = true;
                     }
 
                     if (this.authService.hasAnyAuthority(authorities)) {
+                        allowAccess = true;
+                    }
+
+                    if (allowAccess) {
+                        this.saveLocation();
                         return true;
                     }
 
                     this.toasterService.simplePop(ToasterType.WARNING, "Usuário sem Permissão de Acesso");
-
                     if (StorageManager.has(Constants.LAST_PAGE)) {
                         this.router.navigate([StorageManager.getItem(Constants.LAST_PAGE)], { replaceUrl: true });
                     }
-                    return false;
                 }
 
-                StorageManager.setItem(Constants.LAST_PAGE, url);
                 this.router.navigate(['entrar']);
                 return false;
             }
         ));
+    }
+
+    private saveLocation(): void {
+        StorageManager.setItem(Constants.LAST_PAGE, location.hash.substring(1));
     }
 
 }

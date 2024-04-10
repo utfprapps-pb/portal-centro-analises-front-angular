@@ -139,7 +139,7 @@ export class LoginFormComponent extends FormBase {
                 } else {
                     this.toastrService.showError(this.pageTitle, 'Erro ao realizar login, tente novamente mais tarde!');
                 }
-            })
+            });
         }
     }
 

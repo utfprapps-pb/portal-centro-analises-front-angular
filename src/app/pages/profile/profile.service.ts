@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClientService } from '../../core/services/httpclient.service';
+import { ChangePasswordDTO } from '../../dtos/change-password.dto';
 import { UserDTO } from '../../dtos/user.dto';
 import { GenericCrudService } from '../../generics/generic-crud.service';
 
@@ -15,4 +16,7 @@ export class ProfileService extends GenericCrudService<UserDTO> {
         super(http, '/users', UserDTO)
     }
 
+    public changePassword(change: ChangePasswordDTO): Promise<any> {
+        return this.http.post(`${this.path}/change-password`, change);
+    }
 }
