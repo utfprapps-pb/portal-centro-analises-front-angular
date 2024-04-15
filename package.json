@@ -4,12 +4,12 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve --proxy-config proxy.config.json",
-        "build": "ng build --port 80 --configuration production",
+        "build": "ng build --configuration production",
         "watch": "ng build --watch --configuration development",
         "test": "ng test"
     },
     "engines": {
-        "node": "^18.19.1"
+        "node": ">=18.19.1"
     },
     "private": true,
     "dependencies": {
