@@ -64,7 +64,14 @@ export class HeaderComponent implements OnDestroy {
                         icon: 'fa fa-envelope',
                         url: '/#/configuracao-email',
                         target: '_self',
-                        visible: admin
+                        // visible: admin
+                    },
+                    {
+                        label: 'Domínios',
+                        icon: 'far fa-globe',
+                        url: '/#/configuracao-email',
+                        target: '_self',
+                        // visible: admin
                     },
                 ]
             }

@@ -22,11 +22,11 @@ export class InputPasswordComponent extends InputBaseComponent {
     @Input('equals') equals: string = null;
     @Input('allowToggle') allowToggle: boolean = true;
 
-    public fieldType: 'text' | 'password' = 'password';
+    public visibilityType: 'text' | 'password' = 'password';
 
-    public changeFieldType(): void {
+    public changevisibilityType(): void {
         if (!this.disabled) {
-            this.fieldType = this.fieldType == 'text' ? 'password' : 'text';
+            this.visibilityType = this.visibilityType == 'text' ? 'password' : 'text';
         }
     }
 

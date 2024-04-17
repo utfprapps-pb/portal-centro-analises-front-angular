@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { Roles } from './core/enums/roles.enum';
 import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -22,11 +21,11 @@ export const routes: Routes = [
     },
     {
         path: 'configuracao-email',
-        data: {
-            authorities: [
-                Roles.ROLE_ADMIN
-            ]
-        },
+        // data: {
+        //     authorities: [
+        //         Roles.ROLE_ADMIN
+        //     ]
+        // },
         canActivate: [AuthGuard.canActivate],
         canDeactivate: [AuthGuard.canDeactivate],
         loadChildren: () => import('./pages/email-config/email-config.module').then(m => m.EmailConfigModule),
