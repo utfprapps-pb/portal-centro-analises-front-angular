@@ -21,6 +21,7 @@ export class InputPasswordComponent extends InputBaseComponent {
 
     @Input('equals') equals: string = null;
     @Input('allowToggle') allowToggle: boolean = true;
+    @Input('password') realPassword: boolean = false;
 
     public visibilityType: 'text' | 'password' = 'password';
 
