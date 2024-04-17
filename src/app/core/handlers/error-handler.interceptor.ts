@@ -21,8 +21,13 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
             tap(null, (err: HttpErrorResponse) => {
                 if (ObjectUtils.isNotEmpty(err.error)) {
-                    const mappedMessagePrefix: string = 'mapped|';
+                    if (!!err.error && err.error.trace && err.error.trace.includes('TokenExpiredException')) {
+                        this.authenticationProvider.logout();
+                        this.toastrService.showError('Sessão', 'Sessão expirou, Por favor faça login novamente!');
+                        throw new GenericException('Sessão expirou, Por favor faça login novamente!');
+                    }
 
+                    const mappedMessagePrefix: string = 'mapped|';
                     // Exception Generica que precisa ser tratada por meio do message do erro
                     if (ObjectUtils.isNotEmpty(err.error.message) && (err.error.message as string).startsWith(mappedMessagePrefix)) {
                         err.error['mapped'] = true;

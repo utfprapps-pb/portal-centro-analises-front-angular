@@ -31,7 +31,7 @@ export class AuthService implements OnDestroy {
             if (it.key == null) {
                 this.logout();
             } else {
-                const preventKeys: string[] = [Constants.USER, Constants.TOKEN, Constants.LAST_PAGE];
+                const preventKeys: string[] = [Constants.USER, Constants.TOKEN];
                 if (preventKeys.indexOf(it.key) != -1) {
                     this.toasterService.simplePop(ToasterType.ERROR, 'Você não pode fazer isso!!');
                     localStorage.setItem(it.key, it.oldValue);

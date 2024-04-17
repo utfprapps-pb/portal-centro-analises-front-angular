@@ -28,7 +28,6 @@ export class ProfileFormComponent extends FormCrud<UserDTO> {
         this.object.email = this.authentication.getUserLogged().email;
     }
 
-
     public override async onSave(object: any): Promise<void> {
         object = this.convertUtilsService.cloneObject(this.changePassword);
         if (this.validateForm()) {

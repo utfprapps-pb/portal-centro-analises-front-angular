@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { Component, inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -12,7 +12,7 @@ import { ToasterService } from '../toaster/toaster.service';
 import { ToasterType } from '../toaster/toaster.type';
 
 @Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanActivate {
+export class AuthGuard {
 
     constructor(
         private router: Router,
@@ -20,7 +20,26 @@ export class AuthGuard implements CanActivate {
         private toasterService: ToasterService,
     ) { }
 
-    public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    public static canActivate: CanActivateFn = (
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot,
+    ) => {
+        return inject(AuthGuard).canActivate(route, state);
+    };
+
+    public static canDeactivate(
+        component: Component,
+        currentRoute: ActivatedRouteSnapshot,
+        currentState: RouterStateSnapshot,
+        nextState: RouterStateSnapshot
+    ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        console.log(component, currentRoute, currentState, nextState);
+        console.log(currentRoute.url, currentState.url)
+        AuthGuard.saveLocation(currentState.url);
+        return true;
+    }
+
+    private canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
         const authorities = route.data['authorities'];
         return this.checkLogin(authorities, state.url);
     }
@@ -39,7 +58,6 @@ export class AuthGuard implements CanActivate {
                     }
 
                     if (allowAccess) {
-                        this.saveLocation();
                         return true;
                     }
 
@@ -55,8 +73,8 @@ export class AuthGuard implements CanActivate {
         ));
     }
 
-    private saveLocation(): void {
-        StorageManager.setItem(Constants.LAST_PAGE, location.hash.substring(1));
+    private static saveLocation(hash: string): void {
+        StorageManager.setItem(Constants.LAST_PAGE, hash);
     }
 
 }

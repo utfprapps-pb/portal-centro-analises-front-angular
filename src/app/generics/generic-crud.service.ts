@@ -21,4 +21,12 @@ export abstract class GenericCrudService<T extends ZObject> extends GenericServi
         return this.http.post(`${this.path}/save`, object);
     }
 
+    public findOne(id: number): Promise<any> {
+        return this.http.post(`${this.path}/${id}`, null);
+    }
+
+    public findAll(): Promise<any> {
+        return this.http.get(`${this.path}`);
+    }
+
 }

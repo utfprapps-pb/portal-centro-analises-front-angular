@@ -1,4 +1,4 @@
-import { AfterViewInit, Injectable, Injector } from '@angular/core';
+import { AfterViewInit, Injectable, Injector, OnInit } from '@angular/core';
 
 import { Constants } from '../../core/constants/constants';
 import { StorageManager } from '../../core/managers/storage-manager';
@@ -8,7 +8,7 @@ import { FormBase } from '../form-base/form-base';
 import { FormCrudComponent } from './form-crud.component';
 
 @Injectable()
-export abstract class FormCrud<T extends ZModel> extends FormBase implements AfterViewInit {
+export abstract class FormCrud<T extends ZModel> extends FormBase implements OnInit, AfterViewInit {
 
     public abstract override formView: FormCrudComponent;
 
@@ -22,14 +22,20 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements Aft
         this.object = this.service.createInstance();
     }
 
+    public ngOnInit(): void {
+        this.formComplete();
+        // Todo implementar findOne;
+
+    }
+
     public ngAfterViewInit(): void {
         this.bindMethods();
     }
 
-    private bindMethods(): void {
+    private async bindMethods(): Promise<void> {
         if (this.formView == undefined) {
-            setTimeout(() => {
-                this.bindMethods();
+            setTimeout(async () => {
+                await this.bindMethods();
             }, 500);
             return;
         }
@@ -44,6 +50,47 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements Aft
         this.formView.onSave = (object) => this.onSave(object);
         this.formView.onAfterSave = (object) => this.onAfterSave(object);
     }
+
+    private async formComplete(): Promise<void> {
+        this.blockForm();
+        await this.service.findOne(this.getObjectIdFromUrl()).then(data => {
+            this.onLoadObject(data);
+            this.object = data;
+        }, error => {
+            if (this.hasErrorMapped(error)) {
+                this.errorHandler(error);
+            } else {
+                this.toastrService.showError(this.pageTitle, 'Erro ao carregar Registro!');
+            }
+        }).finally(() => {
+            this.releaseForm();
+        });
+    }
+
+    public onLoadObject(object: any): void {
+
+    }
+
+    public getLocalUrl(): string {
+        return window.location.hash.substring(2);
+    }
+
+    public getObjectIdFromUrl(): number {
+        const url: string = this.getLocalUrl();
+        if (url.includes('/alterar')) {
+            return this.urlSubstringKey(url, '/alterar') as undefined as number;
+        }
+        return null;
+    }
+
+    private urlSubstringKey(url: string, key: string): string {
+        if (url.includes(key)) {
+            return url.substring(url.indexOf(key) + key.length);
+        } else {
+            return url;
+        }
+    }
+
 
     public showButtons(button: string): boolean {
         return true;

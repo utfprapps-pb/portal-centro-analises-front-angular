@@ -1,0 +1,39 @@
+<form-crud #formView [pageTitle]="'Config. Email'">
+
+    <div class="row">
+        <div class="col-24">
+            <h1 class="m-0">Configurações do Email</h1>
+        </div>
+    </div>
+    <hr class="mt-2 border border-success mx-3">
+    <div class="row">
+        <div class="col-24">
+            <input-email label="Email" compCtrl required [(ngModel)]="object.email" [minlength]="4"
+                [maxlength]="255">
+            </input-email>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24">
+            <input-password label="Senha" compCtrl required [minlength]="6" [maxlength]="254"
+                [(ngModel)]="object.password">
+            </input-password>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-24">
+            <input-text label="Provedor" compCtrl required [(ngModel)]="object.host" [minlength]="4"
+                [maxlength]="255">
+            </input-text>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-24">
+            <input-number label="Porta" compCtrl required [(ngModel)]="object.port" [maxlength]="5">
+            </input-number>
+        </div>
+    </div>
+
+</form-crud>

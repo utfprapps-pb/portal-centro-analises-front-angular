@@ -2,6 +2,8 @@ import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { TieredMenu } from 'primeng/tieredmenu';
 import { Subscription } from 'rxjs';
+
+import { Roles } from '../../core/enums/roles.enum';
 import { AuthService } from '../../core/services/auth.service';
 import { UserLoginDTO } from '../../dtos/user-login-dto';
 
@@ -38,6 +40,12 @@ export class HeaderComponent implements OnDestroy {
     constructor(
         public readonly authentication: AuthService,
     ) {
+        const admin: boolean = this.authentication.getUserLogged().role ==     Roles.ROLE_ADMIN;
+        const professor: boolean = this.authentication.getUserLogged().role == Roles.ROLE_PROFESSOR;
+        const student: boolean = this.authentication.getUserLogged().role == Roles.ROLE_STUDENT;
+        const external: boolean = this.authentication.getUserLogged().role == Roles.ROLE_EXTERNAL;
+        const partner: boolean = this.authentication.getUserLogged().role == Roles.ROLE_PARTNER;
+
         this.items =  this.items = [
             {
                 label: 'File',
@@ -46,6 +54,19 @@ export class HeaderComponent implements OnDestroy {
                 command(event) {
                     console.log(event)
                 },
+            },
+            {
+                label: 'Configurações',
+                icon: 'fa fa-cog',
+                items: [
+                    {
+                        label: 'Config. Email',
+                        icon: 'fa fa-envelope',
+                        url: '/#/configuracao-email',
+                        target: '_self',
+                        visible: admin
+                    },
+                ]
             }
         ];
 
