@@ -33,8 +33,7 @@ export class AuthGuard {
         currentState: RouterStateSnapshot,
         nextState: RouterStateSnapshot
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        console.log(component, currentRoute, currentState, nextState);
-        console.log(currentRoute.url, currentState.url)
+        console.log('salvou');
         AuthGuard.saveLocation(currentState.url);
         return true;
     }
