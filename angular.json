@@ -30,6 +30,12 @@
                             "src/assets"
                         ],
                         "styles": [
+                            "src/assets/styles/fonts.css",
+                            "src/assets/styles/fontawesome/sharp-light.css",
+                            "src/assets/styles/fontawesome/sharp-regular.css",
+                            "src/assets/styles/fontawesome/sharp-solid.css",
+                            "src/assets/styles/fontawesome/sharp-thin.css",
+                            "src/assets/styles/fontawesome/all.css",
                             "node_modules/primeng/resources/themes/bootstrap4-light-blue/theme.css",
                             "src/assets/styles/components.scss",
                             "src/assets/styles/prime.scss",
