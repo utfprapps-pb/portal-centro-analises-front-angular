@@ -1,47 +1,28 @@
-import { EventEmitter, Injectable, OnDestroy } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, ReplaySubject, Subscription, catchError, fromEvent, of, shareReplay, take, tap } from 'rxjs';
+import { Observable, ReplaySubject, catchError, of, shareReplay, take, tap } from 'rxjs';
 
 import { UserLoginDTO } from '../../dtos/user-login-dto';
 import { ObjectUtils } from '../../utils/object-utils';
 import { Constants } from '../constants/constants';
 import { StorageManager } from '../managers/storage-manager';
-import { ToasterService } from '../toaster/toaster.service';
-import { ToasterType } from '../toaster/toaster.type';
 import { DialogService, DialogType } from './dialog.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AuthService implements OnDestroy {
+export class AuthService {
 
     public showSideBar = new EventEmitter<boolean>();
 
     public authenticationState: ReplaySubject<UserLoginDTO | null> = new ReplaySubject<UserLoginDTO | null>(1);
     private accountIdentity: UserLoginDTO | null = null;
     public accountCache$?: Observable<UserLoginDTO | null> = null;
-    private localStorageChanges: Subscription;
 
     constructor(
         private readonly router: Router,
-        private readonly toasterService: ToasterService,
         private readonly dialogService: DialogService,
     ) {
-        this.localStorageChanges = fromEvent<StorageEvent>(window, 'storage').subscribe(it => {
-            if (it.key == null) {
-                this.logout();
-            } else {
-                const preventKeys: string[] = [Constants.USER, Constants.TOKEN];
-                if (preventKeys.indexOf(it.key) != -1) {
-                    this.toasterService.simplePop(ToasterType.ERROR, 'Você não pode fazer isso!!');
-                    localStorage.setItem(it.key, it.oldValue);
-                }
-            }
-        })
-    }
-
-    ngOnDestroy(): void {
-        this.localStorageChanges.unsubscribe();
     }
 
     public isUserAuthenticated(): boolean {
