@@ -1,5 +1,5 @@
-import { ToasterService } from "../core/toaster/toaster.service";
-import { ToasterType } from "../core/toaster/toaster.type";
+import { ToasterService } from '../core/toaster/toaster.service';
+import { ToasterType } from '../core/toaster/toaster.type';
 
 export abstract class ZObject {
 

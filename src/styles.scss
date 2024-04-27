@@ -1,5 +1,9 @@
-@import 'primeng/resources/primeng.css';
-@import 'primeng/resources/themes/bootstrap4-light-blue/theme.css';
+@import './assets/themes/bootstrap4-light-blue.scss';
+$font-size-default: 13px;
+
+* {
+    font-size: $font-size-default;
+}
 
 body {
     background-color: var(--green-100);
@@ -15,7 +19,7 @@ body {
 }
 
 .small-text {
-    font-size  : 12px;
+    font-size  : ($font-size-default - 2px);
     color      : var(--surface-600);
     font-weight: bold;
     line-height: 1;
@@ -62,8 +66,16 @@ p {
     font-weight: bold;
 }
 
+form-list form-base form,
 form-crud form-base form {
-    background: var(--surface-0);
+    background   : var(--surface-0);
     border-radius: 5px;
 }
 
+.w-max-content {
+    width: max-content;
+}
+
+.ng-content {
+    overflow: auto;
+}

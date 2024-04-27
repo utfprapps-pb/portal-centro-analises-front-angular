@@ -20,6 +20,17 @@ export const routes: Routes = [
         loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule),
     },
     {
+        path: 'dominios',
+        // data: {
+        //     authorities: [
+        //         Roles.ROLE_ADMIN
+        //     ]
+        // },
+        canActivate: [AuthGuard.canActivate],
+        canDeactivate: [AuthGuard.canDeactivate],
+        loadChildren: () => import('./pages/domain/domain.module').then(m => m.DomainModule),
+    },
+    {
         path: 'configuracao-email',
         // data: {
         //     authorities: [

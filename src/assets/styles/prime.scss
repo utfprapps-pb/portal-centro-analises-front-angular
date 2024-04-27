@@ -1,13 +1,11 @@
-@import "../../../node_modules/primeng/resources/themes/bootstrap4-light-blue/theme.css";
-@import "../../../node_modules/primeng/resources/primeng.min.css";
-@import "./bootstrap/bootstrap.css";
-@import "./bootstrap/bootstrap-grid.css";
-@import "./bootstrap/bootstrap-reboot.css";
-@import "./bootstrap/bootstrap-utilities.css";
-
+@import './bootstrap/bootstrap';
+@import './bootstrap/bootstrap-grid';
+@import './bootstrap/bootstrap-reboot';
+@import './bootstrap/bootstrap-utilities';
 
 .p-inputtext {
     padding: 0.0rem 0.0rem;
+
 
     &:not(:has(.p-component)) {
         padding: 0.25rem 0.75rem;
@@ -15,6 +13,57 @@
 
     &:enabled:focus {
         box-shadow: 0 0 0 0 #268fff80;
+    }
+}
+
+enum-filter-template {
+    & .filter-row {
+        &>div {
+            // padding-top: 1.4px;
+        }
+    }
+}
+
+.p-datatable {
+    & .p-dropdown-label {
+        & .p-inputtext {
+            padding-right: 0px;
+        }
+    }
+
+    & .filter-row {
+        & div {
+            & .p-dropdown {
+                height                   : 100%;
+                width                    : 100%;
+                border-top-left-radius   : 0px;
+                border-bottom-left-radius: 0px;
+            }
+        }
+
+        & div:not(.col) {
+            & .p-dropdown {
+                border-top-right-radius   : 0px;
+                border-bottom-right-radius: 0px;
+                border-top-left-radius    : 4px;
+                border-bottom-left-radius : 4px;
+
+                & .p-dropdown-label {
+                    padding-left : 0.5rem;
+                    padding-right: 0px;
+                }
+
+                & .p-dropdown-trigger {
+                    width: 1.5rem;
+                }
+            }
+
+            & .p-inputtext {
+                border-top-left-radius   : 0px;
+                border-bottom-left-radius: 0px;
+            }
+        }
+
     }
 }
 
@@ -55,7 +104,7 @@ p-progressspinner {
 }
 
 .p-submenu-list {
-    border-radius: 4px;
+    border-radius   : 4px;
     background-color: var(--green-50);
 }
 
@@ -92,3 +141,52 @@ p-progressspinner {
 .p-progress-spinner-svg {
     scale: 3;
 }
+
+.p-datatable .p-datatable-thead>tr>th {
+    text-align  : left;
+    padding     : 3px 10px;
+    border      : 1px solid #dee2e6;
+    border-width: 1px 0 2px 0;
+    font-weight : 600;
+    color       : #212529;
+    background  : #ffffff;
+    transition  : box-shadow 0.15s;
+}
+
+.p-datatable .p-datatable-tbody>tr>td {
+    text-align  : left;
+    border      : 1px solid #dee2e6;
+    border-width: 1px 0 0 0;
+    padding     : 3px 4rem;
+}
+
+
+.p-datatable {
+    &>& p-overlay & .p-overlay.p-component {
+        z-index: 10000 !important;
+    }
+
+    &>.p-datatable-wrapper {
+        overflow: inherit;
+    }
+}
+
+p-overlay {
+    height: 26px;
+    position: absolute;
+    top     : 26px;
+
+    & div.p-overlay.p-component {
+        position: sticky;
+    }
+}
+
+p-paginator {
+    p-overlay {
+        top: auto;
+    }
+    & div.p-overlay.p-component {
+        transform: translateY(calc(-100%));
+    }
+}
+

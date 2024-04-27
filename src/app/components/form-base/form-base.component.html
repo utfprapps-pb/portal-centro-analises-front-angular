@@ -1,5 +1,7 @@
 <p-progressSpinner *ngIf="facades.size()" ariaLabel="loading" animationDuration="3"></p-progressSpinner>
 <p-breadcrumb *ngIf="enableBreadcrumb && getBreadcrumbItens()" class="max-w-full" [model]="getBreadcrumbItens()" [home]="breadCrumbHome"></p-breadcrumb>
 <form #formBase>
-    <ng-content></ng-content>
+    <div class="ng-content">
+        <ng-content></ng-content>
+    </div>
 </form>

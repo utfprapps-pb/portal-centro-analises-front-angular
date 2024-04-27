@@ -40,13 +40,13 @@ export class HeaderComponent implements OnDestroy {
     constructor(
         public readonly authentication: AuthService,
     ) {
-        const admin: boolean = this.authentication.getUserLogged().role ==     Roles.ROLE_ADMIN;
+        const admin: boolean = this.authentication.getUserLogged().role == Roles.ROLE_ADMIN;
         const professor: boolean = this.authentication.getUserLogged().role == Roles.ROLE_PROFESSOR;
         const student: boolean = this.authentication.getUserLogged().role == Roles.ROLE_STUDENT;
         const external: boolean = this.authentication.getUserLogged().role == Roles.ROLE_EXTERNAL;
         const partner: boolean = this.authentication.getUserLogged().role == Roles.ROLE_PARTNER;
 
-        this.items =  this.items = [
+        this.items = this.items = [
             {
                 label: 'File',
                 icon: 'fa fa-file',
@@ -69,7 +69,7 @@ export class HeaderComponent implements OnDestroy {
                     {
                         label: 'Domínios',
                         icon: 'far fa-globe',
-                        url: '/#/configuracao-email',
+                        url: '/#/dominios',
                         target: '_self',
                         // visible: admin
                     },

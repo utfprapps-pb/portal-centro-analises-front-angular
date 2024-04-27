@@ -1,0 +1,50 @@
+<p-table #table
+        dataKey="id"
+        [value]="datatableObjects"
+        [columns]="datatableColumns"
+        [paginator]="true"
+        [first]="first"
+        [rows]="rows"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [showCurrentPageReport]="true"
+        [sortMode]="'multiple'"
+        styleClass="p-datatable-gridlines"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [currentPageReportTemplate]="'Vendo de {first} até {last} de {totalRecords} registros.'">
+
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{ col.header }}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+            </tr>
+            <tr>
+                <td *ngFor="let col of datatableFilterColumns">
+                    <ng-container *ngIf="col.type == 'text'">
+                        <text-filter-template [column]="col" [datatable]="table"></text-filter-template>
+                    </ng-container>
+                    <ng-container *ngIf="col.type == 'numeric'">
+                        <number-filter-template [column]="col" [datatable]="table"></number-filter-template>
+                    </ng-container>
+                    <ng-container *ngIf="col.type == 'enum'">
+                        <enum-filter-template [column]="col" [datatable]="table"></enum-filter-template>
+                    </ng-container>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-data let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns">
+                    <ng-container *ngIf="col.type == 'enum'; else textTemplate">
+                        <enum-column-template [column]="col" [data]="data"></enum-column-template>
+                    </ng-container>
+                    <ng-template #textTemplate>
+                        {{ data[col.field] }}
+                    </ng-template>
+                </td>
+            </tr>
+        </ng-template>
+
+</p-table>

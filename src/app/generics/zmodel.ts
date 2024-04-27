@@ -1,5 +1,8 @@
-import { ZObject } from "./zobject";
+import { Prop } from '../core/decorators/decorators';
+import { ZObject } from './zobject';
 
 export abstract class ZModel extends ZObject {
-    id: number;
+
+    @Prop('numeric')
+    id: number = null;
 }

@@ -1,4 +1,4 @@
-import { Directive, forwardRef, Input } from '@angular/core';
+import { Directive, EventEmitter, Input, Output, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Guid } from '../../../utils/models/guid';
@@ -21,9 +21,11 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
     @Input() name: string = Guid.raw();
     @Input() label: string = null;
     @Input() placeholder: string = '';
-    @Input() class: string = 'form-control';
+    @Input() class: string = 'w-100';
     @Input() minlength: number = null;
     @Input() maxlength: number = null;
+
+    @Output('onChange') onChangeEventEmmiter: EventEmitter<number> = new EventEmitter();
 
     private _innerValue: string = null;
     private _disabled: boolean = false;
@@ -76,6 +78,7 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
         if (v !== this.innerValue) {
             this._innerValue = v;
             this.onChange(v);
+            this.onChangeEventEmmiter.emit(v);
         }
     }
 
@@ -83,6 +86,7 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
     writeValue(value: any): void {
         if (value !== this.innerValue) {
             this._innerValue = value;
+            this.onChangeEventEmmiter.emit(value);
         }
     }
 

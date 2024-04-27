@@ -29,4 +29,8 @@ export abstract class GenericCrudService<T extends ZObject> extends GenericServi
         return this.http.get(`${this.path}`);
     }
 
+    public getDatatable(page: number, size: number): Promise<any> {
+        return this.http.get(`${this.path}/page?page=${page}&size=${size}`);
+    }
+
 }

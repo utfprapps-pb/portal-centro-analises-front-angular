@@ -2,6 +2,12 @@
 <div class="container-fluid pt-1" [ngStyle]="{'padding-bottom': showFooter() ? '3.75rem' : '0.25rem'}">
     <form-base #formBase>
         <div class="p-2 py-3 mt-2">
+            <div class="row">
+                <div class="col-24">
+                    <h1 class="m-0">{{title}}</h1>
+                </div>
+            </div>
+            <hr class="mt-2 border border-success mx-3">
             <div class="ng-content">
                 <ng-content></ng-content>
             </div>
@@ -9,6 +15,7 @@
     </form-base>
 </div>
 <div class="footer px-3" *ngIf="showFooter()">
-    <button *ngIf="showButtons('salvar')" class="btn btn-md btn-primary me-2" (click)="onClickSalvar()">Salvar</button>
-    <button *ngIf="showButtons('cancelar')" class="btn btn-md btn-secondary" (click)="onClickCancelar()">Cancelar</button>
+    <button *ngIf="showButtons('cancelar')" class="btn btn-md btn-secondary" (click)="onClickCancelar()">
+        Cancelar
+    </button>
 </div>
