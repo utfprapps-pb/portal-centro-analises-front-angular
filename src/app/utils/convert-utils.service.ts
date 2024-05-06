@@ -8,7 +8,7 @@ export class ConvertUtilsService {
 
     public getBoolean(value: any, valueNull: any = true) {
         if ((typeof value === 'string' || value instanceof String) && value == '') {
-            return valueNull;
+            return true;
         } else if (value == 'true' || value == 'T' || value == true) {
             return true;
         } else if (value == 'false' || value == 'F' || value == false) {

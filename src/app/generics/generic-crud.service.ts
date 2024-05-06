@@ -21,6 +21,10 @@ export abstract class GenericCrudService<T extends ZObject> extends GenericServi
         return this.http.post(`${this.path}/save`, object);
     }
 
+    public delete(id: number): Promise<void> {
+        return this.http.delete(`${this.path}/${id}`);
+    }
+
     public findOne(id: number): Promise<any> {
         return this.http.post(`${this.path}/${id}`, null);
     }

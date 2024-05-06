@@ -3,6 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { TieredMenu } from 'primeng/tieredmenu';
 import { Subscription } from 'rxjs';
 
+import pageSettings from '../../core/constants/page-settings';
 import { Roles } from '../../core/enums/roles.enum';
 import { AuthService } from '../../core/services/auth.service';
 import { UserLoginDTO } from '../../dtos/user-login-dto';
@@ -15,6 +16,8 @@ import { UserLoginDTO } from '../../dtos/user-login-dto';
 export class HeaderComponent implements OnDestroy {
 
     @ViewChild('tiredMenu') tiredMenu: TieredMenu;
+
+    public pageSettings = pageSettings;
 
     public items: MenuItem[] = [];
     private subscriptions: Subscription[] = [];

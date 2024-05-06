@@ -2,8 +2,6 @@ import 'reflect-metadata';
 
 import { AfterViewInit, Injectable, Injector } from '@angular/core';
 
-import { Constants } from '../../core/constants/constants';
-import { StorageManager } from '../../core/managers/storage-manager';
 import { GenericCrudService } from '../../generics/generic-crud.service';
 import { ZModel } from '../../generics/zmodel';
 import { DatatableComponent } from '../datatable/datatable/datatable.component';
@@ -36,6 +34,7 @@ export abstract class FormList<T extends ZModel> extends FormBase implements Aft
         }
         this.formView.showFooter = () => this.showFooter();
         this.formView.showButtons = (button: string) => this.showButtons(button);
+        this.formView.onClickCancelar = () => this.onClickCancelar();
     }
 
     public getLocalUrl(): string {
@@ -56,17 +55,11 @@ export abstract class FormList<T extends ZModel> extends FormBase implements Aft
 
     public async onClickCancelar(): Promise<void> {
         this.blockForm();
-        setTimeout(() => {
-            this.onCancel();
-        }, 200);
+        await this.onCancel();
     }
 
-    protected onCancel() {
-        if (StorageManager.has(Constants.LAST_PAGE)) {
-            this.router.navigate([StorageManager.getItem(Constants.LAST_PAGE)], { replaceUrl: false });
-        } else {
-            this.router.navigate(['inicio'], { replaceUrl: false });
-        }
+    protected async onCancel(): Promise<void> {
+        this.router.navigate(['inicio'], { replaceUrl: false });
     }
 
 }

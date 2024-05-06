@@ -3,7 +3,11 @@
 
     <div class="position-relative">
         <input #input pInputText [class]="class" [id]="id" [name]="name" autocomplete="off"
-            [placeholder]="placeholder" [disabled]="disabled" [(ngModel)]="innerValue" />
-            <invalid-info #invalid class="float-icon invalid-info" [causes]="invalidCause"></invalid-info>
+            [placeholder]="placeholder" [disabled]="disabled" [(ngModel)]="innerValue" [maxlength]="maxlength"
+            style="padding-right: 30px;" />
+        <i class="pi pi-times cursor-pointer mr-icon-0" *ngIf="!!innerValue && showClear"
+            (click)="forceClear()">
+        </i>
+        <invalid-info #invalid class="mr-icon-1" [causes]="invalidCause"></invalid-info>
     </div>
 </div>

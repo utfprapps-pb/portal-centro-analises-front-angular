@@ -2,10 +2,9 @@
     <label [for]="id" *ngIf="!!label" class="form-label bold">{{label}}</label>
 
     <div class="position-relative">
-        <p-inputNumber #input [useGrouping]="false" [class]="class" [id]="id"
-            [name]="name" autocomplete="off" [maxlength]="maxlength" [placeholder]="placeholder"
-            [disabled]="disabled" [showClear]="showClear" [(ngModel)]="innerValue"
-            [max]="max" [min]="min"/>
-        <invalid-info #invalid class="float-icon invalid-info" [causes]="invalidCause"></invalid-info>
+        <p-inputNumber #input [useGrouping]="false" [class]="class" [id]="id" [name]="name" autocomplete="off"
+            [maxlength]="maxlength" [placeholder]="placeholder" [disabled]="disabled"
+            [showClear]="showClear && !disabled" [(ngModel)]="innerValue" [max]="max" [min]="min" />
+        <invalid-info #invalid class="mr-icon-1" [causes]="invalidCause"></invalid-info>
     </div>
 </div>

@@ -16,14 +16,6 @@
     }
 }
 
-enum-filter-template {
-    & .filter-row {
-        &>div {
-            // padding-top: 1.4px;
-        }
-    }
-}
-
 .p-datatable {
     & .p-dropdown-label {
         & .p-inputtext {
@@ -38,6 +30,18 @@ enum-filter-template {
                 width                    : 100%;
                 border-top-left-radius   : 0px;
                 border-bottom-left-radius: 0px;
+            }
+
+            & p-dropdown.dropdown-filter {
+                & span {
+                    width: 70px;
+
+                    &>div {
+                        white-space  : nowrap;
+                        text-overflow: ellipsis;
+                        overflow     : hidden;
+                    }
+                }
             }
         }
 
@@ -67,12 +71,8 @@ enum-filter-template {
     }
 }
 
-.p-input-icon-left,
-.p-input-icon-right {
-    & :not(.p-overlaypanel) {
-        width: 100%;
-
-    }
+input.p-component {
+    width: inherit;
 }
 
 p-progressspinner {
@@ -146,7 +146,7 @@ p-progressspinner {
     text-align  : left;
     padding     : 3px 10px;
     border      : 1px solid #dee2e6;
-    border-width: 1px 0 2px 0;
+    border-width: 1px 0 2px 1px;
     font-weight : 600;
     color       : #212529;
     background  : #ffffff;
@@ -154,10 +154,11 @@ p-progressspinner {
 }
 
 .p-datatable .p-datatable-tbody>tr>td {
-    text-align  : left;
-    border      : 1px solid #dee2e6;
-    border-width: 1px 0 0 0;
-    padding     : 3px 4rem;
+    text-align     : left;
+    border         : 1px solid #dee2e6;
+    border-width   : 1px 0 1px 1px;
+    // padding     : 3px 4rem;
+    padding        : 3px;
 }
 
 
@@ -167,12 +168,17 @@ p-progressspinner {
     }
 
     &>.p-datatable-wrapper {
-        overflow: inherit;
+        overflow  : inherit;
+        min-height: 50vh;
     }
 }
 
+div.p-datatable-gridlines.p-datatable.p-component {
+    overflow: auto;
+}
+
 p-overlay {
-    height: 26px;
+    height  : 26px;
     position: absolute;
     top     : 26px;
 
@@ -185,8 +191,41 @@ p-paginator {
     p-overlay {
         top: auto;
     }
+
     & div.p-overlay.p-component {
         transform: translateY(calc(-100%));
     }
 }
 
+p-tablecheckbox {
+    &>div.p-checkbox.p-component {
+        place-content: center;
+    }
+}
+
+p-dropdown {
+    &.w-100 {
+        &>div {
+            width: 100%;
+        }
+    }
+    & span {
+        .p-dropdown-label.p-inputtext {
+            padding-right: 20px;
+        }
+    }
+}
+
+.mobile-menu {
+    .p-menubar-root-list {
+        width: 90%;
+        margin-left: 2rem;
+    }
+    li.p-menuitem {
+        width: 90%;
+    }
+}
+barsicon {
+    scale: 2;
+    margin-left: 2rem;
+}

@@ -936,6 +936,9 @@
         color        : #212529;
         border-radius: 4px;
         transition   : background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+        &.p-disabled {
+            background-color: #ced4da;
+        }
     }
 
     .p-checkbox .p-checkbox-box .p-checkbox-icon {
@@ -3405,13 +3408,16 @@
     }
 
     .p-datatable .p-paginator-top {
-        border-width : 1px 0 0 0;
-        border-radius: 0;
+        border-width: 1px 0 0 0;
     }
 
     .p-datatable .p-paginator-bottom {
-        border-width : 1px 0 0 0;
-        border-radius: 0;
+        border-width: 1px 0 0 0;
+    }
+
+    .p-datatable {
+        border-radius: 4px;
+        border       : 1px solid #dee2e6;
     }
 
     .p-datatable .p-datatable-header {
@@ -3419,7 +3425,7 @@
         color       : #212529;
         border      : solid #dee2e6;
         border-width: 1px 0 0 0;
-        padding     : 1rem 1rem;
+        padding     : 0.2rem 0.5rem;
         font-weight : 600;
     }
 
@@ -4131,6 +4137,7 @@
         height          : 2.357rem;
         margin          : 0 0 0 -1px;
         padding         : 0 0.5rem;
+        margin-left     : auto;
     }
 
     .p-paginator .p-paginator-pages .p-paginator-page {
@@ -6331,7 +6338,7 @@
         .p-menubar .p-menubar-button:focus {
             outline       : 0 none;
             outline-offset: 0;
-            box-shadow    : 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+            // box-shadow    : 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
         }
 
         .p-menubar .p-menubar-root-list {

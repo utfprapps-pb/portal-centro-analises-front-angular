@@ -19,7 +19,6 @@ export class InputCurrency extends InputBaseComponent {
     @ViewChild('input') component: PrimeInputNumber;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
-    @Input('showClear') showClear: boolean = true;
     @Input('max') max: number = null;
     @Input('min') min: number = 0;
 

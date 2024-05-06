@@ -1,0 +1,11 @@
+<div class="form-group">
+    <label [for]="id" *ngIf="!!label" class="form-label bold">{{label}}</label>
+
+    <div class="position-relative">
+        <p-dropdown #input [id]="id" [name]="name" [options]="options" [(ngModel)]="innerObject"
+            [focusOnHover]="true" optionLabel="value" [showClear]="showClear && !disabled" [class]="class">
+        </p-dropdown>
+
+        <invalid-info #invalid class="mr-icon-1" [causes]="invalidCause"></invalid-info>
+    </div>
+</div>

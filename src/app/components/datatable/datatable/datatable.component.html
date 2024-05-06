@@ -1,50 +1,104 @@
+<p-progressSpinner *ngIf="loading" ariaLabel="loading" animationDuration="3"></p-progressSpinner>
 <p-table #table
-        dataKey="id"
-        [value]="datatableObjects"
-        [columns]="datatableColumns"
-        [paginator]="true"
-        [first]="first"
-        [rows]="rows"
-        [rowsPerPageOptions]="[10, 25, 50]"
-        [showCurrentPageReport]="true"
-        [sortMode]="'multiple'"
-        styleClass="p-datatable-gridlines"
-        [tableStyle]="{ 'min-width': '50rem' }"
-        [currentPageReportTemplate]="'Vendo de {first} até {last} de {totalRecords} registros.'">
+    dataKey="id"
+    [(selection)]="datatableSelectedObjects"
+    [value]="datatableObjects"
+    [columns]="datatableColumns"
+    [paginator]="true"
+    [first]="0"
+    [rows]="rowsPerPageOptions[0]"
+    [rowsPerPageOptions]="rowsPerPageOptions"
+    [showCurrentPageReport]="true"
+    [sortMode]="'multiple'"
+    styleClass="p-datatable-gridlines"
+    [tableStyle]="{'min-width': '50rem'}"
+    (onFilter)="saveState()"
+    (onSort)="saveState()"
+    [currentPageReportTemplate]="currentPageReportTemplate()">
 
-        <ng-template pTemplate="header" let-columns>
-            <tr>
-                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                    {{ col.header }}
-                    <p-sortIcon [field]="col.field"></p-sortIcon>
-                </th>
-            </tr>
-            <tr>
-                <td *ngFor="let col of datatableFilterColumns">
-                    <ng-container *ngIf="col.type == 'text'">
-                        <text-filter-template [column]="col" [datatable]="table"></text-filter-template>
-                    </ng-container>
-                    <ng-container *ngIf="col.type == 'numeric'">
-                        <number-filter-template [column]="col" [datatable]="table"></number-filter-template>
-                    </ng-container>
-                    <ng-container *ngIf="col.type == 'enum'">
-                        <enum-filter-template [column]="col" [datatable]="table"></enum-filter-template>
-                    </ng-container>
-                </td>
-            </tr>
-        </ng-template>
+    <!-- Todo: Edit, Delete, BeforeColumn e AfterColumn -->
 
-        <ng-template pTemplate="body" let-data let-columns="columns">
-            <tr>
-                <td *ngFor="let col of columns">
-                    <ng-container *ngIf="col.type == 'enum'; else textTemplate">
+    <ng-template *ngIf="!!table" pTemplate="caption">
+        <div class="text-right">
+            <datatable-header-button [icon]="'fa fa-filter-circle-xmark'" [loading]="loading"
+                [disabled]="loading" (onClick)="onClickClearFilter()">
+            </datatable-header-button>
+            <datatable-header-button [icon]="'fa fa-filter'" [loading]="loading" [disabled]="loading"
+                (onClick)="onClickToggleFilter()">
+            </datatable-header-button>
+            <datatable-header-button [icon]="'fa fa-refresh'" [loading]="loading" [disabled]="loading"
+                (onClick)="onClickRefresh()">
+            </datatable-header-button>
+        </div>
+    </ng-template>
+
+    <ng-template *ngIf="!!table" pTemplate="header" let-columns>
+        <tr>
+            <th *ngIf="allowSelectAll" class="checkbox-column">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th *ngIf="showEditButton" class="button-column"></th>
+            <th *ngIf="showDeleteButton" class="button-column"></th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngStyle]="{'width': col.width}">
+                {{ col.header }}
+                <p-sortIcon class="float-end" [field]="col.field"></p-sortIcon>
+            </th>
+        </tr>
+        <tr *ngIf="!!table && options.showfilter">
+            <th *ngIf="allowSelectAll"></th>
+            <th *ngIf="showEditButton" class="button-column"></th>
+            <th *ngIf="showDeleteButton" class="button-column"></th>
+            <th *ngFor="let col of datatableFilterColumns" class="px-1">
+                <ng-container *ngIf="col.type == 'text'">
+                    <text-filter-template [column]="col" [datatable]="this"></text-filter-template>
+                </ng-container>
+                <ng-container *ngIf="col.type == 'numeric'">
+                    <number-filter-template [column]="col" [datatable]="this"></number-filter-template>
+                </ng-container>
+                <ng-container *ngIf="col.type == 'enum'">
+                    <enum-filter-template [column]="col" [datatable]="this"></enum-filter-template>
+                </ng-container>
+            </th>
+        </tr>
+    </ng-template>
+
+    <ng-template *ngIf="!!table" pTemplate="body" let-data let-columns="columns">
+        <tr><td *ngIf="allowSelectAll" class="text-center">
+            <p-tableCheckbox [value]="data" [disabled]="!allowSelectRowDatatableInternal(data)">
+            </p-tableCheckbox>
+        </td>
+        <td *ngIf="showEditButton" class="text-center">
+            <a class="btn btn-sm btn-primary" [href]="getHref(data)">
+                <i class="fa fa-pencil-alt"></i>
+            </a>
+        </td>
+        <td *ngIf="showDeleteButton" class="text-center">
+            <button class="btn btn-sm btn-danger" (click)="onClickDelete(data)"
+                [disabled]="!allowDeleteRowDatatableInternal(data)">
+                <i class="fa fa-trash-alt"></i>
+            </button>
+        </td>
+        <td *ngFor="let col of columns">
+            <div [ngStyle]="{'text-align': col.align }">
+                    <ng-container *ngIf="col.type == 'enum'; else defaultColumnTemplate">
                         <enum-column-template [column]="col" [data]="data"></enum-column-template>
                     </ng-container>
-                    <ng-template #textTemplate>
-                        {{ data[col.field] }}
-                    </ng-template>
-                </td>
-            </tr>
-        </ng-template>
+                </div>
+                <ng-template #defaultColumnTemplate>
+                    <column-template>
+                        {{data[col.field]}}
+                    </column-template>
+                </ng-template>
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template *ngIf="!!table" pTemplate="emptymessage">
+        <tr class="no-content">
+            <td colspan="99999999" class="text-center">
+                Nenhum registro encontrado!
+            </td>
+        </tr>
+    </ng-template>
 
 </p-table>

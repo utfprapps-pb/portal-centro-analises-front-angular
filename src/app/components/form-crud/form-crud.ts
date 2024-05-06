@@ -91,7 +91,6 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         }
     }
 
-
     public showButtons(button: string): boolean {
         return true;
     }
@@ -115,17 +114,34 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
 
     public async onClickCancelar(): Promise<void> {
         this.blockForm();
-        setTimeout(() => {
-            this.onCancel();
-        }, 200);
+        this.onCancel();
     }
 
     protected onCancel() {
-        if (StorageManager.has(Constants.LAST_PAGE)) {
-            this.router.navigate([StorageManager.getItem(Constants.LAST_PAGE)], { replaceUrl: false });
-        } else {
-            this.router.navigate(['inicio'], { replaceUrl: false });
+        let localRedirect = false;
+        let index = 0;
+        const hash = location.hash.substring(1);
+        if (hash.includes('/alterar') || hash.includes('/novo')) {
+            localRedirect = true;
+            if (hash.includes('/alterar')) {
+                index = hash.indexOf('/alterar');
+            }
+            if (hash.includes('/novo')) {
+                index = hash.indexOf('/novo');
+            }
         }
+
+        if (localRedirect) {
+            this.router.navigate([hash.substring(0, index)], { replaceUrl: false });
+        } else {
+            if (StorageManager.has(Constants.LAST_PAGE)) {
+                this.router.navigate([StorageManager.getItem(Constants.LAST_PAGE)], { replaceUrl: false });
+            } else {
+                this.router.navigate(['inicio'], { replaceUrl: false });
+            }
+        }
+
+
     }
 
     protected async onBeforeSave(object: any): Promise<void> { }

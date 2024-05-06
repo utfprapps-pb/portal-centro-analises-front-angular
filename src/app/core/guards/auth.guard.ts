@@ -20,6 +20,7 @@ export class AuthGuard {
         private toasterService: ToasterService,
     ) { }
 
+
     public static canActivate: CanActivateFn = (
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot,
@@ -72,6 +73,12 @@ export class AuthGuard {
     }
 
     private static saveLocation(hash: string): void {
+        if (hash.includes('/alterar')) {
+            hash = hash.substring(0, hash.indexOf('/alterar'))
+        }
+        if (hash.includes('/novo')) {
+            hash = hash.substring(0, hash.indexOf('/novo'))
+        }
         StorageManager.setItem(Constants.LAST_PAGE, hash);
     }
 

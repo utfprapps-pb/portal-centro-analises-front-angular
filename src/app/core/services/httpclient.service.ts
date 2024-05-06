@@ -42,4 +42,16 @@ export class HttpClientService {
         });
     }
 
+    public delete(url: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.http.delete(`${this.fixUrl(url)}`, { observe: 'body' }).subscribe(
+                (entity) => {
+                    resolve(entity);
+                }, (error) => {
+                    reject(error);
+                }
+            );
+        });
+    }
+
 }

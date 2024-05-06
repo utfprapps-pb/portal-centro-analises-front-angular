@@ -35,9 +35,10 @@ export class DialogService {
             focusConfirm: false,
             focusCancel: true,
             showConfirmButton: true,
+            confirmButtonColor: '#0dcaf0',
             confirmButtonText: options.confirmButtonText || 'Sim',
             showCancelButton: options.showCancelButton || true,
-            cancelButtonColor: '#d33',
+            cancelButtonColor: '#dc3545',
             cancelButtonText: options.cancelButtonText || 'Não',
         };
 

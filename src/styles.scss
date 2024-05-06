@@ -1,4 +1,6 @@
 @import './assets/themes/bootstrap4-light-blue.scss';
+@import '../node_modules/primeicons/primeicons.css';
+
 $font-size-default: 13px;
 
 * {
@@ -76,6 +78,29 @@ form-crud form-base form {
     width: max-content;
 }
 
-.ng-content {
-    overflow: auto;
+// .ng-content {
+//     overflow: auto;
+// }
+
+@for $i from 0 through 5 {
+    invalid-info {
+        &.mr-icon-#{$i} {
+            margin-right: -6px !important;
+        }
+    }
+
+    .mr-icon-#{$i} {
+        position : absolute;
+        top      : 50%;
+        transform: translateY(-50%);
+        right    : 0;
+
+        margin-right: if($i==0, 12px, $i * 12px + 20px);
+    }
+}
+
+.text-ellipsis {
+    white-space  : nowrap !important;
+    text-overflow: ellipsis;
+    overflow     : hidden;
 }

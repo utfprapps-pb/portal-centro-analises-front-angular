@@ -143,6 +143,19 @@ export abstract class FormBase implements OnDestroy {
         return this.validForm().size == 0;
     }
 
+    public getPageTitle(): string {
+        if (!this.pageTitle) {
+            let title = document.title;
+            if (title.includes('|')) {
+                title = title.substring(title.indexOf('|' + 1));
+            }
+            if (!!this.formView) {
+                this.formView.pageTitle = title;
+            }
+        }
+        return this.pageTitle;
+    }
+
     public hasErrorMapped(error: any): boolean {
         return ObjectUtils.isNotEmpty(error) &&
             ((ObjectUtils.isNotEmpty(error.error) && !!error.error.mapped) ||
@@ -154,7 +167,7 @@ export abstract class FormBase implements OnDestroy {
             return;
         } else {
             if (ObjectUtils.isEmpty(title)) {
-                title = this.pageTitle;
+                title = this.getPageTitle();
             }
 
             let message: string = '';

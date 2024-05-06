@@ -19,7 +19,9 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ToastrService } from '../core/services/toastr.service';
 import { ToasterService } from '../core/toaster/toaster.service';
 import { UtilsModule } from '../utils/utils.module';
+import { ComboboxComponent } from './combobox/combobox.component';
 import { CompCtrlDirective } from './compctrl/compctrl.directive';
+import { ColumnTemplateComponent } from './datatable/datatable-columns/column-template/column-template.component';
 import {
     EnumColumnTemplateComponent,
 } from './datatable/datatable-columns/enum-column-template/enum-column-template.component';
@@ -32,6 +34,7 @@ import {
 import {
     TextFilterTemplateComponent,
 } from './datatable/datatable-filters/text-filter-template/text-filter-template.component';
+import { DatatableHeaderButtonComponent } from './datatable/datatable-header-button/datatable-header-button.component';
 import { DatatableComponent } from './datatable/datatable/datatable.component';
 import { FormBaseComponent } from './form-base/form-base.component';
 import { FormCrudComponent } from './form-crud/form-crud.component';
@@ -55,13 +58,16 @@ import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.compone
         InputTextComponent,
         InputPasswordComponent,
         InputEmailComponent,
+        ComboboxComponent,
         InputNumber,
         InputCurrency,
         DatatableComponent,
+        DatatableHeaderButtonComponent,
         EnumColumnTemplateComponent,
+        ColumnTemplateComponent,
         NumberFilterTemplateComponent,
         TextFilterTemplateComponent,
-        EnumFilterTemplateComponent
+        EnumFilterTemplateComponent,
     ],
     exports: [
         CompCtrlDirective,
@@ -73,11 +79,14 @@ import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.compone
         InputTextComponent,
         InputPasswordComponent,
         InputEmailComponent,
+        ComboboxComponent,
         InputNumber,
         InputCurrency,
         TableModule,
+        DatatableHeaderButtonComponent,
         DatatableComponent,
         EnumColumnTemplateComponent,
+        ColumnTemplateComponent,
         NumberFilterTemplateComponent,
         TextFilterTemplateComponent,
         EnumFilterTemplateComponent,

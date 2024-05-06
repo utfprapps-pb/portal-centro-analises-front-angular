@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { Table } from 'primeng/table';
 
 import { OperatorWhere } from '../../../../core/filter/operator-where.enum';
 import { DatatableFilterColumn } from '../../datatable-columns/datatable-filter-column';
+import { DatatableComponent } from '../../datatable/datatable.component';
 import { FilterTemplateComponent } from '../datatable-filter-template.component';
 
 @Component({
@@ -12,7 +12,7 @@ import { FilterTemplateComponent } from '../datatable-filter-template.component'
 })
 export class NumberFilterTemplateComponent extends FilterTemplateComponent {
 
-    @Input('datatable') table: Table;
+    @Input('datatable') datatable: DatatableComponent;
     @Input('column') column: DatatableFilterColumn;
 
     public override operators: OperatorWhere[] = [

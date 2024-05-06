@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, Input } from '@angular/core';
-import { Table } from 'primeng/table';
 
 import { getEnum, getEnumTranslation } from '../../../../core/enums/enum-mapper';
 import { OperatorWhere } from '../../../../core/filter/operator-where.enum';
 import { DatatableFilterColumn } from '../../datatable-columns/datatable-filter-column';
+import { DatatableComponent } from '../../datatable/datatable.component';
 import { FilterTemplateComponent } from '../datatable-filter-template.component';
 
 @Component({
@@ -13,7 +13,7 @@ import { FilterTemplateComponent } from '../datatable-filter-template.component'
 })
 export class EnumFilterTemplateComponent extends FilterTemplateComponent implements AfterViewInit {
 
-    @Input('datatable') table: Table;
+    @Input('datatable') datatable: DatatableComponent;
     @Input('column') column: DatatableFilterColumn;
 
     public enumOptions: { key: string, value: string }[] = [];
@@ -32,12 +32,21 @@ export class EnumFilterTemplateComponent extends FilterTemplateComponent impleme
     ]
 
     public ngAfterViewInit(): void {
-        console.log(this);
         const enumName = this.column.enumname;
         const enu = getEnum(enumName);
         for (const key in enu) {
             this.enumOptions.push({ key: key, value: getEnumTranslation(enumName, key) })
         }
+    }
+
+    public override clearValue(): void {
+        this._enum = null;
+        super.clearValue();
+    }
+
+    public override loadState(): void {
+        super.loadState();
+        this._enum = this.enumOptions.find(it => it.key == this.value);
     }
 
 }

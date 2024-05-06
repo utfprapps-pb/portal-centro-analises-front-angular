@@ -1,38 +1,51 @@
-import { Directive, EventEmitter, forwardRef, Input, Output } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ControlValueAccessor } from '@angular/forms';
+import { Dropdown } from 'primeng/dropdown';
 
-import { Guid } from '../../../utils/models/guid';
-import { ObjectUtils } from '../../../utils/object-utils';
-import { CompCtrlContainer } from '../../compctrl/compctrl.container';
-import { ConvertUtilsService } from './../../../utils/convert-utils.service';
+import { getEnum, getEnumTranslation } from '../../core/enums/enum-mapper';
+import { ConvertUtilsService } from '../../utils/convert-utils.service';
+import { Guid } from '../../utils/models/guid';
+import { CompCtrlContainer } from '../compctrl/compctrl.container';
+import { InputBaseComponent } from '../inputs/input-base/input-base.component';
+import { InvalidInfoComponent } from '../inputs/invalid-info/invalid-info.component';
 
-@Directive()
-export abstract class InputBaseComponent extends CompCtrlContainer implements ControlValueAccessor {
+@Component({
+    selector: 'combobox',
+    templateUrl: './combobox.component.html',
+    styleUrl: './combobox.component.scss',
+    providers: [
+        InputBaseComponent.CONTROL(ComboboxComponent),
+        CompCtrlContainer.PROVIDER(ComboboxComponent)
+    ],
+})
+export class ComboboxComponent extends CompCtrlContainer implements ControlValueAccessor {
 
-    public static CONTROL(input: any): any {
-        return {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => input),
-            multi: true
-        };
-    }
+    @ViewChild('input') component: Dropdown;
+    @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
     @Input() id: string = Guid.raw();
     @Input() name: string = Guid.raw();
     @Input() label: string = null;
     @Input() placeholder: string = '';
     @Input() class: string = 'w-100';
-    @Input() minlength: number = null;
-    @Input() maxlength: number = 255;
 
     @Input('showClear') showClear: boolean = true;
 
     @Output('onChange') onChangeEventEmmiter: EventEmitter<number> = new EventEmitter();
 
+    private _innerObject: any;
     private _innerValue: string = null;
     private _disabled: boolean = null;
     private _required: boolean = false;
     public invalidCause: string[] = null;
+
+    @Input('enum') set enum(name: string) {
+        const enu = getEnum(name);
+        for (const key in enu) {
+            this.options.push({ key: key, value: getEnumTranslation(name, key) })
+        }
+    };
+    public options: any[] = []
 
     constructor(protected readonly convertUtilsService: ConvertUtilsService) {
         super();
@@ -79,25 +92,39 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
         return this._required;
     }
 
+    get innerObject(): any {
+        return this._innerObject;
+    }
+
+    set innerObject(value: any) {
+        if (value !== this.innerObject) {
+            this._innerObject = value;
+            this.innerValue = value?.key;
+        }
+    }
+
     // Obtém o valor do modelo
     get innerValue(): any {
         return this._innerValue;
     }
 
     // Define o valor do modelo e chama a função de callback
-    set innerValue(v: any) {
-        if (v !== this.innerValue) {
-            this._innerValue = v;
-            this.onChange(v);
-            this.onChangeEventEmmiter.emit(v);
+    set innerValue(value: any) {
+        if (value !== this.innerValue) {
+            this._innerValue = value;
+            this.onChange(value);
+            this.onChangeEventEmmiter.emit(value);
         }
     }
 
     // Escreve o valor do modelo para o componente
     writeValue(value: any): void {
-        if (value !== this.innerValue) {
-            this._innerValue = value;
-            this.onChangeEventEmmiter.emit(value);
+        if (value !== this.innerObject) {
+            if (typeof (value) == 'string') {
+                this.innerObject = this.options.find(it => it.key == value);
+            } else {
+                this.innerObject = value;
+            }
         }
     }
 
@@ -141,9 +168,6 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
 
     override validate(): string[] {
         const causes: string[] = [];
-        if (!this.isValidMinLength()) {
-            causes.push(`Minímo de caracteres exigidos: ${this.minlength}`);
-        }
         return causes;
     }
 
@@ -151,18 +175,21 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
         this.invalidCause = value;
     }
 
-    private isValidMinLength(): boolean {
-        if (ObjectUtils.isNotEmpty(this.minlength) && this.minlength >= 0) {
-            if (this._innerValue != null) {
-                return this._innerValue.length >= this.minlength;
-            } else if (this._required) {
-                return false;
-            }
-        }
-        return true;
+    public forceClear(): void {
+        this.innerObject = null;
+        this.innerValue = null;
     }
 
-    public forceClear(): void {
-        this.innerValue = null;
+    override getContainer(): any {
+        return this.component;
+    }
+
+    override setFocus() {
+        if (!!this.invalidInfoComponent) {
+            this.invalidInfoComponent.show();
+        }
+        setTimeout(() => {
+            this.component.focus();
+        });
     }
 }

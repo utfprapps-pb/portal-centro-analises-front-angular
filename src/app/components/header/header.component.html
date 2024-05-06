@@ -1,4 +1,4 @@
-<div class="header">
+<div class="header" [ngClass]="{'mobile-menu': pageSettings.isMobile}">
     <p-menubar [model]="items" [autoHide]="true">
         <ng-template pTemplate="start">
             <a href="/#/inicio">

@@ -12,7 +12,7 @@ export class DomainService extends GenericCrudService<Domain> {
     constructor(
         protected override http: HttpClientService,
     ) {
-        super(http, '/domain-role', Domain)
+        super(http, '/dominios', Domain)
     }
 
 

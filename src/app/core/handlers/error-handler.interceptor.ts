@@ -38,6 +38,9 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
                         }
 
                         if ('GenericException' == body[1]) {
+                            if (newMessage == 'Usuário inválido!') {
+                                this.authenticationProvider.logout();
+                            }
                             throw new GenericException(newMessage);
                         }
                     } else if (ObjectUtils.isNotEmpty(err.error.validationErrors)) {

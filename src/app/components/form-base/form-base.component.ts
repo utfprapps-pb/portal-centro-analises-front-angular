@@ -1,4 +1,4 @@
-import { Component, ContentChildren, ElementRef, Injector, Input, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ContentChildren, ElementRef, Injector, Input, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 
@@ -13,11 +13,12 @@ import { ToastrService } from './../../core/services/toastr.service';
     templateUrl: './form-base.component.html',
     styleUrl: './form-base.component.scss'
 })
-export class FormBaseComponent {
+export class FormBaseComponent implements AfterViewInit {
 
     @ViewChildren('formBase') formBase: QueryList<ElementRef>;
     @ContentChildren(CompCtrlDirective, { descendants: true }) contentFieldsCompCtrlForm: QueryList<CompCtrlDirective>;
     @Input() enableBreadcrumb: boolean = true;
+
     @Input() pageTitle: string;
 
     public facades: Stack<number> = new Stack();
@@ -35,6 +36,10 @@ export class FormBaseComponent {
         this.toastrService = injector.get(ToastrService);
         this.dialogService = injector.get(DialogService);
         this.router = injector.get(Router);
+    }
+
+    public ngAfterViewInit(): void {
+        document.title = `UTFPR | ${this.pageTitle || 'LCA'}`;
     }
 
     public blockForm(): void {
