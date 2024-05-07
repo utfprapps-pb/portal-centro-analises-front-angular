@@ -34,6 +34,7 @@ export abstract class FormList<T extends ZModel> extends FormBase implements Aft
         }
         this.formView.showFooter = () => this.showFooter();
         this.formView.showButtons = (button: string) => this.showButtons(button);
+        this.formView.onClickAddNovo = () => this.onClickAddNovo();
         this.formView.onClickCancelar = () => this.onClickCancelar();
     }
 
@@ -51,6 +52,10 @@ export abstract class FormList<T extends ZModel> extends FormBase implements Aft
 
     protected override getFormBaseToDisable(): any {
         return (this.formView.formBase.first as any).formBase.first.nativeElement;
+    }
+
+    public async onClickAddNovo(): Promise<void> {
+        this.router.navigate([`${this.service.path}/novo`], { replaceUrl: false });
     }
 
     public async onClickCancelar(): Promise<void> {

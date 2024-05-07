@@ -161,7 +161,7 @@ export class DatatableComponent implements AfterViewInit {
 
     private async loadDatatableData(): Promise<void> {
         await this._service.findAll().then((data: any[]) => {
-            this.datatableObjects = data.sort((a, b) => a.id < b.id ? -1 : 1);
+            this.datatableObjects = data.sort((a, b) => a.id > b.id ? -1 : 1);
         });
     }
 

@@ -38,6 +38,8 @@ export class FormListComponent<T extends ZModel> extends FormBaseComponent imple
         return true;
     }
 
+    public async onClickAddNovo(): Promise<void> { }
+
     public async onClickCancelar(): Promise<void> { }
 
 }

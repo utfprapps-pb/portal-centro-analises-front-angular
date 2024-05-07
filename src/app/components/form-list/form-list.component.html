@@ -15,6 +15,9 @@
     </form-base>
 </div>
 <div class="footer px-3" *ngIf="showFooter()">
+    <button *ngIf="showButtons('novo')" class="btn btn-md btn-primary me-2" (click)="onClickAddNovo()">
+        Adicionar Novo
+    </button>
     <button *ngIf="showButtons('cancelar')" class="btn btn-md btn-secondary" (click)="onClickCancelar()">
         Cancelar
     </button>

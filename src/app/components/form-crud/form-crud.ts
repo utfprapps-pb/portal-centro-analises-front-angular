@@ -53,18 +53,21 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
 
     private async formComplete(): Promise<void> {
         this.blockForm();
-        await this.service.findOne(this.getObjectIdFromUrl()).then(data => {
-            this.onLoadObject(data);
-            this.object = data;
-        }, error => {
-            if (this.hasErrorMapped(error)) {
-                this.errorHandler(error);
-            } else {
-                this.toastrService.showError(this.pageTitle, 'Erro ao carregar Registro!');
-            }
-        }).finally(() => {
-            this.releaseForm();
-        });
+        const id = this.getObjectIdFromUrl();
+        if (id != null && this.getLocalUrl().includes('/alterar')) {
+            await this.service.findOne(id).then(data => {
+                this.onLoadObject(data);
+                this.object = data;
+            }, error => {
+                if (this.hasErrorMapped(error)) {
+                    this.errorHandler(error);
+                } else {
+                    this.toastrService.showError(this.pageTitle, 'Erro ao carregar Registro!');
+                }
+            }).finally(() => {
+                this.releaseForm();
+            });
+        }
     }
 
     public onLoadObject(object: any): void {
@@ -72,13 +75,13 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
     }
 
     public getLocalUrl(): string {
-        return window.location.hash.substring(2);
+        return location.hash.substring(2);
     }
 
     public getObjectIdFromUrl(): number {
         const url: string = this.getLocalUrl();
         if (url.includes('/alterar')) {
-            return this.urlSubstringKey(url, '/alterar') as undefined as number;
+            return this.urlSubstringKey(url, '/alterar/') as undefined as number;
         }
         return null;
     }

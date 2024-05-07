@@ -320,6 +320,7 @@
     .p-disabled,
     .p-component:disabled {
         opacity: 0.65;
+        background: var(--surface-b);
     }
 
     .p-error {
