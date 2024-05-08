@@ -4,8 +4,8 @@
     <div class="position-relative">
         <p-inputNumber #input mode="decimal" [useGrouping]="false" [class]="class" [id]="id" [name]="name"
             autocomplete="off" [maxlength]="maxlength" [placeholder]="placeholder" [disabled]="disabled"
-            [showClear]="showClear && !disabled" [(ngModel)]="innerValue" [max]="max" [min]="min" [minFractionDigits]="2"
-            [maxFractionDigits]="precision" />
+            [showClear]="showClear && !disabled" [(ngModel)]="innerValue" [max]="max" [min]="min"
+            [minFractionDigits]="2" [maxFractionDigits]="precision" (onClear)="forceClear()" />
         <i class="pi pi-times cursor-pointer mr-icon-0" *ngIf="!!innerValue && showClear && !disabled"
             (click)="forceClear()">
         </i>

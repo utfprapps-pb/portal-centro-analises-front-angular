@@ -1,0 +1,30 @@
+<form-crud #formView [pageTitle]="'Parceiros'">
+
+    <div class="row">
+        <div class="col-6">
+            <input-number label="Código" compCtrl="id" [ngModel]="object.id" disabled></input-number>
+        </div>
+        <div class="col-6 ms-auto">
+            <combobox label="Status" compCtrl="status" [(ngModel)]="object.status" defaultValue="ACTIVE"
+                enum="StatusAI" required>
+            </combobox>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-24">
+            <input-text label="Nome" compCtrl="nome" [(ngModel)]="object.name" required [minlength]="4"
+                [maxlength]="255">
+            </input-text>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-24">
+            <input-mask label="CNPJ" compCtrl="cnpj" [(ngModel)]="object.cnpj" required [minlength]="4"
+                [maxlength]="20" mask="cnpj">
+            </input-mask>
+        </div>
+    </div>
+
+</form-crud>

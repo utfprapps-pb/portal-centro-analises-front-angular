@@ -29,9 +29,15 @@ export class FormCrudComponent extends FormBaseComponent implements OnInit {
         return true;
     }
 
+    public objectUpdating(): boolean {
+        return false;
+    }
+
     public async onClickSalvar(): Promise<void> { }
 
     public async onClickCancelar(): Promise<void> { }
+
+    public async onClickExcluir(): Promise<void> { }
 
     public exitOnSave(): boolean {
         return true;
@@ -43,6 +49,6 @@ export class FormCrudComponent extends FormBaseComponent implements OnInit {
 
     public async onAfterSave(object: any): Promise<void> { }
 
-
+    public async onExcluir(object: any): Promise<void> { }
 
 }

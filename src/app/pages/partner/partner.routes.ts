@@ -1,24 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DomainFormComponent } from './form/domain-form.component';
-import { DomainListComponent } from './list/domain-list.component';
+import { PartnerFormComponent } from './form/partner-form.component';
+import { PartnerListComponent } from './list/partner-list.component';
 
 const routes: Routes = [
     {
-        path: '', component: DomainListComponent,
+        path: '', component: PartnerListComponent,
     },
     {
         path: ':action',
-        component: DomainFormComponent,
+        component: PartnerFormComponent,
     },
     {
         path: ':action/:id',
-        component: DomainFormComponent,
+        component: PartnerFormComponent,
     },
     {
         path: ':action/:event/:id',
-        component: DomainFormComponent,
+        component: PartnerFormComponent,
     },
 ];
 
@@ -26,4 +26,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class DomainRoutes { }
+export class PartnerRoutes { }

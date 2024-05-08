@@ -20,6 +20,17 @@ export const routes: Routes = [
         loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule),
     },
     {
+        path: 'configuracao-email',
+        // data: {
+        //     authorities: [
+        //         Roles.ROLE_ADMIN
+        //     ]
+        // },
+        canActivate: [AuthGuard.canActivate],
+        canDeactivate: [AuthGuard.canDeactivate],
+        loadChildren: () => import('./pages/email-config/email-config.module').then(m => m.EmailConfigModule),
+    },
+    {
         path: 'dominios',
         // data: {
         //     authorities: [
@@ -31,7 +42,7 @@ export const routes: Routes = [
         loadChildren: () => import('./pages/domain/domain.module').then(m => m.DomainModule),
     },
     {
-        path: 'configuracao-email',
+        path: 'parceiros',
         // data: {
         //     authorities: [
         //         Roles.ROLE_ADMIN
@@ -39,7 +50,7 @@ export const routes: Routes = [
         // },
         canActivate: [AuthGuard.canActivate],
         canDeactivate: [AuthGuard.canDeactivate],
-        loadChildren: () => import('./pages/email-config/email-config.module').then(m => m.EmailConfigModule),
+        loadChildren: () => import('./pages/partner/partner.module').then(m => m.PartnerModule),
     },
     {
         path: 'inicio',

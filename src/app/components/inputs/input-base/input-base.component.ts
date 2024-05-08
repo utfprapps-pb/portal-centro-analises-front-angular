@@ -95,9 +95,8 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
 
     // Escreve o valor do modelo para o componente
     writeValue(value: any): void {
-        if (value !== this.innerValue) {
-            this._innerValue = value;
-            this.onChangeEventEmmiter.emit(value);
+        if (!!this.getContainer()) {
+            this.innerValue = value;
         }
     }
 

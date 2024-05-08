@@ -47,6 +47,15 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
                         throw new CompCtrlException(err.error.validationErrors);
                     }
                 }
+
+                if (!!err.error && !!err.error.trace) {
+                    const message = err.error.trace.substring(0, err.error.trace.indexOf('\r'))
+                    if (message.includes('Usuário não encontrado!')) {
+                        this.authenticationProvider.logout();
+                        throw new GenericException(message);
+                    }
+                }
+
                 console.error('Error ErrorHandlerInterceptor: ', err);
 
                 // Falha de Conexao com a API...

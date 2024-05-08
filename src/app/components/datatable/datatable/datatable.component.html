@@ -16,8 +16,6 @@
     (onSort)="saveState()"
     [currentPageReportTemplate]="currentPageReportTemplate()">
 
-    <!-- Todo: Edit, Delete, BeforeColumn e AfterColumn -->
-
     <ng-template *ngIf="!!table" pTemplate="caption">
         <div class="text-right">
             <datatable-header-button [icon]="'fa fa-filter-circle-xmark'" [loading]="loading"

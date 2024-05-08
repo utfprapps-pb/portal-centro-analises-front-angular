@@ -16,6 +16,7 @@ import { TagModule } from 'primeng/tag';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { TooltipModule } from 'primeng/tooltip';
 
+import { InputMaskModule } from 'primeng/inputmask';
 import { ToastrService } from '../core/services/toastr.service';
 import { ToasterService } from '../core/toaster/toaster.service';
 import { UtilsModule } from '../utils/utils.module';
@@ -42,6 +43,7 @@ import { FormListComponent } from './form-list/form-list.component';
 import { HeaderComponent } from './header/header.component';
 import { InputCurrency } from './inputs/input-currency/input-currency.component';
 import { InputEmailComponent } from './inputs/input-email/input-email.component';
+import { InputMaskComponent } from './inputs/input-mask/input-mask.component';
 import { InputNumber } from './inputs/input-number/input-number.component';
 import { InputPasswordComponent } from './inputs/input-password/input-password.component';
 import { InputTextComponent } from './inputs/input-text/input-text.component';
@@ -59,6 +61,7 @@ import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.compone
         InputPasswordComponent,
         InputEmailComponent,
         ComboboxComponent,
+        InputMaskComponent,
         InputNumber,
         InputCurrency,
         DatatableComponent,
@@ -77,9 +80,11 @@ import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.compone
         FormListComponent,
         InvalidInfoComponent,
         InputTextComponent,
+        InputMaskModule,
         InputPasswordComponent,
         InputEmailComponent,
         ComboboxComponent,
+        InputMaskComponent,
         InputNumber,
         InputCurrency,
         TableModule,
@@ -95,6 +100,7 @@ import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.compone
         CommonModule,
         FormsModule,
         InputTextModule,
+        InputMaskModule,
         PasswordModule,
         InputGroupModule,
         InputGroupAddonModule,

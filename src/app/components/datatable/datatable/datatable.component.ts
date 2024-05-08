@@ -36,7 +36,7 @@ export class DatatableComponent implements AfterViewInit {
     }
 
     @Input('name') name: string;
-    @Input('allowSelectAll') allowSelectAll: boolean = true;
+    @Input('allowSelectAll') allowSelectAll: boolean = false;
     @Input('showEditButton') showEditButton: boolean = true;
     @Input('showDeleteButton') showDeleteButton: boolean = true;
     @Input() allowSelectRow: Function;

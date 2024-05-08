@@ -24,8 +24,6 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
 
     public ngOnInit(): void {
         this.formComplete();
-        // Todo implementar findOne;
-
     }
 
     public ngAfterViewInit(): void {
@@ -39,16 +37,21 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
             }, 500);
             return;
         }
+        this.formView.objectUpdating = () => this.objectUpdating();
+
         this.formView.showFooter = () => this.showFooter();
         this.formView.showButtons = (button) => this.showButtons(button);
         this.formView.exitOnSave = () => this.exitOnSave();
 
         this.formView.onClickSalvar = () => this.onClickSalvar();
         this.formView.onClickCancelar = () => this.onClickCancelar();
+        this.formView.onClickExcluir = () => this.onClickExcluir();
 
         this.formView.onBeforeSave = (object) => this.onBeforeSave(object);
         this.formView.onSave = (object) => this.onSave(object);
         this.formView.onAfterSave = (object) => this.onAfterSave(object);
+
+        this.formView.onExcluir = (object) => this.onExcluir(object);
     }
 
     private async formComplete(): Promise<void> {
@@ -102,17 +105,16 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         return true;
     }
 
+    protected objectUpdating(): boolean {
+        return !!this.object && !!this.object.id;
+    }
+
     protected override getFormBaseToDisable(): any {
         return (this.formView.formBase.first as any).formBase.first.nativeElement;
     }
 
     protected exitOnSave(): boolean {
         return true;
-    }
-
-    public async onClickSalvar(): Promise<void> {
-        const object = this.object;
-        this.onSave(object)
     }
 
     public async onClickCancelar(): Promise<void> {
@@ -143,8 +145,11 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
                 this.router.navigate(['inicio'], { replaceUrl: false });
             }
         }
+    }
 
-
+    public async onClickSalvar(): Promise<void> {
+        const object = this.object;
+        this.onSave(object)
     }
 
     protected async onBeforeSave(object: any): Promise<void> { }
@@ -156,21 +161,46 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
             this.service.save(object).then(async (data) => {
                 await this.onAfterSave(object);
                 this.toastrService.showSuccess(this.pageTitle, 'Registro salvo com sucesso!');
-                this.releaseForm();
                 if (this.exitOnSave()) {
                     this.onCancel();
                 }
             }, error => {
-                this.releaseForm();
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
                 } else {
                     this.toastrService.showError(this.pageTitle, 'Erro ao salvar Registro!');
                 }
+            }).finally(() => {
+                this.releaseForm();
             });
         }
     }
 
     protected async onAfterSave(object: any): Promise<void> { }
+
+    public async onClickExcluir(): Promise<void> {
+        const object = this.object;
+        this.onExcluir(object)
+    }
+
+    protected async onExcluir(object: any): Promise<void> {
+        if (!!object.id) {
+            this.blockForm();
+            this.service.delete(object.id).then(async () => {
+                this.toastrService.showSuccess(this.pageTitle, 'Registro excluido com sucesso!');
+                if (this.exitOnSave()) {
+                    this.onCancel();
+                }
+            }, error => {
+                if (this.hasErrorMapped(error)) {
+                    this.errorHandler(error);
+                } else {
+                    this.toastrService.showError(this.pageTitle, 'Erro ao excluir Registro!');
+                }
+            }).finally(() => {
+                this.releaseForm();
+            });
+        }
+    }
 
 }

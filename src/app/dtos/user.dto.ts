@@ -1,5 +1,5 @@
 import { Roles } from '../core/enums/roles.enum';
-import { StatusInactiveActive } from '../core/enums/status-inactive-active.enum';
+import { StatusAI } from '../core/enums/statusai.enum';
 import { ZModel } from '../generics/zmodel';
 
 export class UserDTO extends ZModel {
@@ -10,7 +10,7 @@ export class UserDTO extends ZModel {
     role: Roles = null;
     name: String = null;
     email: String = null;
-    status: StatusInactiveActive = null;
+    status: StatusAI = null;
     createdAt: Date = null;
     updatedAt: Date = null;
     emailVerified: Boolean = null;

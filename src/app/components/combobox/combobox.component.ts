@@ -121,7 +121,11 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
     writeValue(value: any): void {
         if (value !== this.innerObject) {
             if (typeof (value) == 'string') {
-                this.innerObject = this.options.find(it => it.key == value);
+                let val = this.options.find(it => it.key == value);
+                if (val == undefined) {
+                    val = this.options.find(it => it.value == value);
+                }
+                this.innerObject = val;
             } else {
                 this.innerObject = value;
             }
