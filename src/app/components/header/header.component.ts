@@ -62,13 +62,6 @@ export class HeaderComponent implements OnDestroy {
                 label: 'Cadastros',
                 icon: 'fa fa-plus',
                 items: [
-                    // {
-                    //     label: 'Usuários',
-                    //     icon: 'far fa-person',
-                    //     url: '/#/usuarios',
-                    //     target: '_self',
-                    //     // visible: admin
-                    // },
                     {
                         label: 'Domínios',
                         icon: 'far fa-globe',
@@ -77,9 +70,23 @@ export class HeaderComponent implements OnDestroy {
                         // visible: admin
                     },
                     {
+                        label: 'Equipamentos',
+                        icon: 'fa fa-dryer-heat',
+                        url: '/#/equipamentos',
+                        target: '_self',
+                        // visible: admin
+                    },
+                    {
                         label: 'Parceiros',
                         icon: 'fa fa-handshake-simple',
                         url: '/#/parceiros',
+                        target: '_self',
+                        // visible: admin
+                    },
+                    {
+                        label: 'Usuários',
+                        icon: 'far fa-person',
+                        url: '/#/usuarios',
                         target: '_self',
                         // visible: admin
                     },

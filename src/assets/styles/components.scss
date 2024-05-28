@@ -24,6 +24,22 @@ input {
     }
 }
 
+radio-button {
+    & .required {
+        & div.p-radiobutton-box {
+            border-left-color  : var(--bs-form-invalid-color);
+            border-bottom-color: var(--bs-form-invalid-color);
+        }
+    }
+
+    & .valid {
+        & div.p-radiobutton-box {
+            border-left-color  : var(--bs-form-valid-color);
+            border-bottom-color: var(--bs-form-valid-color);
+        }
+    }
+}
+
 p-dropdown {
     &.required {
         &>div {

@@ -30,4 +30,7 @@ export abstract class GenericService {
         this._path = url || '';
     }
 
+    public getDatatable(page: number, size: number): Promise<any> {
+        return this.http.get(`${this.path}/page?page=${page}&size=${size}`);
+    }
 }

@@ -3,7 +3,7 @@
 
     <div class="position-relative">
         <p-inputNumber #input [useGrouping]="false" [id]="id" [name]="name" autocomplete="off"
-            [maxlength]="maxlength" [placeholder]="placeholder" [disabled]="disabled"
+            [maxlength]="maxlength" [placeholder]="placeholder" [disabled]="disabled" [readonly]="disabled"
             [showClear]="showClear && !disabled" [(ngModel)]="innerValue" [max]="max" [min]="min"
             [class]="class" [inputStyleClass]="class" (onClear)="forceClear()" />
         <invalid-info #invalid class="mr-icon-1" [causes]="invalidCause"></invalid-info>

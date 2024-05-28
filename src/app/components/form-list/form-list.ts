@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { AfterViewInit, Injectable, Injector } from '@angular/core';
+import { AfterContentInit, Injectable, Injector } from '@angular/core';
 
 import { GenericCrudService } from '../../generics/generic-crud.service';
 import { ZModel } from '../../generics/zmodel';
@@ -9,7 +9,7 @@ import { FormBase } from '../form-base/form-base';
 import { FormListComponent } from './form-list.component';
 
 @Injectable()
-export abstract class FormList<T extends ZModel> extends FormBase implements AfterViewInit {
+export abstract class FormList<T extends ZModel> extends FormBase implements AfterContentInit  {
 
     public abstract override formView: FormListComponent<T>;
     public abstract formViewDatatable: DatatableComponent;
@@ -21,7 +21,7 @@ export abstract class FormList<T extends ZModel> extends FormBase implements Aft
         super(injector, service)
     }
 
-    public ngAfterViewInit(): void {
+    public ngAfterContentInit(): void {
         this.bindMethods();
     }
 

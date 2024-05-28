@@ -1,0 +1,15 @@
+<div class="form-group">
+    <label [for]="id" *ngIf="!!label" class="form-label bold">{{label}}</label>
+
+
+    <div class="position-relative">
+        <p-calendar #input [iconDisplay]="'input'" [touchUI]="true" [showButtonBar]="true" [showIcon]="true"
+            [showOnFocus]="false" [id]="id" [name]="name" autocomplete="off" [maxlength]="maxlength"
+            [placeholder]="placeholder" [disabled]="disabled" [(ngModel)]="innerValue" [class]="class"
+            [inputStyleClass]="class" (onClear)="forceClear()" [defaultDate]="null"/>
+        <i class="pi pi-times cursor-pointer mr-icon-1" *ngIf="!!innerValue && showClear && !disabled"
+            (click)="forceClear()">
+        </i>
+        <invalid-info #invalid class="mr-icon-1" [causes]="invalidCause"></invalid-info>
+    </div>
+</div>

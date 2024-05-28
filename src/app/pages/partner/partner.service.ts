@@ -15,5 +15,4 @@ export class PartnerService extends GenericCrudService<Partner> {
         super(http, '/parceiros', Partner)
     }
 
-
 }

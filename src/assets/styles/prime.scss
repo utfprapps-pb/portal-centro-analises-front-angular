@@ -216,6 +216,12 @@ p-dropdown {
     }
 }
 
+p-calendar {
+    &>span {
+        width: 100%;
+    }
+}
+
 .mobile-menu {
     .p-menubar-root-list {
         width: 90%;

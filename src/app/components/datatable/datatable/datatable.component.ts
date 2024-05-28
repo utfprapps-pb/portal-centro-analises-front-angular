@@ -100,16 +100,25 @@ export class DatatableComponent implements AfterViewInit {
         this.datatableColumns = [];
         for (const prop in this.emptyObject) {
             const filter: DatatableFilterColumn = this.generateDatatableFilter(prop);
-            this.addDatatableFilter(filter);
+            if (!!filter) {
+                this.addDatatableFilter(filter);
+            }
 
             const column: DatatableColumn = this.generateDatatableColumn(prop);
-            this.addDatatableColumn(column);
+            if (!!column) {
+                this.addDatatableColumn(column);
+            }
         }
         await this.loadDatatableData();
         this.loading = false;
     }
 
     private generateDatatableColumn(prop: string): DatatableColumn {
+        const hidden = Reflect.getMetadata('column:hidden', this.emptyObject, prop) || false;
+        if (hidden) {
+            return null;
+        }
+
         let prp = prop as string;
         if (prp == 'id') {
             prp = 'Código';
@@ -117,25 +126,45 @@ export class DatatableComponent implements AfterViewInit {
         prp = prp.charAt(0).toUpperCase() + prp.substring(1);
 
         const column = new DatatableColumn();
-        column.header = prp;
+        const titulo = Reflect.getMetadata('column:title', this.emptyObject, prop) || prp;
+        column.header = titulo;
+        column.headerAlign = Reflect.getMetadata('column:title-align', this.emptyObject, prop);
         column.field = prop;
-        column.type = Reflect.getMetadata('design:type', this.emptyObject, prop);
-        column.width = '150px'
-        if (column.type == 'string') {
-            column.width = null;
-        }
-        if (column.type == 'number') {
-            column.align = 'right'
+        column.type = Reflect.getMetadata('primitive', this.emptyObject, prop);
+        column.mask = Reflect.getMetadata('column:mask', this.emptyObject, prop);
+        column.align = Reflect.getMetadata('column:align', this.emptyObject, prop);
+
+        if (column.type == 'boolean') {
+            column.align = 'center';
+            column.enumname = 'Boolean';
         }
         if (column.type == 'enum') {
-            column.align = 'center'
+            column.align = 'center';
             column.width = '200px'
             column.enumname = Reflect.getMetadata('enumname', this.emptyObject, prop);
+        }
+        if (column.type == 'numeric') {
+            column.width = '150px'
+        }
+        if (column.type == 'date') {
+            column.align = 'center';
+        }
+        const minWidth = Reflect.getMetadata('column:minWidth', this.emptyObject, prop);
+        if (!!minWidth) {
+            column.minWidth = minWidth;
+        }
+        const maxWidth = Reflect.getMetadata('column:maxWidth', this.emptyObject, prop);
+        if (!!maxWidth) {
+            column.maxWidth = maxWidth;
         }
         return column;
     }
 
     private generateDatatableFilter(prop: string): DatatableFilterColumn {
+        const hidden = Reflect.getMetadata('column:hidden', this.emptyObject, prop) || false;
+        if (hidden) {
+            return null;
+        }
         let prp = prop as string;
         if (prp == 'id') {
             prp = 'Código';
@@ -145,8 +174,12 @@ export class DatatableComponent implements AfterViewInit {
         const filter = new DatatableFilterColumn();
         filter.field = prop;
         filter.type = Reflect.getMetadata('primitive', this.emptyObject, prop);
+        filter.mask = Reflect.getMetadata('column:mask', this.emptyObject, prop);
         if (filter.type == 'enum') {
             filter.enumname = Reflect.getMetadata('enumname', this.emptyObject, prop);
+        }
+        if (filter.type == 'boolean') {
+            filter.enumname = 'Boolean';
         }
         return filter;
     }
@@ -160,7 +193,14 @@ export class DatatableComponent implements AfterViewInit {
     }
 
     private async loadDatatableData(): Promise<void> {
+        const mapFieldType: Map<String, String> = new Map();
         await this._service.findAll().then((data: any[]) => {
+            for (const prop in this.emptyObject) {
+                const type = Reflect.getMetadata('primitive', this.emptyObject, prop);
+                if (type == 'boolean') {
+                    data.forEach(it => it[prop] = !!it[prop]);
+                }
+            }
             this.datatableObjects = data.sort((a, b) => a.id > b.id ? -1 : 1);
         });
     }

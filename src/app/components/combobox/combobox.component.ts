@@ -28,6 +28,7 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
     @Input() label: string = null;
     @Input() placeholder: string = '';
     @Input() class: string = 'w-100';
+    @Input() defaultValue: string = null;
 
     @Input('showClear') showClear: boolean = true;
 
@@ -129,6 +130,13 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
             } else {
                 this.innerObject = value;
             }
+        }
+        if (!!this.defaultValue) {
+            let val = this.options.find(it => it.key == this.defaultValue);
+                if (val == undefined) {
+                    val = this.options.find(it => it.value == this.defaultValue);
+                }
+                this.innerObject = val;
         }
     }
 

@@ -16,8 +16,6 @@ export class PartnerListComponent extends FormList<Partner> {
     @ViewChild('formView') public formView: FormListComponent<Partner>;
     @ViewChild('formViewTable') public formViewDatatable: DatatableComponent;
 
-    public objects: any[] = [];
-
     constructor(
         protected override readonly injector: Injector,
         protected override readonly service: PartnerService,

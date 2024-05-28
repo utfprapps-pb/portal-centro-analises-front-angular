@@ -15,15 +15,15 @@ export class LoginService extends GenericService {
     constructor(
         protected override http: HttpClientService,
     ) {
-        super(http, '/users')
-    }
-
-    public createNewUser(object: RegisterUser): Promise<any> {
-        return this.http.post(`${this.path}/save`, object);
+        super(http, '/open')
     }
 
     public login(login: Login): Promise<any> {
         return this.http.post('/login', login);
+    }
+
+    public createNewUser(object: RegisterUser): Promise<any> {
+        return this.http.post(`${this.path}/save`, object);
     }
 
     public recoverPassword(recover: RecoverPasswordDTO): Promise<any> {
@@ -31,7 +31,7 @@ export class LoginService extends GenericService {
     }
 
     public sendCodeRecoverPassword(email: string): Promise<any> {
-        return this.http.post(`${this.path}/send-code-recover-password/email/${email}`, null);
+        return this.http.post(`${this.path}/send-code-recover-password/${email}`, null);
     }
 
     public requestValidation(email: string): Promise<any> {

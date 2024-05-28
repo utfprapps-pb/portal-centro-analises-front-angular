@@ -1,4 +1,4 @@
-import { AfterViewInit, Injectable, Injector, OnInit } from '@angular/core';
+import { AfterContentInit, Injectable, Injector, OnInit } from '@angular/core';
 
 import { Constants } from '../../core/constants/constants';
 import { StorageManager } from '../../core/managers/storage-manager';
@@ -8,7 +8,7 @@ import { FormBase } from '../form-base/form-base';
 import { FormCrudComponent } from './form-crud.component';
 
 @Injectable()
-export abstract class FormCrud<T extends ZModel> extends FormBase implements OnInit, AfterViewInit {
+export abstract class FormCrud<T extends ZModel> extends FormBase implements OnInit, AfterContentInit {
 
     public abstract override formView: FormCrudComponent;
 
@@ -26,7 +26,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         this.formComplete();
     }
 
-    public ngAfterViewInit(): void {
+    public ngAfterContentInit(): void {
         this.bindMethods();
     }
 

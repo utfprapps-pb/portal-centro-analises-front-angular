@@ -25,8 +25,7 @@ export class FormCrudComponent extends FormBaseComponent implements OnInit {
         return true;
     }
 
-    public showButtons(button: string): boolean {
-        return true;
+    public showButtons(button: string): boolean | void {
     }
 
     public objectUpdating(): boolean {

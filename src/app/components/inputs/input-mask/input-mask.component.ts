@@ -22,8 +22,10 @@ export class InputMaskComponent extends InputBaseComponent {
         let pattern = '*';
         if (value == 'cpf') {
             pattern = '999.999.999-99';
+            this.placeholder = '___.___.___-__';
         } else if (value == 'cnpj') {
             pattern = '99.999.999/9999-99'
+            this.placeholder = '__.___.___/____-__';
         }
         this._mask = pattern;
     }

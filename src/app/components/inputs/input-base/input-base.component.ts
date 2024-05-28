@@ -36,6 +36,11 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
 
     constructor(protected readonly convertUtilsService: ConvertUtilsService) {
         super();
+        this.afterConstructor();
+    }
+
+    protected afterConstructor(): void {
+
     }
 
     // Função chamada quando o valor interno muda
@@ -60,7 +65,7 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
         if (this.disabled == null) {
             savePermanentDisabledState = true;
         }
-        this._disabled = this.convertUtilsService.getBoolean(value, false);
+        this._disabled = this.convertUtilsService.getBoolean(value, true);
         if (savePermanentDisabledState) {
             this.internalDisabled = this._disabled;
         }
@@ -73,7 +78,7 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
     }
 
     @Input() set required(value: any) {
-        this._required = this.convertUtilsService.getBoolean(value, false);
+        this._required = this.convertUtilsService.getBoolean(value, true);
     }
     get required() {
         return this._required;

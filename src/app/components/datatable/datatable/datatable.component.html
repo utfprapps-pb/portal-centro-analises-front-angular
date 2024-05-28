@@ -1,20 +1,9 @@
 <p-progressSpinner *ngIf="loading" ariaLabel="loading" animationDuration="3"></p-progressSpinner>
-<p-table #table
-    dataKey="id"
-    [(selection)]="datatableSelectedObjects"
-    [value]="datatableObjects"
-    [columns]="datatableColumns"
-    [paginator]="true"
-    [first]="0"
-    [rows]="rowsPerPageOptions[0]"
-    [rowsPerPageOptions]="rowsPerPageOptions"
-    [showCurrentPageReport]="true"
-    [sortMode]="'multiple'"
-    styleClass="p-datatable-gridlines"
-    [tableStyle]="{'min-width': '50rem'}"
-    (onFilter)="saveState()"
-    (onSort)="saveState()"
-    [currentPageReportTemplate]="currentPageReportTemplate()">
+<p-table #table dataKey="id" [(selection)]="datatableSelectedObjects" [value]="datatableObjects"
+    [columns]="datatableColumns" [paginator]="true" [first]="0" [rows]="rowsPerPageOptions[0]"
+    [rowsPerPageOptions]="rowsPerPageOptions" [showCurrentPageReport]="true" [sortMode]="'multiple'"
+    styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" (onFilter)="saveState()"
+    (onSort)="saveState()" [currentPageReportTemplate]="currentPageReportTemplate()">
 
     <ng-template *ngIf="!!table" pTemplate="caption">
         <div class="text-right">
@@ -37,7 +26,11 @@
             </th>
             <th *ngIf="showEditButton" class="button-column"></th>
             <th *ngIf="showDeleteButton" class="button-column"></th>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngStyle]="{'width': col.width}">
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngStyle]="{
+                    'max-width': col.maxWidth,
+                    'width': col.width,
+                    'min-width': col.minWidth,
+                    'text-align': col.headerAlign}">
                 {{ col.header }}
                 <p-sortIcon class="float-end" [field]="col.field"></p-sortIcon>
             </th>
@@ -53,40 +46,58 @@
                 <ng-container *ngIf="col.type == 'numeric'">
                     <number-filter-template [column]="col" [datatable]="this"></number-filter-template>
                 </ng-container>
-                <ng-container *ngIf="col.type == 'enum'">
+                <ng-container *ngIf="col.type == 'enum' || col.type == 'boolean'">
                     <enum-filter-template [column]="col" [datatable]="this"></enum-filter-template>
+                </ng-container>
+                <ng-container *ngIf="col.type == 'date'">
+                    <date-filter-template [column]="col" [datatable]="this"></date-filter-template>
                 </ng-container>
             </th>
         </tr>
     </ng-template>
 
     <ng-template *ngIf="!!table" pTemplate="body" let-data let-columns="columns">
-        <tr><td *ngIf="allowSelectAll" class="text-center">
-            <p-tableCheckbox [value]="data" [disabled]="!allowSelectRowDatatableInternal(data)">
-            </p-tableCheckbox>
-        </td>
-        <td *ngIf="showEditButton" class="text-center">
-            <a class="btn btn-sm btn-primary" [href]="getHref(data)">
-                <i class="fa fa-pencil-alt"></i>
-            </a>
-        </td>
-        <td *ngIf="showDeleteButton" class="text-center">
-            <button class="btn btn-sm btn-danger" (click)="onClickDelete(data)"
-                [disabled]="!allowDeleteRowDatatableInternal(data)">
-                <i class="fa fa-trash-alt"></i>
-            </button>
-        </td>
-        <td *ngFor="let col of columns">
-            <div [ngStyle]="{'text-align': col.align }">
-                    <ng-container *ngIf="col.type == 'enum'; else defaultColumnTemplate">
+        <tr>
+            <td *ngIf="allowSelectAll" class="text-center">
+                <p-tableCheckbox [value]="data" [disabled]="!allowSelectRowDatatableInternal(data)">
+                </p-tableCheckbox>
+            </td>
+            <td *ngIf="showEditButton" class="text-center button-column">
+                <a class="btn btn-sm btn-primary" [href]="getHref(data)">
+                    <i class="fa fa-pencil-alt"></i>
+                </a>
+            </td>
+            <td *ngIf="showDeleteButton" class="text-center button-column">
+                <button class="btn btn-sm btn-danger" (click)="onClickDelete(data)"
+                    [disabled]="!allowDeleteRowDatatableInternal(data)">
+                    <i class="fa fa-trash-alt"></i>
+                </button>
+            </td>
+            <td *ngFor="let col of columns">
+                <div [ngStyle]="{'text-align': col.align, 'max-width': col.maxWidth}">
+                    <ng-container *ngIf="col.type == 'numeric' || col.type == 'text'">
+                        <span class="text-ellipsis" [title]="data[col.field]">{{data[col.field]}}</span>
+                    </ng-container>
+                    <ng-container *ngIf="col.type == 'enum'">
                         <enum-column-template [column]="col" [data]="data"></enum-column-template>
                     </ng-container>
+                    <ng-container *ngIf="col.type == 'boolean'">
+                        <boolean-column-template [column]="col" [data]="data"></boolean-column-template>
+                    </ng-container>
+                    <ng-container *ngIf="col.type == 'date'">
+                        <date-column-template [column]="col" [data]="data"></date-column-template>
+                    </ng-container>
+                    <ng-container *ngIf="col.type == 'currency'">
+                        <currency-column-template [column]="col" [data]="data"></currency-column-template>
+                    </ng-container>
                 </div>
-                <ng-template #defaultColumnTemplate>
-                    <column-template>
-                        {{data[col.field]}}
-                    </column-template>
-                </ng-template>
+                <column-template *ngIf="col.type != 'numeric' &&
+                                        col.type != 'text' &&
+                                        col.type != 'enum' &&
+                                        col.type != 'boolean' &&
+                                        col.type != 'date'">
+                    <!-- {{col.type}} > {{data[col.field]}} -->
+                </column-template>
             </td>
         </tr>
     </ng-template>

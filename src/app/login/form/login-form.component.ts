@@ -1,10 +1,12 @@
 import { Component, Injector, ViewChild } from '@angular/core';
 import { take } from 'rxjs';
+import { UserType } from './../../core/enums/user-type.enum';
 
 import { FormBase } from '../../components/form-base/form-base';
 import { FormBaseComponent } from '../../components/form-base/form-base.component';
 import { Constants } from '../../core/constants/constants';
 import { StorageManager } from '../../core/managers/storage-manager';
+import { OpenService } from '../../core/services/open.service';
 import { RecoverPasswordDTO } from '../../dtos/recover-password.dto';
 import { ObjectUtils } from '../../utils/object-utils';
 import { LoginService } from '../login.service';
@@ -21,6 +23,11 @@ export class LoginFormComponent extends FormBase {
 
     @ViewChild('formView') public override formView: FormBaseComponent;
 
+    public readonly PF: String = 'PF';
+    public readonly PJ: String = 'PJ';
+    public cpf: string = '';
+    public cnpj: string = '';
+
     public template: 'login' | 'password' | 'confirm' | 'register' = 'login'
     public title: string;
     public subtitle: string;
@@ -31,10 +38,13 @@ export class LoginFormComponent extends FormBase {
     public passwordConfirm: string = null;
 
     public newUser: RegisterUser;
+    private buscouEmailsAcademicos: boolean = false;
+    private emailsAcademicos: string[] = [];
 
     constructor(
         protected override readonly injector: Injector,
         protected override readonly service: LoginService,
+        protected readonly openService: OpenService,
     ) {
         super(injector, service);
         this.changeTemplate('login');
@@ -51,7 +61,7 @@ export class LoginFormComponent extends FormBase {
         });
     }
 
-    public changeTemplate(template: 'login' | 'password' | 'confirm' | 'register'): void {
+    public async changeTemplate(template: 'login' | 'password' | 'confirm' | 'register'): Promise<void> {
         this.blockForm();
         switch (template) {
             case 'login':
@@ -72,16 +82,30 @@ export class LoginFormComponent extends FormBase {
                 this.buttonText = 'Solicitar validação';
                 break;
             case 'register':
-                this.title = 'Criar nova Conta';
-                this.subtitle = 'Seja bem vindo, registre-se para acessar o sistema!';
-                this.buttonText = 'Cadastrar';
-                this.newUser = new RegisterUser();
-                this.newUser.email = this.object.email;
+                try {
+                    if (!this.buscouEmailsAcademicos) {
+                        await this.openService.findParceirosAcademicos().then(async (data) => {
+                            this.emailsAcademicos = data;
+                            this.buscouEmailsAcademicos = true;
+                        })
+                    }
+                } finally {
+                    this.title = 'Criar nova Conta';
+                    this.subtitle = 'Seja bem vindo, registre-se para acessar o sistema!';
+                    this.buttonText = 'Cadastrar';
+                    this.newUser = new RegisterUser();
+                    this.newUser.email = this.object.email;
+                    this.newUser.type = UserType.PF;
+                }
                 break;
         }
 
         this.template = template;
         this.releaseForm();
+    }
+
+    public requerRA(): boolean {
+        return ObjectUtils.isNotEmpty(this.newUser.email) && this.emailsAcademicos.find(email => this.newUser.email.endsWith(email)) != undefined;
     }
 
     public onClickButton(): void {
@@ -189,6 +213,9 @@ export class LoginFormComponent extends FormBase {
     }
 
     private onClickRegisterNewUser(): void {
+        if (!!this.newUser.type) {
+            this.newUser.cpfCnpj = this.newUser.type == this.PF ? this.cpf : this.cnpj;
+        }
         if (this.validateForm()) {
             this.blockForm();
             this.loginService.createNewUser(this.newUser).then((data: any) => {
@@ -206,6 +233,11 @@ export class LoginFormComponent extends FormBase {
                 }
             });
         }
+    }
+
+    public onChangeTipoPessoa(): void {
+        this.cpf = '';
+        this.cnpj = '';
     }
 
 }

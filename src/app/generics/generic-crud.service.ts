@@ -1,9 +1,10 @@
 import { HttpClientService } from '../core/services/httpclient.service';
+import { ObjectUtils } from '../utils/object-utils';
 import { GenericService } from './generic.service';
-import { ZObject } from './zobject';
+import { ZModel } from './zmodel';
 
 
-export abstract class GenericCrudService<T extends ZObject> extends GenericService {
+export abstract class GenericCrudService<T extends ZModel> extends GenericService {
 
     constructor(
         protected override http: HttpClientService,
@@ -18,7 +19,11 @@ export abstract class GenericCrudService<T extends ZObject> extends GenericServi
     }
 
     public save(object: T): Promise<any> {
-        return this.http.post(`${this.path}/save`, object);
+        if (ObjectUtils.isNotEmpty(object.id)) {
+            return this.http.post(`${this.path}/update`, object);
+        } else {
+            return this.http.post(`${this.path}/save`, object);
+        }
     }
 
     public delete(id: number): Promise<void> {
@@ -31,10 +36,6 @@ export abstract class GenericCrudService<T extends ZObject> extends GenericServi
 
     public findAll(): Promise<any> {
         return this.http.get(`${this.path}`);
-    }
-
-    public getDatatable(page: number, size: number): Promise<any> {
-        return this.http.get(`${this.path}/page?page=${page}&size=${size}`);
     }
 
 }

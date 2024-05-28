@@ -26,7 +26,7 @@ export abstract class FilterTemplateComponent implements OnInit {
     public operators: OperatorWhere[] = [this.defaultOperatorWhere];
     public operatorsEntities: { operator: OperatorWhere, text: string, icon: string }[] = [];
 
-    private _value: any = null;
+    protected _value: any = null;
     get value() {
         return this._value;
     }

@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ComponentsModule } from './components/components.module';
 import { AuthInterceptor } from './core/handlers/auth-handler.interceptor';
+import { DateHttpInterceptor } from './core/handlers/date-handler.interceptor';
 import { ErrorHandlerInterceptor } from './core/handlers/error-handler.interceptor';
 import { AuthService } from './core/services/auth.service';
 
@@ -39,6 +40,11 @@ import { AuthService } from './core/services/auth.service';
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorHandlerInterceptor,
+            multi: true,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: DateHttpInterceptor,
             multi: true,
         },
     ],

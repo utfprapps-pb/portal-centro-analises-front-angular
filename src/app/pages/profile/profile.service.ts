@@ -13,7 +13,7 @@ export class ProfileService extends GenericCrudService<UserDTO> {
     constructor(
         protected override http: HttpClientService,
     ) {
-        super(http, '/users', UserDTO)
+        super(http, '/usuarios', UserDTO)
     }
 
     public override findOne(): Promise<any> {

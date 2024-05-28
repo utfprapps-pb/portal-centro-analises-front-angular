@@ -585,7 +585,7 @@
         color      : #212529;
         transition : box-shadow 0.15s;
         font-weight: 600;
-        padding    : 0.5rem;
+        padding: 0.25rem;
     }
 
     .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year:enabled:hover,
@@ -599,11 +599,12 @@
 
     .p-datepicker table {
         font-size: 1rem;
-        margin   : 0.5rem 0;
+        margin   : 0.25rem 0;
     }
 
     .p-datepicker table th {
-        padding: 0.5rem;
+        padding: 0.25rem;
+        text-align: center !important;
     }
 
     .p-datepicker table th>span {
@@ -1900,13 +1901,13 @@
     }
 
     .p-radiobutton .p-radiobutton-box.p-highlight {
-        border-color: #007bff;
-        background  : #007bff;
+        border-color: var(--bs-form-valid-color);
+        background  : var(--bs-form-valid-color);
     }
 
     .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover {
-        border-color: #0062cc;
-        background  : #0062cc;
+        border-color: var(--bs-form-valid-color);
+        background  : var(--bs-form-valid-color);
         color       : #ffffff;
     }
 
@@ -1923,11 +1924,11 @@
     }
 
     .p-input-filled .p-radiobutton .p-radiobutton-box.p-highlight {
-        background: #007bff;
+        background: var(--bs-form-valid-color);
     }
 
     .p-input-filled .p-radiobutton .p-radiobutton-box.p-highlight:not(.p-disabled):hover {
-        background: #0062cc;
+        background: var(--bs-form-valid-color);
     }
 
     .p-radiobutton-label {

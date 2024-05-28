@@ -16,16 +16,25 @@ import { TagModule } from 'primeng/tag';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { TooltipModule } from 'primeng/tooltip';
 
+import { CalendarModule } from 'primeng/calendar';
 import { InputMaskModule } from 'primeng/inputmask';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { CurrencyFormatterPipe } from '../core/pipes/currency-formatter.pipe';
+import { DateFormatterPipe } from '../core/pipes/date-formatter.pipe';
 import { ToastrService } from '../core/services/toastr.service';
 import { ToasterService } from '../core/toaster/toaster.service';
 import { UtilsModule } from '../utils/utils.module';
 import { ComboboxComponent } from './combobox/combobox.component';
 import { CompCtrlDirective } from './compctrl/compctrl.directive';
+import { BooleanColumnTemplateComponent } from './datatable/datatable-columns/boolean-column-template/boolean-column-template.component';
 import { ColumnTemplateComponent } from './datatable/datatable-columns/column-template/column-template.component';
+import { CurrencyColumnTemplateComponent } from './datatable/datatable-columns/currency-column-template/currency-column-template.component';
+import { DateColumnTemplateComponent } from './datatable/datatable-columns/date-column-template/date-column-template.component';
 import {
     EnumColumnTemplateComponent,
 } from './datatable/datatable-columns/enum-column-template/enum-column-template.component';
+import { BooleanFilterTemplateComponent } from './datatable/datatable-filters/boolean-filter-template/boolean-filter-template.component';
+import { DateFilterTemplateComponent } from './datatable/datatable-filters/date-filter-template/date-filter-template.component';
 import {
     EnumFilterTemplateComponent,
 } from './datatable/datatable-filters/enum-filter-template/enum-filter-template.component';
@@ -37,6 +46,7 @@ import {
 } from './datatable/datatable-filters/text-filter-template/text-filter-template.component';
 import { DatatableHeaderButtonComponent } from './datatable/datatable-header-button/datatable-header-button.component';
 import { DatatableComponent } from './datatable/datatable/datatable.component';
+import { DatePicker } from './datepicker/datepicker.component';
 import { FormBaseComponent } from './form-base/form-base.component';
 import { FormCrudComponent } from './form-crud/form-crud.component';
 import { FormListComponent } from './form-list/form-list.component';
@@ -48,9 +58,13 @@ import { InputNumber } from './inputs/input-number/input-number.component';
 import { InputPasswordComponent } from './inputs/input-password/input-password.component';
 import { InputTextComponent } from './inputs/input-text/input-text.component';
 import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.component';
+import { RadioButtonComponent } from './radiobutton/radiobutton.component';
 
 @NgModule({
     declarations: [
+        DateFormatterPipe,
+        CurrencyFormatterPipe,
+
         CompCtrlDirective,
         HeaderComponent,
         FormBaseComponent,
@@ -61,18 +75,31 @@ import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.compone
         InputPasswordComponent,
         InputEmailComponent,
         ComboboxComponent,
+        RadioButtonComponent,
         InputMaskComponent,
         InputNumber,
         InputCurrency,
+        DatePicker,
+
         DatatableComponent,
         DatatableHeaderButtonComponent,
-        EnumColumnTemplateComponent,
+
         ColumnTemplateComponent,
+        EnumColumnTemplateComponent,
+        BooleanColumnTemplateComponent,
+        DateColumnTemplateComponent,
+        CurrencyColumnTemplateComponent,
+
         NumberFilterTemplateComponent,
         TextFilterTemplateComponent,
         EnumFilterTemplateComponent,
+        BooleanFilterTemplateComponent,
+        DateFilterTemplateComponent,
     ],
     exports: [
+        DateFormatterPipe,
+        CurrencyFormatterPipe,
+
         CompCtrlDirective,
         HeaderComponent,
         FormBaseComponent,
@@ -84,17 +111,27 @@ import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.compone
         InputPasswordComponent,
         InputEmailComponent,
         ComboboxComponent,
+        RadioButtonComponent,
         InputMaskComponent,
         InputNumber,
         InputCurrency,
+        DatePicker,
         TableModule,
-        DatatableHeaderButtonComponent,
+
         DatatableComponent,
-        EnumColumnTemplateComponent,
+        DatatableHeaderButtonComponent,
+
         ColumnTemplateComponent,
+        EnumColumnTemplateComponent,
+        BooleanColumnTemplateComponent,
+        DateColumnTemplateComponent,
+        CurrencyColumnTemplateComponent,
+
         NumberFilterTemplateComponent,
         TextFilterTemplateComponent,
         EnumFilterTemplateComponent,
+        BooleanFilterTemplateComponent,
+        DateFilterTemplateComponent,
     ],
     imports: [
         CommonModule,
@@ -115,6 +152,8 @@ import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.compone
         TableModule,
         TagModule,
         DropdownModule,
+        RadioButtonModule,
+        CalendarModule,
     ],
     providers: [
         ToastrService,
