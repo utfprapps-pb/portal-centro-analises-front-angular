@@ -20,6 +20,8 @@ export class UserFormComponent extends FormCrud<User> {
     public readonly PF: String = 'PF';
     public readonly PJ: String = 'PJ';
 
+    public maskRole: Roles = Roles.ROLE_EXTERNAL;
+    public maskType: UserType = UserType.PF;
     public cpf: string = '';
     public cnpj: string = '';
 
@@ -44,15 +46,23 @@ export class UserFormComponent extends FormCrud<User> {
         } else {
             object.type = UserType.PF;
         }
+        this.maskType = object.type;
+        this.maskRole = object.role;
     }
 
     public onChangeRole(): void {
-        this.object.raSiape = null;
+        if (this.maskRole != this.object.role) {
+            this.object.raSiape = null;
+            this.maskRole = this.object.role;
+        }
     }
 
     public onChangeTipoPessoa(): void {
-        this.cpf = '';
-        this.cnpj = '';
+        if (this.maskType != this.object.type) {
+            this.cpf = '';
+            this.cnpj = '';
+            this.maskType = this.object.type;
+        }
     }
 
     public override async onBeforeSave(object: User): Promise<void> {
