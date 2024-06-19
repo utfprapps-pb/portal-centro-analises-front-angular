@@ -2,11 +2,13 @@ import { AfterViewInit, Component, Injector, Input, ViewChild } from '@angular/c
 import { TableState } from 'primeng/api';
 import { Table } from 'primeng/table';
 
+import { AuthService } from '../../../core/services/auth.service';
 import { ToastrService } from '../../../core/services/toastr.service';
 import { ToasterService } from '../../../core/toaster/toaster.service';
 import { GenericCrudService } from '../../../generics/generic-crud.service';
 import { ZModel } from '../../../generics/zmodel';
 import { ObjectUtils } from '../../../utils/object-utils';
+import { ColumnTemplateComponent } from '../datatable-columns/column-template/column-template.component';
 import { DatatableColumn } from '../datatable-columns/datatable-column';
 import { DatatableFilterColumn } from '../datatable-columns/datatable-filter-column';
 import { FilterTemplateComponent } from '../datatable-filters/datatable-filter-template.component';
@@ -49,6 +51,16 @@ export class DatatableComponent implements AfterViewInit {
     public datatableColumns: DatatableColumn[] = [];
     public datatableFilterColumns: DatatableFilterColumn[] = [];
 
+    private _columnsBefore: ColumnTemplateComponent[] = [];
+    private _columnsAfter: ColumnTemplateComponent[] = [];
+
+    get columnsBefore() {
+        return this._columnsBefore.filter(it => it.visible);
+    }
+    get columnsAfter() {
+        return this._columnsAfter.filter(it => it.visible);
+    }
+
     private filterColumnsComponent: FilterTemplateComponent[] = [];
     public addFilterColumn(template: FilterTemplateComponent): void {
         if (!!this.name) {
@@ -70,7 +82,7 @@ export class DatatableComponent implements AfterViewInit {
 
     public ngAfterViewInit(): void {
         if (!!this.name) {
-            this.table.stateKey = this.name;
+            this.table.stateKey = `${this.name}_${AuthService.USER_LOGGED.id}`;
             this.table.stateStorage = 'local';
             const state = localStorage.getItem(this.table.stateKey);
             if (ObjectUtils.isNotEmpty(state)) {
@@ -99,40 +111,81 @@ export class DatatableComponent implements AfterViewInit {
         this.loading = true;
         this.datatableColumns = [];
         for (const prop in this.emptyObject) {
-            const filter: DatatableFilterColumn = this.generateDatatableFilter(prop);
-            if (!!filter) {
-                this.addDatatableFilter(filter);
-            }
+            if (!Reflect.getMetadata('column:title', this.emptyObject, prop) || false) continue;
 
-            const column: DatatableColumn = this.generateDatatableColumn(prop);
-            if (!!column) {
-                this.addDatatableColumn(column);
+            const additionalcolumn: string[] = Reflect.getMetadata('column:additionalcolumn', this.emptyObject, prop);
+            if (ObjectUtils.isNotEmpty(additionalcolumn)) {
+                for (const col of additionalcolumn) {
+                    if (!Reflect.getMetadata('column:title', this.emptyObject[prop], col) || false) continue;
+
+                    const filter: DatatableFilterColumn = this.generateDatatableFilter(col, prop);
+                    if (!!filter) {
+                        this.addDatatableFilter(filter);
+                    }
+
+                    const column: DatatableColumn = this.generateDatatableColumn(col, prop);
+                    if (!!column) {
+                        this.addDatatableColumn(column);
+                    }
+                }
+                continue;
+            } else {
+                const filter: DatatableFilterColumn = this.generateDatatableFilter(prop);
+                if (!!filter) {
+                    this.addDatatableFilter(filter);
+                }
+
+                const column: DatatableColumn = this.generateDatatableColumn(prop);
+                if (!!column) {
+                    this.addDatatableColumn(column);
+                }
             }
         }
         await this.loadDatatableData();
         this.loading = false;
     }
 
-    private generateDatatableColumn(prop: string): DatatableColumn {
-        const hidden = Reflect.getMetadata('column:hidden', this.emptyObject, prop) || false;
-        if (hidden) {
+    public getColumnData(data: any, field: string): String | number {
+        if (field != null && field.includes('.')) {
+            let path: string[] = field.split('.');
+            const fieldPath = path.shift();
+            return this.getColumnData(data[fieldPath], path.join('.'));
+        } else {
+            return data[field];
+        }
+    }
+
+    private generateDatatableColumn(prop: string, parent?: string): DatatableColumn {
+        const data = parent == null ? this.emptyObject : this.emptyObject[parent];
+        const hidden = Reflect.getMetadata('column:hidden', data, prop) || false;
+        if (hidden || (!!parent && !!Reflect.getMetadata('column:hidden', this.emptyObject, parent))) {
             return null;
         }
 
-        let prp = prop as string;
-        if (prp == 'id') {
-            prp = 'Código';
+        let title = prop as string;
+        if (title == 'id') {
+            title = 'Código';
         }
-        prp = prp.charAt(0).toUpperCase() + prp.substring(1);
+        title = title.charAt(0).toUpperCase() + title.substring(1);
+
+        const reflectionTitle: string = Reflect.getMetadata('column:title', data, prop);
+        if (ObjectUtils.isNotEmpty(reflectionTitle)) {
+            title = reflectionTitle;
+        }
+        if (!!parent) {
+            const reflectionParentTitle: string = Reflect.getMetadata('column:title', this.emptyObject, parent);
+            if (!!reflectionParentTitle) {
+                title = `${reflectionParentTitle} | ${title}`
+            }
+        }
 
         const column = new DatatableColumn();
-        const titulo = Reflect.getMetadata('column:title', this.emptyObject, prop) || prp;
-        column.header = titulo;
-        column.headerAlign = Reflect.getMetadata('column:title-align', this.emptyObject, prop);
-        column.field = prop;
-        column.type = Reflect.getMetadata('primitive', this.emptyObject, prop);
-        column.mask = Reflect.getMetadata('column:mask', this.emptyObject, prop);
-        column.align = Reflect.getMetadata('column:align', this.emptyObject, prop);
+        column.header = title;
+        column.headerAlign = Reflect.getMetadata('column:title-align', data, prop);
+        column.field = `${parent != null ? (parent + '.') : ''}${prop}`;
+        column.type = Reflect.getMetadata('primitive', data, prop);
+        column.mask = Reflect.getMetadata('column:mask', data, prop);
+        column.align = Reflect.getMetadata('column:align', data, prop);
 
         if (column.type == 'boolean') {
             column.align = 'center';
@@ -141,7 +194,7 @@ export class DatatableComponent implements AfterViewInit {
         if (column.type == 'enum') {
             column.align = 'center';
             column.width = '200px'
-            column.enumname = Reflect.getMetadata('enumname', this.emptyObject, prop);
+            column.enumname = Reflect.getMetadata('enumname', data, prop);
         }
         if (column.type == 'numeric') {
             column.width = '150px'
@@ -149,34 +202,30 @@ export class DatatableComponent implements AfterViewInit {
         if (column.type == 'date') {
             column.align = 'center';
         }
-        const minWidth = Reflect.getMetadata('column:minWidth', this.emptyObject, prop);
+        const minWidth = Reflect.getMetadata('column:minWidth', data, prop);
         if (!!minWidth) {
             column.minWidth = minWidth;
         }
-        const maxWidth = Reflect.getMetadata('column:maxWidth', this.emptyObject, prop);
+        const maxWidth = Reflect.getMetadata('column:maxWidth', data, prop);
         if (!!maxWidth) {
             column.maxWidth = maxWidth;
         }
         return column;
     }
 
-    private generateDatatableFilter(prop: string): DatatableFilterColumn {
-        const hidden = Reflect.getMetadata('column:hidden', this.emptyObject, prop) || false;
-        if (hidden) {
+    private generateDatatableFilter(prop: string, parent?: string): DatatableFilterColumn {
+        const data = parent == null ? this.emptyObject : this.emptyObject[parent];
+        const hidden = Reflect.getMetadata('column:hidden', data, prop) || false;
+        if (hidden || (!!parent && !!Reflect.getMetadata('column:hidden', this.emptyObject, parent))) {
             return null;
         }
-        let prp = prop as string;
-        if (prp == 'id') {
-            prp = 'Código';
-        }
-        prp = prp.charAt(0).toUpperCase() + prp.substring(1);
 
         const filter = new DatatableFilterColumn();
-        filter.field = prop;
-        filter.type = Reflect.getMetadata('primitive', this.emptyObject, prop);
-        filter.mask = Reflect.getMetadata('column:mask', this.emptyObject, prop);
+        filter.field = `${parent != null ? (parent + '.') : ''}${prop}`;
+        filter.type = Reflect.getMetadata('primitive', data, prop);
+        filter.mask = Reflect.getMetadata('column:mask', data, prop);
         if (filter.type == 'enum') {
-            filter.enumname = Reflect.getMetadata('enumname', this.emptyObject, prop);
+            filter.enumname = Reflect.getMetadata('enumname', data, prop);
         }
         if (filter.type == 'boolean') {
             filter.enumname = 'Boolean';
@@ -193,7 +242,6 @@ export class DatatableComponent implements AfterViewInit {
     }
 
     private async loadDatatableData(): Promise<void> {
-        const mapFieldType: Map<String, String> = new Map();
         await this._service.findAll().then((data: any[]) => {
             for (const prop in this.emptyObject) {
                 const type = Reflect.getMetadata('primitive', this.emptyObject, prop);
@@ -313,6 +361,15 @@ export class DatatableComponent implements AfterViewInit {
             } else {
                 console.error('Erro não mapeado:', error);
             }
+        }
+    }
+
+    public addCustomColumnTemplate(column: ColumnTemplateComponent): void {
+        const templateColumn = column.position === 'before' ? this._columnsBefore : this._columnsAfter;
+        if (column.order == null) {
+            templateColumn.push(column);
+        } else {
+            templateColumn.splice(column.order, 0, column);
         }
     }
 

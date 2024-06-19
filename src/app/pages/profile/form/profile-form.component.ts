@@ -2,7 +2,10 @@ import { Component, Injector, ViewChild } from '@angular/core';
 
 import { FormCrud } from '../../../components/form-crud/form-crud';
 import { FormCrudComponent } from '../../../components/form-crud/form-crud.component';
-import { ChangePasswordDTO } from '../../../dtos/change-password.dto';
+import { Constants } from '../../../core/constants/constants';
+import { Roles } from '../../../core/enums/roles.enum';
+import { StorageManager } from '../../../core/managers/storage-manager';
+import { UserLoginDTO } from '../../../dtos/user-login-dto';
 import { UserDTO } from '../../../dtos/user.dto';
 import { ProfileService } from '../profile.service';
 
@@ -15,39 +18,36 @@ export class ProfileFormComponent extends FormCrud<UserDTO> {
 
     @ViewChild('formView') public formView: FormCrudComponent;
 
-    public changePassword: ChangePasswordDTO = new ChangePasswordDTO();
-
-    public passwordConfirm: string = null;
+    public readonly PF: String = 'PF';
+    public readonly PJ: String = 'PJ';
 
     constructor(
         protected override readonly injector: Injector,
         protected override readonly service: ProfileService,
     ) {
         super(injector, service);
-        this.object.name = this.authentication.getUserLogged().displayName;
-        this.object.email = this.authentication.getUserLogged().email;
     }
 
-    public override async onSave(object: any): Promise<void> {
-        object = this.convertUtilsService.cloneObject(this.changePassword);
-        if (this.validateForm()) {
-            this.blockForm();
-            await this.onBeforeSave(object);
-            this.service.changePassword(object).then(async (data) => {
-                await this.onAfterSave(object);
-                this.toastrService.showSuccess(this.pageTitle, 'Registro salvo com sucesso!');
-                this.releaseForm();
-                if (this.exitOnSave()) {
-                    this.onCancel();
-                }
-            }, error => {
-                this.releaseForm();
-                if (this.hasErrorMapped(error)) {
-                    this.errorHandler(error);
-                } else {
-                    this.toastrService.showError(this.pageTitle, 'Erro ao salvar Registro!');
-                }
-            });
-        }
+    public override getObjectIdFromUrl(): number {
+        return this.authentication.getUserLogged().id;
     }
+
+    public override exitOnSave(): boolean {
+        return false;
+    }
+
+    public override async onAfterSave(object: any, server: UserDTO): Promise<void> {
+        const userLoginDto: UserLoginDTO = new UserLoginDTO();
+        userLoginDto.id = server.id;
+        userLoginDto.displayName = server.name;
+        userLoginDto.email = server.email;
+        userLoginDto.role = server.role;
+        StorageManager.setItem(Constants.USER, JSON.stringify(userLoginDto));
+        this.authentication.identity(true);
+    }
+
+    public isStudant(): boolean {
+        return this.object.role == Roles.ROLE_STUDENT;
+    }
+
 }

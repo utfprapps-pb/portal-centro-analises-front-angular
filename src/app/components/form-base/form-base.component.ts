@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, ContentChildren, ElementRef, Injector, Input, QueryList, ViewChildren } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ContentChildren,
+    ElementRef,
+    Injector,
+    Input,
+    QueryList,
+    ViewChildren,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 
@@ -20,6 +29,7 @@ export class FormBaseComponent implements AfterViewInit {
     @Input() enableBreadcrumb: boolean = true;
 
     @Input() pageTitle: string;
+    @Input() changeTitle: boolean = true;
 
     public facades: Stack<number> = new Stack();
     public toasterService: ToasterService;
@@ -39,7 +49,9 @@ export class FormBaseComponent implements AfterViewInit {
     }
 
     public ngAfterViewInit(): void {
-        document.title = `UTFPR | ${this.pageTitle || 'LCA'}`;
+        if (this.changeTitle) {
+            document.title = `UTFPR | ${this.pageTitle || 'LCA'}`;
+        }
     }
 
     public blockForm(): void {

@@ -2,12 +2,12 @@
 <div class="container-fluid pt-1" [ngStyle]="{'padding-bottom': showFooter() ? '3.75rem' : '0.25rem'}">
     <form-base #formBase>
         <div class="p-2 py-3 mt-2">
-            <div class="row">
+            <div class="row" *ngIf="showHeader()">
                 <div class="col-24">
                     <h1 class="m-0">{{title}}</h1>
                 </div>
             </div>
-            <hr class="mt-2 border border-success mx-3">
+            <hr class="mt-2 border border-success mx-3" *ngIf="showHeader()">
             <div class="ng-content">
                 <ng-content></ng-content>
             </div>

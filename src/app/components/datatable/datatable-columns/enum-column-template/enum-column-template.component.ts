@@ -19,7 +19,17 @@ export class EnumColumnTemplateComponent implements OnInit {
 
     public ngOnInit(): void {
         this.color = getEnumColor(this.column.enumname, this.data[this.column.field]);
-        this.value = getEnumTranslation(this.column.enumname, this.data[this.column.field]);
+        this.value = getEnumTranslation(this.column.enumname, this.getColumnData(this.data, this.column.field));
+    }
+
+    private getColumnData(data: any, field: string): String | number {
+        if (field != null && field.includes('.')) {
+            let path: string[] = field.split('.');
+            const fieldPath = path.shift();
+            return this.getColumnData(data[fieldPath], path.join('.'));
+        } else {
+            return data[field];
+        }
     }
 
 }

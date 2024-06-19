@@ -1,0 +1,20 @@
+<form-list #formView [pageTitle]="'Vínculos'">
+
+    <datatable #formViewDatatable [name]="'studentteacher_list'" [service]="service" [showEditButton]="false">
+        <column-template position="before" [visible]="isProfessor" [minWidth]="'50px'">
+            <ng-template #itemColumn let-item>
+                <div class="text-center button-column" *ngIf="item.approved == 'PENDENTE'">
+                    <button class="btn btn-sm approve-refuse-button" (click)="onClickApproveRefuse(item)">
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-check"></i>&nbsp;
+                            <i class="fa fa-slash-forward"></i>&nbsp;
+                            <i class="fa fa-times"></i>
+                        </div>
+                    </button>
+                </div>
+            </ng-template>
+        </column-template>
+
+    </datatable>
+
+</form-list>

@@ -26,6 +26,13 @@
             </th>
             <th *ngIf="showEditButton" class="button-column"></th>
             <th *ngIf="showDeleteButton" class="button-column"></th>
+            <th *ngFor="let col of columnsBefore" [ngStyle]="{
+                'max-width': col.maxWidth,
+                'width': col.width,
+                'min-width': col.minWidth,
+                'text-align': col.headerAlign}">
+                {{ col.header }}
+            </th>
             <th *ngFor="let col of columns" [pSortableColumn]="col.field" [ngStyle]="{
                     'max-width': col.maxWidth,
                     'width': col.width,
@@ -34,11 +41,19 @@
                 {{ col.header }}
                 <p-sortIcon class="float-end" [field]="col.field"></p-sortIcon>
             </th>
+            <th *ngFor="let col of columnsAfter" [ngStyle]="{
+                'max-width': col.maxWidth,
+                'width': col.width,
+                'min-width': col.minWidth,
+                'text-align': col.headerAlign}">
+                {{ col.header }}
+            </th>
         </tr>
         <tr *ngIf="!!table && options.showfilter">
             <th *ngIf="allowSelectAll"></th>
             <th *ngIf="showEditButton" class="button-column"></th>
             <th *ngIf="showDeleteButton" class="button-column"></th>
+            <th *ngFor="let col of columnsBefore"></th>
             <th *ngFor="let col of datatableFilterColumns" class="px-1">
                 <ng-container *ngIf="col.type == 'text'">
                     <text-filter-template [column]="col" [datatable]="this"></text-filter-template>
@@ -53,6 +68,7 @@
                     <date-filter-template [column]="col" [datatable]="this"></date-filter-template>
                 </ng-container>
             </th>
+            <th *ngFor="let col of columnsAfter"></th>
         </tr>
     </ng-template>
 
@@ -73,10 +89,15 @@
                     <i class="fa fa-trash-alt"></i>
                 </button>
             </td>
+            <td *ngFor="let col of columnsBefore">
+                <ng-container *ngTemplateOutlet="col.template; context: {$implicit: data}"></ng-container>
+            </td>
             <td *ngFor="let col of columns">
                 <div [ngStyle]="{'text-align': col.align, 'max-width': col.maxWidth}">
                     <ng-container *ngIf="col.type == 'numeric' || col.type == 'text'">
-                        <span class="text-ellipsis" [title]="data[col.field]">{{data[col.field]}}</span>
+                        <span class="text-ellipsis" [title]="getColumnData(data, col.field)">
+                            {{getColumnData(data, col.field)}}
+                        </span>
                     </ng-container>
                     <ng-container *ngIf="col.type == 'enum'">
                         <enum-column-template [column]="col" [data]="data"></enum-column-template>
@@ -91,13 +112,9 @@
                         <currency-column-template [column]="col" [data]="data"></currency-column-template>
                     </ng-container>
                 </div>
-                <column-template *ngIf="col.type != 'numeric' &&
-                                        col.type != 'text' &&
-                                        col.type != 'enum' &&
-                                        col.type != 'boolean' &&
-                                        col.type != 'date'">
-                    <!-- {{col.type}} > {{data[col.field]}} -->
-                </column-template>
+            </td>
+            <td *ngFor="let col of columnsAfter">
+                <ng-container *ngTemplateOutlet="col.template; context: {$implicit: data}"></ng-container>
             </td>
         </tr>
     </ng-template>

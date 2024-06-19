@@ -1,3 +1,4 @@
+import { Inject } from '@angular/core';
 import { ToasterService } from '../core/toaster/toaster.service';
 import { ToasterType } from '../core/toaster/toaster.type';
 

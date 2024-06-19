@@ -15,8 +15,10 @@ export class Dialog {
     message: string;
     html?: string;
     confirmButtonText?: string;
+    showDenyButton?: boolean = true;
+    denyButtonText?: string;
     cancelButtonText?: string;
-    showCancelButton?: boolean = true;
+    showCancelButton?: boolean = false;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -37,13 +39,22 @@ export class DialogService {
             showConfirmButton: true,
             confirmButtonColor: '#0dcaf0',
             confirmButtonText: options.confirmButtonText || 'Sim',
-            showCancelButton: options.showCancelButton || true,
-            cancelButtonColor: '#dc3545',
-            cancelButtonText: options.cancelButtonText || 'Não',
+            showCancelButton: options.showCancelButton || false,
+            cancelButtonColor: '#ccc',
+            cancelButtonText: options.cancelButtonText || 'Cencelar',
+            showDenyButton: options.showDenyButton || true,
+            denyButtonColor: '#dc3545',
+            denyButtonText: options.cancelButtonText || 'Não',
         };
 
         return swal.mixin(sweetAlertOptions).fire().then((result) => {
-            return result.isConfirmed;
+            if (result.isConfirmed) {
+                return true;
+            } else if (result.isDenied) {
+                return false;
+            } else {
+                return null;
+            }
         });
     }
 

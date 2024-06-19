@@ -1,0 +1,66 @@
+<form-crud #formView [pageTitle]="'Equipamentos'">
+
+    <div class="row mb-2">
+        <div class="col-6">
+            <input-number label="Código" compCtrl="id" [ngModel]="object.id" [disabled]="true"></input-number>
+        </div>
+        <div class="col-6 ms-auto">
+            <combobox label="Status" compCtrl="status" [(ngModel)]="object.status" enum="StatusAI" required
+                defaultValue="ACTIVE">
+            </combobox>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-12">
+            <input-text label="Nome" compCtrl="nome" [(ngModel)]="object.name" required [minlength]="6">
+            </input-text>
+        </div>
+        <div class="col-6">
+            <input-text label="Nome Curto" compCtrl="shortName" [(ngModel)]="object.shortName" required
+                [minlength]="6">
+            </input-text>
+        </div>
+        <div class="col-6">
+            <input-text label="Modelo" compCtrl="model" [(ngModel)]="object.model">
+            </input-text>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-8">
+            <input-currency label="[UTFPR] Valor por Hora" compCtrl="valueHourUtfpr"
+                [(ngModel)]="object.valueHourUtfpr">
+            </input-currency>
+        </div>
+        <div class="col-8">
+            <input-currency label="[Parceiro] Valor por Hora" compCtrl="valueHourPartner"
+                [(ngModel)]="object.valueHourPartner">
+            </input-currency>
+        </div>
+        <div class="col-8">
+            <input-currency label="[Externo] Valor por Hora" compCtrl="valueHourExternal"
+                [(ngModel)]="object.valueHourExternal">
+            </input-currency>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-8">
+            <input-currency label="[UTFPR] Valor por Amostra" compCtrl="valueSampleUtfpr"
+                [(ngModel)]="object.valueSampleUtfpr">
+            </input-currency>
+        </div>
+        <div class="col-8">
+            <input-currency label="[Parceiro] Valor por Amostra" compCtrl="valueSamplePartner"
+                [(ngModel)]="object.valueSamplePartner">
+            </input-currency>
+        </div>
+        <div class="col-8">
+            <input-currency label="[Externo] Valor por Amostra" compCtrl="valueSampleExternal"
+                [(ngModel)]="object.valueSampleExternal">
+            </input-currency>
+        </div>
+    </div>
+
+</form-crud>

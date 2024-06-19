@@ -1,0 +1,54 @@
+<form-crud #formView [pageTitle]="'Usuários'">
+
+    <div class="row mb-2">
+        <div class="col-6">
+            <input-number label="Código" compCtrl="id" [ngModel]="object.id" [disabled]="true"></input-number>
+        </div>
+        <div class="col-6 ms-auto">
+            <combobox label="Status" compCtrl="status" [(ngModel)]="object.status" enum="StatusAI" required>
+            </combobox>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-8">
+            <combobox label="Tipo de Pessoa" compCtrl="type" enum="UserType" required
+                (onChange)="onChangeTipoPessoa()" [showClear]="false" [(ngModel)]="object.type">
+            </combobox>
+        </div>
+        <div class="col-8">
+            <ng-container *ngIf="object.type == PJ; else PFTemplate">
+                <input-mask label="CNPJ" mask="cnpj" compCtrl="cnpj" required [(ngModel)]="cnpj"
+                    [minlength]="11" [maxlength]="20">
+                </input-mask>
+            </ng-container>
+            <ng-template #PFTemplate>
+                <input-mask label="CPF" mask="cpf" compCtrl="cpf" required [(ngModel)]="cpf" [minlength]="11"
+                    [maxlength]="20">
+                </input-mask>
+            </ng-template>
+        </div>
+        <div class="col-8 ms-auto">
+            <combobox label="Cargo" compCtrl="cargo" [(ngModel)]="object.role" enum="Roles" required
+                (onChange)="onChangeRole()">
+            </combobox>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-8">
+            <input-text label="Nome" compCtrl="nome" [(ngModel)]="object.name" required>
+            </input-text>
+        </div>
+        <div class="col-8">
+            <input-email label="Email" compCtrl="email" [ngModel]="object.email" required [disabled]="true">
+            </input-email>
+        </div>
+        <div class="col-8" *ngIf="object.role == 'ROLE_STUDENT'">
+            <input-number label="RA" compCtrl required [(ngModel)]="object.raSiape" [minlength]="6"
+                [maxlength]="10">
+            </input-number>
+        </div>
+    </div>
+
+</form-crud>

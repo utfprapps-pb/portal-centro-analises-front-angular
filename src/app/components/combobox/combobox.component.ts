@@ -2,9 +2,12 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 import { ControlValueAccessor } from '@angular/forms';
 import { Dropdown } from 'primeng/dropdown';
 
+import { Debounce } from '../../core/decorators/decorators';
 import { getEnum, getEnumTranslation } from '../../core/enums/enum-mapper';
+import { ZModel } from '../../generics/zmodel';
 import { ConvertUtilsService } from '../../utils/convert-utils.service';
 import { Guid } from '../../utils/models/guid';
+import { ObjectUtils } from '../../utils/object-utils';
 import { CompCtrlContainer } from '../compctrl/compctrl.container';
 import { InputBaseComponent } from '../inputs/input-base/input-base.component';
 import { InvalidInfoComponent } from '../inputs/invalid-info/invalid-info.component';
@@ -29,24 +32,44 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
     @Input() placeholder: string = '';
     @Input() class: string = 'w-100';
     @Input() defaultValue: string = null;
+    @Input() filterBy: string = null;
+    // @Input() optionLabel: string = 'value';
 
     @Input('showClear') showClear: boolean = true;
 
-    @Output('onChange') onChangeEventEmmiter: EventEmitter<number> = new EventEmitter();
+    @Output('onChange') onChangeEventEmmiter: EventEmitter<any> = new EventEmitter();
+
+    public displayValue: string = null;
+    public mappedDisplayValues: Map<any, string> = new Map();
 
     private _innerObject: any;
     private _innerValue: string = null;
     private _disabled: boolean = null;
     private _required: boolean = false;
     public invalidCause: string[] = null;
+    public _enum: string = null;
+    public _options: any[] = [];
 
     @Input('enum') set enum(name: string) {
+        this._enum = name;
         const enu = getEnum(name);
         for (const key in enu) {
-            this.options.push({ key: key, value: getEnumTranslation(name, key) })
+            this._options.push({ key: key, value: getEnumTranslation(name, key) })
+            this.mappedDisplayValues.set(key, getEnumTranslation(name, key));
         }
-    };
-    public options: any[] = []
+    }
+
+    @Input('options') set options(options: ZModel[]) {
+        this._options = options;
+        this.mappedDisplayValues = new Map();
+        for (const option of options) {
+            let texto: string = this.filterBy.split(',')
+                .map(field => this.getFieldValue(option, field))
+                .join(' - ');
+            this.mappedDisplayValues.set(option.id, texto);
+        }
+        this.onChangeDropdown(this.defaultValue);
+    }
 
     constructor(protected readonly convertUtilsService: ConvertUtilsService) {
         super();
@@ -70,18 +93,12 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
 
     private internalDisabled: boolean = null;
     @Input() set disabled(value: any) {
-        let savePermanentDisabledState;
-        if (this.disabled == null) {
-            savePermanentDisabledState = true;
-        }
-        this._disabled = this.convertUtilsService.getBoolean(value, false);
-        if (savePermanentDisabledState) {
-            this.internalDisabled = this._disabled;
-        }
+        this._disabled = this.convertUtilsService.getBoolean(value, true);
     }
+
     get disabled() {
         if (this.internalDisabled != null) {
-            return this.internalDisabled
+            return this.internalDisabled || this._disabled;
         }
         return this._disabled;
     }
@@ -97,10 +114,43 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
         return this._innerObject;
     }
 
+    private getFieldValue(object: any, fieldPath: string): string {
+        const fields = fieldPath.split('.');
+
+        let value = object;
+        for (const field of fields) {
+            if (ObjectUtils.isEmpty(value[field])) {
+                return '';
+            }
+            value = value[field];
+        }
+        return String(value);
+    }
+
+    public getMapDisplay(object: any) {
+        if (!!this._enum) {
+            return this.mappedDisplayValues.get(object?.key)
+        } else {
+            return this.mappedDisplayValues.get(object?.id)
+        }
+    }
+
     set innerObject(value: any) {
         if (value !== this.innerObject) {
             this._innerObject = value;
-            this.innerValue = value?.key;
+            if (!!this._enum) {
+                this.innerValue = value?.key;
+                this.displayValue = this.mappedDisplayValues.get(value?.key);
+            } else {
+                const texto = !!value && !!value.id ? this.mappedDisplayValues.get(value.id) : null;
+                if (ObjectUtils.isEmpty(texto)) {
+                    this._innerObject = null;
+                    this.innerValue = null;
+                } else {
+                    this.displayValue = texto;
+                    this.innerValue = value;
+                }
+            }
         }
     }
 
@@ -118,25 +168,65 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
         }
     }
 
-    // Escreve o valor do modelo para o componente
+    public onChangeDropdown(value: any): void {
+        if (ObjectUtils.isEmpty(value)) {
+            this.innerObject = null;
+        } else {
+            if (!!this._enum) {
+                this.innerObject = this._options.find(it => it.key == value.key);
+            } else {
+                this.innerObject = this._options.find(it => it.id == value.id);
+            }
+        }
+    }
+
+    @Debounce(100)
     writeValue(value: any): void {
         if (value !== this.innerObject) {
-            if (typeof (value) == 'string') {
-                let val = this.options.find(it => it.key == value);
-                if (val == undefined) {
-                    val = this.options.find(it => it.value == value);
+            if (this._options.length == 0) {
+                setTimeout(() => {
+                    this.writeValue(value);
+                    return;
+                }, 100);
+            }
+            if (!!this._enum) {
+                if (typeof (value) == 'string') {
+                    let val = this._options.find(it => it.key == value);
+                    if (val == undefined) {
+                        val = this._options.find(it => it.value == value);
+                    }
+                    this.innerObject = val;
+                } else {
+                    this.innerObject = value;
                 }
-                this.innerObject = val;
             } else {
-                this.innerObject = value;
+                if (!!value && !!value.id) {
+                    if (this._options.length == 0) {
+                        this.defaultValue = value.id;
+                    } else {
+                        let val = this._options.find(it => it.id == value.id);
+                        if (!!val) {
+                            this.innerObject = val;
+                        }
+                    }
+                } else {
+                    this.innerObject = null;
+                }
             }
         }
         if (!!this.defaultValue) {
-            let val = this.options.find(it => it.key == this.defaultValue);
+            if (!!this._enum) {
+                let val = this._options.find(it => it.key == this.defaultValue);
                 if (val == undefined) {
-                    val = this.options.find(it => it.value == this.defaultValue);
+                    val = this._options.find(it => it.value == this.defaultValue);
                 }
                 this.innerObject = val;
+            } else {
+                let val = this._options.find(it => String(it.id) == this.defaultValue);
+                if (!!val) {
+                    this.innerObject = val;
+                }
+            }
         }
     }
 
@@ -163,7 +253,7 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
     }
 
     override setDisabledState(value: boolean): void {
-        this.disabled = value;
+        this.internalDisabled = value;
     }
 
     override setRequiredState(value: boolean): void {

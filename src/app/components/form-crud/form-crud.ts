@@ -39,6 +39,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         }
         this.formView.objectUpdating = () => this.objectUpdating();
 
+        this.formView.showHeader = () => this.showHeader();
         this.formView.showFooter = () => this.showFooter();
         this.formView.showButtons = (button) => this.showButtons(button);
         this.formView.exitOnSave = () => this.exitOnSave();
@@ -49,7 +50,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
 
         this.formView.onBeforeSave = (object) => this.onBeforeSave(object);
         this.formView.onSave = (object) => this.onSave(object);
-        this.formView.onAfterSave = (object) => this.onAfterSave(object);
+        this.formView.onAfterSave = (object) => this.onAfterSave(object, null);
 
         this.formView.onExcluir = (object) => this.onExcluir(object);
     }
@@ -57,10 +58,11 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
     private async formComplete(): Promise<void> {
         this.blockForm();
         const id = this.getObjectIdFromUrl();
-        if (id != null && this.getLocalUrl().includes('/alterar')) {
-            await this.service.findOne(id).then(data => {
+        if (id != null) {
+            await this.service.findOne(id).then(async (data: any) => {
                 this.onLoadObject(data);
                 this.object = data;
+                await this.onAfterLoadObject(this.object);
             }, error => {
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
@@ -73,7 +75,11 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         }
     }
 
-    public onLoadObject(object: any): void {
+    public onLoadObject(object: T): void {
+
+    }
+
+    public async onAfterLoadObject(object: T): Promise<void> {
 
     }
 
@@ -98,6 +104,10 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
     }
 
     public showButtons(button: string): boolean {
+        return true;
+    }
+
+    public showHeader(): boolean {
         return true;
     }
 
@@ -159,7 +169,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
             this.blockForm();
             await this.onBeforeSave(object);
             this.service.save(object).then(async (data) => {
-                await this.onAfterSave(object);
+                await this.onAfterSave(object, data);
                 this.toastrService.showSuccess(this.pageTitle, 'Registro salvo com sucesso!');
                 if (this.exitOnSave()) {
                     this.onCancel();
@@ -176,7 +186,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         }
     }
 
-    protected async onAfterSave(object: any): Promise<void> { }
+    protected async onAfterSave(object: any, server: any): Promise<void> { }
 
     public async onClickExcluir(): Promise<void> {
         const object = this.object;

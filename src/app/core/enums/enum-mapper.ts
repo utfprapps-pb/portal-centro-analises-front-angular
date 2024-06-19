@@ -2,6 +2,7 @@ import { Action, getActionColor, getActionTranslation } from './action.enum';
 import { Boolean, getBooleanColor, getBooleanTranslation } from './boolean.enum';
 import { Roles, getRolesColor, getRolesTranslation } from './roles.enum';
 import { StatusAI, getStatusAIColor, getStatusAITranslation } from './statusai.enum';
+import { StudentTeacherApproved, getStudentTeacherApprovedColor, getStudentTeacherApprovedTranslation } from './studentteacher-approved.enum';
 import { UserType, getUserTypeColor, getUserTypeTranslation } from './user-type.enum';
 
 export function getEnum(enumName: string): any {
@@ -16,6 +17,8 @@ export function getEnum(enumName: string): any {
             return Action;
         case 'Boolean':
             return Boolean;
+        case 'StudentTeacherApproved':
+            return StudentTeacherApproved;
         default:
             console.error(`getEnum: Enum não mapeado no enum-mapper.ts \t ${enumName}`);
             throw new Error(`getEnum: Enum não mapeado no enum-mapper.ts \t ${enumName}`);
@@ -34,6 +37,8 @@ export function getEnumColor(enumName: string, enumValue: any): string {
             return getActionColor(enumValue);
         case 'Boolean':
             return getBooleanColor(enumValue);
+        case 'StudentTeacherApproved':
+            return getStudentTeacherApprovedColor(enumValue);
         default:
             console.error(`getEnumColor: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
             throw new Error(`getEnumColor: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
@@ -52,6 +57,8 @@ export function getEnumTranslation(enumName: string, enumValue: any): string {
             return getActionTranslation(enumValue);
         case 'Boolean':
             return getBooleanTranslation(enumValue);
+        case 'StudentTeacherApproved':
+            return getStudentTeacherApprovedTranslation(enumValue);
         default:
             console.error(`getEnumTranslation: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
             throw new Error(`getEnumTranslation: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);

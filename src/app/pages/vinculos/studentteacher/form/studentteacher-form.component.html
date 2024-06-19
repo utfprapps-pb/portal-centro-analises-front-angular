@@ -1,0 +1,30 @@
+<form-crud #formView [pageTitle]="'Vínculos'">
+
+    <div class="row">
+        <div class="col-6">
+            <input-number label="Código" compCtrl="id" [ngModel]="object.id" [disabled]="true"></input-number>
+        </div>
+        <div class="ms-auto col-6">
+            <combobox label="Status" compCtrl="status" [ngModel]="object.approved"
+                enum="StudentTeacherApproved" required defaultValue="PENDENTE" [disabled]="true">
+            </combobox>
+        </div>
+    </div>
+    <div class="row" *ngIf="isAdmin || isAluno">
+        <div class="col-24">
+            <combobox label="Professor" compCtrl="professor" [required]="isAdmin || isAluno"
+                [options]="professores" [filterBy]="'id,name,email'" [(ngModel)]="object.professor"
+                [disabled]="object.id != null">
+            </combobox>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="isAdmin || isProfessor">
+        <div class="col-24">
+            <combobox label="Aluno" compCtrl="aluno" [required]="isAdmin || isProfessor" [options]="alunos"
+                [filterBy]="'id,name,email'" [(ngModel)]="object.student" [disabled]="object.id != null">
+            </combobox>
+        </div>
+    </div>
+
+</form-crud>

@@ -18,4 +18,17 @@
             <p-tieredMenu #tiredMenu [model]="profileItens" [popup]="true"></p-tieredMenu>
         </ng-template>
     </p-menubar>
+
+    <p-dialog *ngIf="!!user" [(visible)]="isVisibleModalChangePassword" [modal]="true" [style]="{ width: '25vw' }"
+        [draggable]="false" [resizable]="false" (onHide)="onClickCancloseModalChangePassword()">
+        <ChangePasswordComponent (onChangeComplete)="onClickCancloseModalChangePassword()"></ChangePasswordComponent>
+
+        <ng-template pTemplate="header">
+            <div class="row">
+                <div class="col-24">
+                    <h1 class="m-0">Alterar Senha</h1>
+                </div>
+            </div>
+        </ng-template>
+    </p-dialog>
 </div>

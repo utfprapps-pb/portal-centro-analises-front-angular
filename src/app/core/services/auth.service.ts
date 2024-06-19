@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, ReplaySubject, catchError, of, shareReplay, take, tap } from 'rxjs';
+import { catchError, Observable, of, ReplaySubject, shareReplay, take, tap } from 'rxjs';
 
 import { UserLoginDTO } from '../../dtos/user-login-dto';
 import { ObjectUtils } from '../../utils/object-utils';
@@ -12,6 +12,8 @@ import { DialogService, DialogType } from './dialog.service';
     providedIn: 'root'
 })
 export class AuthService {
+
+    public static USER_LOGGED: UserLoginDTO = null;
 
     public showSideBar = new EventEmitter<boolean>();
 
@@ -40,7 +42,7 @@ export class AuthService {
 
     public logout(requestConfirmation: boolean = false): void {
         if (requestConfirmation) {
-            this.dialogService.open({ type: DialogType.QUESTION, message: 'Você realmente deseja sair do sistema?' }).then(data => {
+            this.dialogService.open({ type: DialogType.QUESTION, message: 'Você realmente deseja sair do sistema?', showCancelButton: false}).then(data => {
                 if (!!data) {
                     this.completeLogout();
                 }
@@ -78,14 +80,13 @@ export class AuthService {
                     return of(null);
                 }),
                 tap(async (account: UserLoginDTO | null) => {
-                    if (account) {
-                        this.authenticate(account);
-                    } else {
+                    if (!account) {
                         this.logout();
                     }
                 }),
                 shareReplay()
             );
+            this.authenticate(this.getUserLogged());
         }
         return this.accountCache$;
     }
@@ -93,6 +94,7 @@ export class AuthService {
     private authenticate(identity: UserLoginDTO | null): void {
         this.accountIdentity = identity;
         this.authenticationState.next(this.accountIdentity);
+        AuthService.USER_LOGGED = identity;
     }
 
     public hasAnyAuthority(authorities: string[]): boolean {

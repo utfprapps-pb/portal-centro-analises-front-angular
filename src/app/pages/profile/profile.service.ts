@@ -16,11 +16,8 @@ export class ProfileService extends GenericCrudService<UserDTO> {
         super(http, '/usuarios', UserDTO)
     }
 
-    public override findOne(): Promise<any> {
-        return new Promise(() => {});
-    }
-
     public changePassword(change: ChangePasswordDTO): Promise<any> {
         return this.http.post(`${this.path}/change-password`, change);
     }
+
 }

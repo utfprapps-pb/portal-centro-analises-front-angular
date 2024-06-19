@@ -1,0 +1,23 @@
+<form-crud #formView [pageTitle]="'Domínios'">
+
+    <div class="row">
+        <div class="col-6">
+            <input-number label="Código" compCtrl="id" [ngModel]="object.id" [disabled]="true"></input-number>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-24">
+            <input-text label="Domínio" compCtrl="dominio" [(ngModel)]="object.domain" required
+                [minlength]="6">
+            </input-text>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24">
+            <combobox label="Permissão" compCtrl="permissao" [(ngModel)]="object.role" enum="Roles" required>
+            </combobox>
+        </div>
+    </div>
+
+</form-crud>

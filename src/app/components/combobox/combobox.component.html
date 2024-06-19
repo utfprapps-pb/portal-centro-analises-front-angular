@@ -2,9 +2,17 @@
     <label [for]="id" *ngIf="!!label" class="form-label bold">{{label}}</label>
 
     <div class="position-relative">
-        <p-dropdown #input [id]="id" [name]="name" [options]="options" [ngModel]="innerObject"
-            [focusOnHover]="true" optionLabel="value" [showClear]="showClear && !disabled" [class]="class"
-            (onClear)="forceClear()" (onChange)="writeValue($event.value)">
+        <p-dropdown #input [id]="id" [name]="name" [options]="_options" [ngModel]="innerObject"
+            [focusOnHover]="true" [disabled]="disabled" [readonly]="disabled" [optionLabel]="!!_enum ? 'key' : 'id'"
+            [showClear]="showClear && !disabled && !!innerObject" [class]="class" (onClear)="forceClear()"
+            (onChange)="onChangeDropdown($event.value)" [filterBy]="filterBy" [filter]="!!filterBy">
+
+            <ng-template pTemplate="selectedItem">
+                <span>{{displayValue}}</span>
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+                <span>{{getMapDisplay(item)}}</span>
+            </ng-template>
         </p-dropdown>
 
         <invalid-info #invalid class="mr-icon-1" [causes]="invalidCause"></invalid-info>

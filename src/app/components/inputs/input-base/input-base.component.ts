@@ -158,7 +158,7 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
     private isValidMinLength(): boolean {
         if (ObjectUtils.isNotEmpty(this.minlength) && this.minlength >= 0) {
             if (this._innerValue != null) {
-                return this._innerValue.length >= this.minlength;
+                return this._innerValue.toString().length >= this.minlength;
             } else if (this._required) {
                 return false;
             }

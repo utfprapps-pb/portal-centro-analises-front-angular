@@ -1,4 +1,4 @@
-import { Component, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, ViewChild } from '@angular/core';
 
 import { FormBase } from '../../../components/form-base/form-base';
 import { FormBaseComponent } from '../../../components/form-base/form-base.component';
@@ -9,7 +9,7 @@ import { HomeService } from '../home.service';
     templateUrl: './home-form.component.html',
     styleUrl: './home-form.component.scss'
 })
-export class HomeFormComponent extends FormBase implements OnInit, OnDestroy {
+export class HomeFormComponent extends FormBase {
 
     @ViewChild('formView') public override formView: FormBaseComponent;
 
@@ -18,10 +18,6 @@ export class HomeFormComponent extends FormBase implements OnInit, OnDestroy {
         protected override readonly service: HomeService,
     ) {
         super(injector, service);
-    }
-
-    public ngOnInit(): void {
-
     }
 
 }

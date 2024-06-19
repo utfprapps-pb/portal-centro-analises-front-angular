@@ -17,6 +17,7 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { CalendarModule } from 'primeng/calendar';
+import { DialogModule } from 'primeng/dialog';
 import { InputMaskModule } from 'primeng/inputmask';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CurrencyFormatterPipe } from '../core/pipes/currency-formatter.pipe';
@@ -50,6 +51,7 @@ import { DatePicker } from './datepicker/datepicker.component';
 import { FormBaseComponent } from './form-base/form-base.component';
 import { FormCrudComponent } from './form-crud/form-crud.component';
 import { FormListComponent } from './form-list/form-list.component';
+import { ChangePasswordComponent } from './header/change-password/change-password.component';
 import { HeaderComponent } from './header/header.component';
 import { InputCurrency } from './inputs/input-currency/input-currency.component';
 import { InputEmailComponent } from './inputs/input-email/input-email.component';
@@ -67,6 +69,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
 
         CompCtrlDirective,
         HeaderComponent,
+        ChangePasswordComponent,
         FormBaseComponent,
         FormCrudComponent,
         FormListComponent,
@@ -102,6 +105,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
 
         CompCtrlDirective,
         HeaderComponent,
+        ChangePasswordComponent,
         FormBaseComponent,
         FormCrudComponent,
         FormListComponent,
@@ -154,6 +158,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         DropdownModule,
         RadioButtonModule,
         CalendarModule,
+        DialogModule
     ],
     providers: [
         ToastrService,

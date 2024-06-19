@@ -21,6 +21,10 @@ export class FormCrudComponent extends FormBaseComponent implements OnInit {
         this.title = this.pageTitle;
     }
 
+    public showHeader(): boolean {
+        return true;
+    }
+
     public showFooter(): boolean {
         return true;
     }
@@ -46,7 +50,7 @@ export class FormCrudComponent extends FormBaseComponent implements OnInit {
 
     public async onSave(object: any): Promise<void> { }
 
-    public async onAfterSave(object: any): Promise<void> { }
+    public async onAfterSave(object: any, server: any): Promise<void> { }
 
     public async onExcluir(object: any): Promise<void> { }
 

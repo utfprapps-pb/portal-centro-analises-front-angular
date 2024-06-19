@@ -15,9 +15,8 @@ export const routes: Routes = [
     },
 
 
-
     {
-        path: 'configuracao-email',
+        path: 'vinculos',
         // data: {
         //     authorities: [
         //         Roles.ROLE_ADMIN
@@ -25,8 +24,9 @@ export const routes: Routes = [
         // },
         canActivate: [AuthGuard.canActivate],
         canDeactivate: [AuthGuard.canDeactivate],
-        loadChildren: () => import('./pages/email-config/email-config.module').then(m => m.EmailConfigModule),
+        loadChildren: () => import('./pages/vinculos/studentteacher/studentteacher.module').then(m => m.StudentTeacherModule),
     },
+
     {
         path: 'dominios',
         // data: {
@@ -36,18 +36,7 @@ export const routes: Routes = [
         // },
         canActivate: [AuthGuard.canActivate],
         canDeactivate: [AuthGuard.canDeactivate],
-        loadChildren: () => import('./pages/domain/domain.module').then(m => m.DomainModule),
-    },
-    {
-        path: 'equipamentos',
-        // data: {
-        //     authorities: [
-        //         Roles.ROLE_ADMIN
-        //     ]
-        // },
-        canActivate: [AuthGuard.canActivate],
-        canDeactivate: [AuthGuard.canDeactivate],
-        loadChildren: () => import('./pages/equipament/equipament.module').then(m => m.EquipamentModule),
+        loadChildren: () => import('./pages/cadastros/domain/domain.module').then(m => m.DomainModule),
     },
     {
         path: 'parceiros',
@@ -58,13 +47,18 @@ export const routes: Routes = [
         // },
         canActivate: [AuthGuard.canActivate],
         canDeactivate: [AuthGuard.canDeactivate],
-        loadChildren: () => import('./pages/partner/partner.module').then(m => m.PartnerModule),
+        loadChildren: () => import('./pages/cadastros/partner/partner.module').then(m => m.PartnerModule),
     },
     {
-        path: 'perfil',
+        path: 'equipamentos',
+        // data: {
+        //     authorities: [
+        //         Roles.ROLE_ADMIN
+        //     ]
+        // },
         canActivate: [AuthGuard.canActivate],
         canDeactivate: [AuthGuard.canDeactivate],
-        loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule),
+        loadChildren: () => import('./pages/cadastros/equipament/equipament.module').then(m => m.EquipamentModule),
     },
     {
         path: 'usuarios',
@@ -75,9 +69,26 @@ export const routes: Routes = [
         // },
         canActivate: [AuthGuard.canActivate],
         canDeactivate: [AuthGuard.canDeactivate],
-        loadChildren: () => import('./pages/user/user.module').then(m => m.UserModule),
+        loadChildren: () => import('./pages/cadastros/user/user.module').then(m => m.UserModule),
+    },
+    {
+        path: 'perfil',
+        canActivate: [AuthGuard.canActivate],
+        canDeactivate: [AuthGuard.canDeactivate],
+        loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule),
     },
 
+    {
+        path: 'configuracao-email',
+        // data: {
+        //     authorities: [
+        //         Roles.ROLE_ADMIN
+        //     ]
+        // },
+        canActivate: [AuthGuard.canActivate],
+        canDeactivate: [AuthGuard.canDeactivate],
+        loadChildren: () => import('./pages/configuracoes/email-config/email-config.module').then(m => m.EmailConfigModule),
+    },
 
     {
         path: 'inicio',

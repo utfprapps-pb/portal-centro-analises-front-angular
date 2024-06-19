@@ -6,7 +6,9 @@ import { Subscription } from 'rxjs';
 import pageSettings from '../../core/constants/page-settings';
 import { Roles } from '../../core/enums/roles.enum';
 import { AuthService } from '../../core/services/auth.service';
+import { ChangePasswordDTO } from '../../dtos/change-password.dto';
 import { UserLoginDTO } from '../../dtos/user-login-dto';
+import { InputPasswordComponent } from '../inputs/input-password/input-password.component';
 
 @Component({
     selector: 'HeaderComponent',
@@ -17,16 +19,31 @@ export class HeaderComponent implements OnDestroy {
 
     @ViewChild('tiredMenu') tiredMenu: TieredMenu;
 
+    @ViewChild('inputSenhaAtual') inputSenhaAtual: InputPasswordComponent;
+    @ViewChild('inputNovaSenha') inputNovaSenha: InputPasswordComponent;
+    @ViewChild('inputConfirmacaoNovaSenha') inputConfirmacaoNovaSenha: InputPasswordComponent;
+
+    public isVisibleModalChangePassword: boolean = false;
+    public changePassword: ChangePasswordDTO = new ChangePasswordDTO();
+    public passwordConfirm: string = null;
+
     public pageSettings = pageSettings;
+    private subscriptions: Subscription[] = [];
 
     public items: MenuItem[] = [];
-    private subscriptions: Subscription[] = [];
     public user: UserLoginDTO = null;
     public profileItens: MenuItem[] = [
         {
             label: 'Meu Perfil',
             icon: 'fa fa-user-tie',
             routerLink: 'perfil'
+        },
+        {
+            label: 'Alterar Senha',
+            icon: 'fa fa-lock',
+            command: () => {
+                this.onClickChangePassword();
+            },
         },
         {
             separator: true,
@@ -57,6 +74,19 @@ export class HeaderComponent implements OnDestroy {
                 command(event) {
                     console.log(event)
                 },
+            },
+            {
+                label: 'Vínculos',
+                icon: 'fa fa-chain',
+                items: [
+                    {
+                        label: 'Vínculos Existentes',
+                        icon: 'fa fa-chalkboard-user',
+                        url: '/#/vinculos',
+                        target: '_self',
+                        // visible: admin
+                    },
+                ]
             },
             {
                 label: 'Cadastros',
@@ -116,6 +146,16 @@ export class HeaderComponent implements OnDestroy {
         for (const sub of this.subscriptions) {
             sub.unsubscribe();
         }
+    }
+
+    private onClickChangePassword(): void {
+        this.isVisibleModalChangePassword = true;
+        this.changePassword = new ChangePasswordDTO();
+        this.passwordConfirm = null;
+    }
+
+    public onClickCancloseModalChangePassword(): void {
+        this.isVisibleModalChangePassword = false;
     }
 
 }

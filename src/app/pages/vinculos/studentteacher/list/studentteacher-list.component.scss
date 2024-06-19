@@ -1,0 +1,15 @@
+@import '../../../../../assets/themes/variables.scss';
+
+.approve-refuse-button {
+    display: inline-block;
+    background: linear-gradient(120deg, var(--bs-success) 40%, var(--bs-danger) 60%);
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.approve-refuse-button:hover {
+    color: white;
+    background: linear-gradient(120deg, $green-600  40%, $red-600 60%);
+}

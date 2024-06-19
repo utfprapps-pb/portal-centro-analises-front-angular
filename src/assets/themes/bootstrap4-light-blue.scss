@@ -319,7 +319,11 @@
 
     .p-disabled,
     .p-component:disabled {
-        opacity: 0.65;
+        opacity   : 0.65;
+        background: var(--surface-b);
+    }
+
+    .p-dropdown.p-component.p-inputwrapper.p-disabled {
         background: var(--surface-b);
     }
 
@@ -585,7 +589,7 @@
         color      : #212529;
         transition : box-shadow 0.15s;
         font-weight: 600;
-        padding: 0.25rem;
+        padding    : 0.25rem;
     }
 
     .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year:enabled:hover,
@@ -603,7 +607,7 @@
     }
 
     .p-datepicker table th {
-        padding: 0.25rem;
+        padding   : 0.25rem;
         text-align: center !important;
     }
 
@@ -938,6 +942,7 @@
         color        : #212529;
         border-radius: 4px;
         transition   : background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+
         &.p-disabled {
             background-color: #ced4da;
         }
@@ -1150,7 +1155,7 @@
     }
 
     .p-dropdown-panel .p-dropdown-header {
-        padding                : 0.75rem 1.5rem;
+        padding                : 0.5rem;
         border-bottom          : 1px solid #dee2e6;
         color                  : #212529;
         background             : #efefef;
@@ -5451,9 +5456,9 @@
     }
 
     .p-dialog .p-dialog-content {
-        background: #ffffff;
-        color     : #212529;
-        padding   : 1rem;
+        background   : #ffffff;
+        color        : #212529;
+        // padding   : 1rem;
     }
 
     .p-dialog .p-dialog-content:last-of-type {
@@ -6338,8 +6343,8 @@
         }
 
         .p-menubar .p-menubar-button:focus {
-            outline       : 0 none;
-            outline-offset: 0;
+            outline          : 0 none;
+            outline-offset   : 0;
             // box-shadow    : 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
         }
 

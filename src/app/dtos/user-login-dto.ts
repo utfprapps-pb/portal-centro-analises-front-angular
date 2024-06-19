@@ -1,6 +1,7 @@
 import { Roles } from '../core/enums/roles.enum';
+import { ZModel } from '../generics/zmodel';
 
-export class UserLoginDTO {
+export class UserLoginDTO extends ZModel {
 
     displayName: string = null;
     email: string = null;
