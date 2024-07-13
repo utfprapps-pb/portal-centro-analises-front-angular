@@ -1,9 +1,9 @@
 import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConvertUtilsService } from './../../utils/convert-utils.service';
-
 import { Subscription } from 'rxjs';
+
 import pageSettings from '../../core/constants/page-settings';
+import { Roles } from '../../core/enums/roles.enum';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastrService } from '../../core/services/toastr.service';
 import { ToasterService } from '../../core/toaster/toaster.service';
@@ -11,12 +11,19 @@ import { GenericService } from '../../generics/generic.service';
 import { LoginService } from '../../login/login.service';
 import { ObjectUtils } from '../../utils/object-utils';
 import { CompCtrlDirective } from '../compctrl/compctrl.directive';
+import { ConvertUtilsService } from './../../utils/convert-utils.service';
 import { FormBaseComponent } from './form-base.component';
 
 @Injectable()
 export abstract class FormBase implements OnDestroy {
 
     public abstract formView: FormBaseComponent;
+
+    public isAdmin: boolean;
+    public isProfessor: boolean;
+    public isAluno: boolean;
+    public isPartner: boolean;
+    public isExterno: boolean;
 
     public pageSettings = pageSettings;
 
@@ -47,6 +54,12 @@ export abstract class FormBase implements OnDestroy {
         this.route = injector.get(ActivatedRoute);
         this.authentication = injector.get(AuthService);
         this.convertUtilsService = injector.get(ConvertUtilsService);
+
+        this.isAdmin = Roles.ROLE_ADMIN == this.authentication.getUserLogged().role;
+        this.isProfessor = Roles.ROLE_PROFESSOR == this.authentication.getUserLogged().role;
+        this.isAluno = Roles.ROLE_STUDENT == this.authentication.getUserLogged().role;
+        this.isPartner = Roles.ROLE_PARTNER == this.authentication.getUserLogged().role;
+        this.isExterno = Roles.ROLE_EXTERNAL == this.authentication.getUserLogged().role;
     }
 
     public ngOnDestroy(): void {

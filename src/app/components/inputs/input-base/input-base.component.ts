@@ -72,7 +72,7 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
     }
     get disabled() {
         if (this.internalDisabled != null) {
-            return this.internalDisabled
+            return this.internalDisabled || this._disabled;
         }
         return this._disabled;
     }

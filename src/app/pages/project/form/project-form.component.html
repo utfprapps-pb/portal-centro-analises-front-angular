@@ -1,0 +1,86 @@
+<form-crud #formView [pageTitle]="'Projeto'">
+
+    <div class="row">
+        <div class="col-6">
+            <input-number label="Código" compCtrl="id" [ngModel]="object.id" [disabled]="true"></input-number>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-24">
+            <input-text label="Titulo" compCtrl="subject" [(ngModel)]="object.subject" required
+                [minlength]="6" [maxlength]="255" [disabled]="objectUpdating()">
+            </input-text>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-24">
+            <input-text label="Descrição" compCtrl="description" [(ngModel)]="object.description" required
+                [minlength]="6" [maxlength]="255" [disabled]="objectUpdating()">
+            </input-text>
+        </div>
+    </div>
+
+    <ng-container *ngIf="isAdmin || isProfessor || isAluno || isPartner">
+        <div class="row">
+            <div class="col-24">
+                <combobox label="Responsável" compCtrl="user" [required]="true" [filterBy]="'id,name,email'"
+                    [options]="responsaveis" [(ngModel)]="object.user"
+                    [disabled]="objectUpdating() || isExterno || isProfessor">
+                </combobox>
+            </div>
+        </div>
+        <div class="row" *ngIf="isAdmin || isAluno || isProfessor">
+            <div class="col-24">
+                <table class="table table-stripped">
+                    <thead>
+                        <tr>
+                            <th [width]="20" class="bold">#</th>
+                            <th [width]="20" *ngIf="!objectUpdating()"></th>
+                            <th [width]="20" *ngIf="!objectUpdating()"></th>
+                            <th>Alunos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="!objectUpdating() && object.students.length == 0">
+                            <td colspan="4">
+                                <button class="btn btn-success" (click)="onClickAddAluno()">
+                                    <i class="fa fa-plus"></i>
+                                    Adicionar Aluno
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let aluno of object.students; let index = index">
+                            <td>
+                                <b>{{index + 1}}</b>
+                            </td>
+                            <td *ngIf="!objectUpdating()">
+                                <button class="btn btn-sm btn-success" (click)="onClickAddAluno()"
+                                    [disabled]="objectUpdating()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </td>
+                            <td *ngIf="!objectUpdating()">
+                                <button class="btn btn-sm btn-danger" (click)="onClickRemoveAluno(index)"
+                                    [disabled]="objectUpdating()">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <combobox compCtrl="students" [required]="true" [filterBy]="'id,name,raSiape,email'"
+                                    [options]="alunos" [(ngModel)]="object.students[index]"
+                                    [disabled]="objectUpdating()">
+                                </combobox>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </ng-container>
+
+
+
+
+</form-crud>

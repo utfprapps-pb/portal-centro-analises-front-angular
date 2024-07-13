@@ -21,4 +21,8 @@ export class UserService extends GenericCrudService<User> {
         return this.http.get(`${this.path}/role/${role}`);
     }
 
+    public findAllByDomain(domain: String): Promise<UserDTO[]> {
+        return this.http.get(`${this.path}/domain/${domain}`);
+    }
+
 }

@@ -65,6 +65,7 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
         for (const option of options) {
             let texto: string = this.filterBy.split(',')
                 .map(field => this.getFieldValue(option, field))
+                .filter(field => ObjectUtils.isNotEmpty(field))
                 .join(' - ');
             this.mappedDisplayValues.set(option.id, texto);
         }

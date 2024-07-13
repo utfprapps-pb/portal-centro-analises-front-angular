@@ -28,6 +28,18 @@ export const routes: Routes = [
     },
 
     {
+        path: 'projetos',
+        // data: {
+        //     authorities: [
+        //         Roles.ROLE_ADMIN
+        //     ]
+        // },
+        canActivate: [AuthGuard.canActivate],
+        canDeactivate: [AuthGuard.canDeactivate],
+        loadChildren: () => import('./pages/project/project.module').then(m => m.ProjectModule),
+    },
+
+    {
         path: 'dominios',
         // data: {
         //     authorities: [

@@ -20,10 +20,6 @@ export class StudentTeacherFormComponent extends FormCrud<StudentTeacher> implem
     @ViewChild('formView') public formView: FormCrudComponent;
     @ViewChild('compoAluno') compoAluno: ComboboxComponent;
 
-    public isAdmin: boolean = Roles.ROLE_ADMIN == this.authentication.getUserLogged().role;
-    public isAluno: boolean = Roles.ROLE_STUDENT == this.authentication.getUserLogged().role;
-    public isProfessor: boolean = Roles.ROLE_PROFESSOR == this.authentication.getUserLogged().role;
-
     public professores: UserDTO[] = [];
     public alunos: UserDTO[] = [];
 
@@ -34,11 +30,6 @@ export class StudentTeacherFormComponent extends FormCrud<StudentTeacher> implem
     ) {
         super(injector, service);
         this.userService = this.injector.get(UserService);
-    }
-
-    public override ngAfterContentInit(): void {
-        super.ngAfterContentInit()
-
     }
 
     public async ngAfterViewInit(): Promise<void> {

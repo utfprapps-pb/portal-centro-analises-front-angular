@@ -72,6 +72,8 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
             }).finally(() => {
                 this.releaseForm();
             });
+        } else {
+            this.onAfterLoadObject(this.object);
         }
     }
 
@@ -80,6 +82,10 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
     }
 
     public async onAfterLoadObject(object: T): Promise<void> {
+
+    }
+
+    public async onAfterFormComplete(object: T): Promise<void> {
 
     }
 
@@ -116,7 +122,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
     }
 
     protected objectUpdating(): boolean {
-        return !!this.object && !!this.object.id;
+        return !!this.object && !!this.object.id && this.object.id != null;
     }
 
     protected override getFormBaseToDisable(): any {

@@ -76,17 +76,18 @@ export class HeaderComponent implements OnDestroy {
                 },
             },
             {
-                label: 'Vínculos',
-                icon: 'fa fa-chain',
-                items: [
-                    {
-                        label: 'Vínculos Existentes',
-                        icon: 'fa fa-chalkboard-user',
-                        url: '/#/vinculos',
-                        target: '_self',
-                        // visible: admin
-                    },
-                ]
+                label: 'Vínculos Existentes',
+                icon: 'fa fa-chalkboard-user',
+                url: '/#/vinculos',
+                target: '_self',
+                // visible: admin
+            },
+            {
+                label: 'Projetos',
+                icon: 'fa fa-diagram-project',
+                url: '/#/projetos',
+                target: '_self',
+                // visible: admin
             },
             {
                 label: 'Cadastros',

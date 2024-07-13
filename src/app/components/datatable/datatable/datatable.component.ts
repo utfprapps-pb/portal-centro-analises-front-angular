@@ -4,7 +4,6 @@ import { Table } from 'primeng/table';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastrService } from '../../../core/services/toastr.service';
-import { ToasterService } from '../../../core/toaster/toaster.service';
 import { GenericCrudService } from '../../../generics/generic-crud.service';
 import { ZModel } from '../../../generics/zmodel';
 import { ObjectUtils } from '../../../utils/object-utils';
@@ -70,13 +69,11 @@ export class DatatableComponent implements AfterViewInit {
     }
 
     private dialogService: DialogService;
-    private toasterService: ToasterService;
     private toastrService: ToastrService;
     constructor(
         protected readonly injector: Injector
     ) {
         this.dialogService = injector.get(DialogService);
-        this.toasterService = injector.get(ToasterService);
         this.toastrService = injector.get(ToastrService);
     }
 

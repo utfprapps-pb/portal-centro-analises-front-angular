@@ -3,7 +3,6 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { DatatableComponent } from '../../../../components/datatable/datatable/datatable.component';
 import { FormList } from '../../../../components/form-list/form-list';
 import { FormListComponent } from '../../../../components/form-list/form-list.component';
-import { Roles } from '../../../../core/enums/roles.enum';
 import { DialogService } from '../../../../core/services/dialog.service';
 import { StudentTeacher } from '../model/studentteacher.model';
 import { StudentTeacherService } from '../studentteacher.service';
@@ -19,8 +18,6 @@ export class StudentTeacherListComponent extends FormList<StudentTeacher> {
 
     @ViewChild('formView') public formView: FormListComponent<StudentTeacher>;
     @ViewChild('formViewDatatable') public formViewDatatable: DatatableComponent;
-
-    public isProfessor: boolean = Roles.ROLE_PROFESSOR == this.authentication.getUserLogged().role;
 
     public objects: any[] = [];
 

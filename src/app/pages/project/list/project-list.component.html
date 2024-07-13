@@ -1,0 +1,6 @@
+<form-list #formView [pageTitle]="'Projetos'">
+
+    <datatable #formViewDatatable [name]="'project_list'" [service]="service" [allowDeleteRow]="allowDeleteRow.bind(this)">
+    </datatable>
+
+</form-list>
