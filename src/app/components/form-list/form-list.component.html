@@ -16,9 +16,11 @@
 </div>
 <div class="footer px-3" *ngIf="showFooter()">
     <button *ngIf="showButtons('novo')" class="btn btn-md btn-primary me-2" (click)="onClickAddNovo()">
+        <i class="fa fa-inbox-arrow-down me-1"></i>
         Adicionar Novo
     </button>
     <button *ngIf="showButtons('cancelar')" class="btn btn-md btn-secondary" (click)="onClickCancelar()">
+        <i class="fa fa-ban me-1"></i>
         Cancelar
     </button>
 </div>

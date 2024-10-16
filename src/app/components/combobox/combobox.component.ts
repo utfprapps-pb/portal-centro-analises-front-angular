@@ -33,6 +33,7 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
     @Input() class: string = 'w-100';
     @Input() defaultValue: string = null;
     @Input() filterBy: string = null;
+    @Input() columns: string = null;
     // @Input() optionLabel: string = 'value';
 
     @Input('showClear') showClear: boolean = true;
@@ -63,7 +64,7 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
         this._options = options;
         this.mappedDisplayValues = new Map();
         for (const option of options) {
-            let texto: string = this.filterBy.split(',')
+            let texto: string = (this.columns || this.filterBy).split(',')
                 .map(field => this.getFieldValue(option, field))
                 .filter(field => ObjectUtils.isNotEmpty(field))
                 .join(' - ');

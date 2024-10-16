@@ -19,11 +19,11 @@ export abstract class FormBase implements OnDestroy {
 
     public abstract formView: FormBaseComponent;
 
-    public isAdmin: boolean;
-    public isProfessor: boolean;
-    public isAluno: boolean;
-    public isPartner: boolean;
-    public isExterno: boolean;
+    public isAdmin: boolean = false;
+    public isProfessor: boolean = false;
+    public isAluno: boolean = false;
+    public isPartner: boolean = false;
+    public isExterno: boolean = false;
 
     public pageSettings = pageSettings;
 
@@ -55,11 +55,13 @@ export abstract class FormBase implements OnDestroy {
         this.authentication = injector.get(AuthService);
         this.convertUtilsService = injector.get(ConvertUtilsService);
 
-        this.isAdmin = Roles.ROLE_ADMIN == this.authentication.getUserLogged().role;
-        this.isProfessor = Roles.ROLE_PROFESSOR == this.authentication.getUserLogged().role;
-        this.isAluno = Roles.ROLE_STUDENT == this.authentication.getUserLogged().role;
-        this.isPartner = Roles.ROLE_PARTNER == this.authentication.getUserLogged().role;
-        this.isExterno = Roles.ROLE_EXTERNAL == this.authentication.getUserLogged().role;
+        if (!!this.authentication.getUserLogged()) {
+            this.isAdmin = Roles.ROLE_ADMIN == this.authentication.getUserLogged().role;
+            this.isProfessor = Roles.ROLE_PROFESSOR == this.authentication.getUserLogged().role;
+            this.isAluno = Roles.ROLE_STUDENT == this.authentication.getUserLogged().role;
+            this.isPartner = Roles.ROLE_PARTNER == this.authentication.getUserLogged().role;
+            this.isExterno = Roles.ROLE_EXTERNAL == this.authentication.getUserLogged().role;
+        }
     }
 
     public ngOnDestroy(): void {

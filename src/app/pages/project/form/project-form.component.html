@@ -68,7 +68,8 @@
                                 </button>
                             </td>
                             <td>
-                                <combobox compCtrl="students" [required]="true" [filterBy]="'id,name,raSiape,email'"
+                                <combobox compCtrl="students" [required]="true"
+                                    [columns]="'id,name'" [filterBy]="'id,name,raSiape,email'"
                                     [options]="alunos" [(ngModel)]="object.students[index]"
                                     [disabled]="objectUpdating()">
                                 </combobox>

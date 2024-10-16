@@ -15,7 +15,16 @@
     </form-base>
 </div>
 <div class="footer px-3" *ngIf="showFooter()">
-    <button *ngIf="showButtons('salvar')" class="btn btn-md btn-primary me-2" (click)="onClickSalvar()">Salvar</button>
-    <button *ngIf="showButtons('excluir') && objectUpdating()" class="btn btn-md btn-danger me-2" (click)="onClickExcluir()">Excluir</button>
-    <button *ngIf="showButtons('cancelar')" class="btn btn-md btn-secondary" (click)="onClickCancelar()">Cancelar</button>
+    <button *ngIf="showButtons('salvar')" class="btn btn-md btn-primary me-2" (click)="onClickSalvar()">
+        <i class="fa fa-inbox-arrow-down me-1"></i>
+        Salvar
+    </button>
+    <button *ngIf="showButtons('excluir') && objectUpdating()" class="btn btn-md btn-danger me-2" (click)="onClickExcluir()">
+        <i class="fa fa-trash-alt me-1"></i>
+        Excluir
+    </button>
+    <button *ngIf="showButtons('cancelar')" class="btn btn-md btn-secondary" (click)="onClickCancelar()">
+        <i class="fa fa-ban me-1"></i>
+        Cancelar
+    </button>
 </div>
