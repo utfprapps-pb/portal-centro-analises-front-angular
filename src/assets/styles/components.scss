@@ -5,8 +5,8 @@ input, textarea {
     }
 
     &.valid {
-        border-left-color  : var(--bs-form-valid-color);
-        border-bottom-color: var(--bs-form-valid-color);
+        border-left-color  : var(--bs-form-valid-color) !important;
+        border-bottom-color: var(--bs-form-valid-color) !important;
     }
 }
 
@@ -20,8 +20,8 @@ radio-button {
 
     & .valid {
         & div.p-radiobutton-box {
-            border-left-color  : var(--bs-form-valid-color);
-            border-bottom-color: var(--bs-form-valid-color);
+            border-left-color  : var(--bs-form-valid-color) !important;
+            border-bottom-color: var(--bs-form-valid-color) !important;
         }
     }
 }
@@ -34,8 +34,8 @@ p-inputmask.required:has(input) {
 
     &.valid {
         input {
-            border-left-color  : var(--bs-form-valid-color);
-            border-bottom-color: var(--bs-form-valid-color);
+            border-left-color  : var(--bs-form-valid-color) !important;
+            border-bottom-color: var(--bs-form-valid-color) !important;
         }
     }
 }
@@ -50,8 +50,8 @@ p-dropdown {
 
     &.valid {
         &>div {
-            border-left-color  : var(--bs-form-valid-color);
-            border-bottom-color: var(--bs-form-valid-color);
+            border-left-color  : var(--bs-form-valid-color) !important;
+            border-bottom-color: var(--bs-form-valid-color) !important;
         }
     }
 

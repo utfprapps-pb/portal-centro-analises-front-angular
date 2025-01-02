@@ -2,7 +2,7 @@
 
     <div class="row mb-2">
         <div class="col-24">
-            <p-stepper [linear]="true" [(activeStep)]="activeStep">
+            <p-stepper [linear]="true" [(activeStep)]="activeStep" (activeStepChange)="onChangeStep()">
                 <p-stepperPanel>
                     <ng-template pTemplate="header" let-index="index">
                         <span
@@ -112,7 +112,8 @@
                             <i class="fa fa-file-lines"></i>
                         </span>
                     </ng-template>
-                    <ng-template pTemplate="content">
+                    <ng-template pTemplate="content" let-prevCallback="prevCallback"
+                        let-nextCallback="nextCallback">
 
                         <div class="row mb-2">
                             <div class="col-24">
@@ -121,6 +122,47 @@
                             </div>
                         </div>
 
+                        <div class="d-flex pt-4 justify-content-between">
+                            <ng-container [ngTemplateOutlet]="btnVoltar"
+                                [ngTemplateOutletContext]="{ $implicit: prevCallback}">
+                            </ng-container>
+                            <ng-container [ngTemplateOutlet]="btnAvancar"
+                                [ngTemplateOutletContext]="{ $implicit: nextCallback, disable: !validateForm(false) }">
+                            </ng-container>
+                        </div>
+
+                    </ng-template>
+                </p-stepperPanel>
+
+                <p-stepperPanel>
+                    <ng-template pTemplate="header" let-index="index">
+                        <span
+                            class="d-flex text-dark rounded border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                            [ngClass]="{
+                                'bg-primary border-primary text-white': index <= activeStep,
+                                'border': index > activeStep
+                            }">
+                            <i class="fa fa-file-circle-check"></i>
+                        </span>
+                    </ng-template>
+
+                    <ng-template pTemplate="content" let-prevCallback="prevCallback">
+                        <div class="row">
+                            <div class="col-24">
+                                <ng-container *ngTemplateOutlet="informacoesAmostras"></ng-container>
+                            </div>
+                        </div>
+
+                        <div class="d-flex pt-4 justify-content-between">
+                            <ng-container [ngTemplateOutlet]="btnVoltar"
+                                [ngTemplateOutletContext]="{ $implicit: prevCallback}">
+                            </ng-container>
+
+                            <button class="btn btn-sm btn-primary"
+                                [disabled]="!validateForm(false) || object.form.citacao == undefined || !object.form.citacao">
+                                Concluir
+                            </button>
+                        </div>
                     </ng-template>
                 </p-stepperPanel>
             </p-stepper>
@@ -128,72 +170,61 @@
     </div>
 
     <ng-template #formulario>
-
-        <div class="row mb-2">
-            <div class="col-24">
-                <combobox label="Projeto" compCtrl required [filterBy]="'id,subject,description,user.name'"
-                    [options]="projetos" [(ngModel)]="object.project" (onChange)="onChangeProject($event)">
-                </combobox>
+        <ng-container>
+            <div class="row mb-2">
+                <div class="col-24">
+                    <combobox label="Projeto" compCtrl required
+                        [filterBy]="'id,subject,description,user.name'" [options]="projetos"
+                        [(ngModel)]="object.project" (onChange)="onChangeProject($event)">
+                    </combobox>
+                </div>
             </div>
-        </div>
 
-        <div class="row mb-2">
-            <div class="col-24">
-                <combobox label="Responsável" compCtrl disabled [filterBy]="'id,name,email'"
-                    [options]="!!responsavel ? [responsavel] : []" [ngModel]="responsavel">
-                </combobox>
+            <div class="row mb-2">
+                <div class="col-24">
+                    <combobox label="Responsável" compCtrl disabled [filterBy]="'id,name,email'"
+                        [options]="!!responsavel ? [responsavel] : []" [ngModel]="responsavel">
+                    </combobox>
+                </div>
             </div>
-        </div>
 
-        <div class="row mb-2">
-            <div class="col-24">
-                <combobox label="Natureza do Projeto" [ngModel]="object.projectNature"
-                    enum="SolicitationProjectNature" compCtrl disabled required>
-                </combobox>
+            <div class="row mb-2">
+                <div class="col-24">
+                    <combobox label="Natureza do Projeto" [ngModel]="object.projectNature"
+                        enum="SolicitationProjectNature" compCtrl disabled required>
+                    </combobox>
+                </div>
             </div>
-        </div>
 
-        <div class="row mb-2" *ngIf="object.projectNature == OPCAO_OUTRO">
-            <div class="ms-auto col-23">
-                <input-text label="Outra Natureza" compCtrl disabled required
-                    [ngModel]="object.otherProjectNature">
-                </input-text>
+            <div class="row mb-2" *ngIf="object.projectNature == OPCAO_OUTRO">
+                <div class="ms-auto col-23">
+                    <input-text label="Outra Natureza" compCtrl disabled required
+                        [ngModel]="object.otherProjectNature">
+                    </input-text>
+                </div>
             </div>
-        </div>
 
-        <div class="row mb-2">
-            <div class="col-24">
-                <input-textarea label="Metodologia" compCtrl required
-                    [(ngModel)]="object.methodologyDescription" [maxlength]="255"
-                    [placeholder]="'Descreva detalhadamente a metodologia de preparo que será adotada para as amostras a serem analisadas, incluindo todas as etapas que garantam a qualidade e a reprodutibilidade do processo.'">
-                </input-textarea>
+            <div class="row mb-2">
+                <div class="col-24">
+                    <input-textarea label="Metodologia" compCtrl required
+                        [(ngModel)]="object.methodologyDescription" [maxlength]="255"
+                        [placeholder]="'Descreva detalhadamente a metodologia de preparo que será adotada para as amostras a serem analisadas, incluindo todas as etapas que garantam a qualidade e a reprodutibilidade do processo.'">
+                    </input-textarea>
+                </div>
             </div>
-        </div>
 
-        <div class="row mb-2">
-            <div class="col-24">
-                <combobox label="Formulário de Solicitação" [(ngModel)]="object.solicitationType"
-                    enum="SolicitationFormType" compCtrl required>
-                </combobox>
+            <div class="row mb-2">
+                <div class="col-24">
+                    <combobox label="Formulário de Solicitação" [(ngModel)]="object.solicitationType"
+                        enum="SolicitationFormType" compCtrl required>
+                    </combobox>
+                </div>
             </div>
-        </div>
-
+        </ng-container>
         <hr>
 
         DESENVOLVER FORMULÁRIOS AQUI
 
-        <hr>
-
-        <ng-container *ngTemplateOutlet="informacoesAmostras"></ng-container>
-
-        <hr>
-        <div class="row pt-3">
-            <div class="col-24 d-flex justify-content-center">
-                <button class="btn btn-sm btn-primary">
-                    {{validateForm(false)}}
-                </button>
-            </div>
-        </div>
     </ng-template>
 
     <ng-template #informacoesAmostras>
@@ -335,11 +366,9 @@
                 </ol>
             </div>
         </div>
-
-        <pre>{{object.form | json}}</pre>
-
-
     </ng-template>
+
+    <pre>{{object.form | json}}</pre>
 </form-crud>
 
 <ng-template #btnVoltar let-emitter>
@@ -349,8 +378,9 @@
     </button>
 </ng-template>
 
-<ng-template #btnAvancar let-emitter>
-    <button class="btn btn-sm btn-primary" (click)="emitter.emit()">
+<ng-template #btnAvancar let-emitter let-disable="disable">
+    <button class="btn btn-sm btn-primary" (click)="emitter.emit()"
+        [disabled]="disable != null && disable != undefined && disable">
         Avançar
         <i class="fa fa-arrow-right"></i>
     </button>

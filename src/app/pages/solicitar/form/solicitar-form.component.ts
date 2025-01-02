@@ -44,7 +44,6 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> {
         await this.projectService.findAllSelf().then(async data => {
             this.projetos = data;
         });
-
     }
 
     public onChangeProject(project: Project): void {
@@ -91,6 +90,10 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> {
         }
     }
 
-
+    public onChangeStep(): void {
+        if (this.activeStep == 3) {
+            this.object.form.citacao = false;
+        }
+    }
 
 }

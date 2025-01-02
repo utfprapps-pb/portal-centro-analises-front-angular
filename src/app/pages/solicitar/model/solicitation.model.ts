@@ -1,4 +1,3 @@
-import { RetiradaAmostra } from '../../../core/enums/retirada-amostras.enum';
 import { SolicitationFormType } from '../../../core/enums/solicitation-form-type.enum';
 import { SolicitationProjectNature } from '../../../core/enums/solicitation-project-nature.enum';
 import { SolicitationStatus } from '../../../core/enums/solicitation-status.enum';
@@ -33,7 +32,7 @@ export class Solicitation extends ZModel {
     status: SolicitationStatus = null;
     equipment: Equipment = null;
     form: any = {
-        'retirada': RetiradaAmostra.FALSE,
+        'retirada': 'FALSE',
         'citacao': false,
     };
 
