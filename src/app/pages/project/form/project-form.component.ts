@@ -21,6 +21,7 @@ import { ProjectService } from '../project.service';
 export class ProjectFormComponent extends FormCrud<Project> {
 
     @ViewChild('formView') public formView: FormCrudComponent;
+    public readonly NATURE_OTHER: any = 'OTHER';
 
     private userID = this.authentication.getUserLogged().id;
 
@@ -48,19 +49,19 @@ export class ProjectFormComponent extends FormCrud<Project> {
                 await this.userService.findAll().then(async data => {
                     this.responsaveis = data;
                     this.alunos = data;
-                })
+                });
             } else if (this.isProfessor) {
                 await this.setSelfResponsavel();
                 await this.studentTeacherService.findAll().then(async (data: StudentTeacher[]) => {
                     this.alunos = data.filter(it => getEnumTranslation('StudentTeacherApproved', it.approved) == StudentTeacherApproved.ACEITO).map(it => it.student);
-                })
+                });
             } else if (this.isPartner) {
                 const email = this.authentication.getUserLogged().email;
                 const domain = email.substring(email.indexOf('@'));
                 await this.userService.findAllByDomain(domain).then(async data => {
                     this.responsaveis = data;
                     this.alunos = data;
-                })
+                });
             }
         }
     }
@@ -92,6 +93,12 @@ export class ProjectFormComponent extends FormCrud<Project> {
 
     public onClickRemoveAluno(number: number): void {
         this.object.students.splice(number, 1);
+    }
+
+    public onChangeProjectNature(): void {
+        if (this.object.projectNature != this.NATURE_OTHER) {
+            this.object.otherProjectNature = null;
+        }
     }
 
 }

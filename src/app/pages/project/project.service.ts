@@ -18,4 +18,8 @@ export class ProjectService extends GenericCrudService<Project> {
         super(http, '/projetos', Project)
     }
 
+    public findAllSelf(): Promise<Project[]> {
+        return this.http.get(`${this.path}/self`);
+    }
+
 }

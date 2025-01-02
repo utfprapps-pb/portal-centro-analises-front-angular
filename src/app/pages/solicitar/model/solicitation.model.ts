@@ -14,25 +14,30 @@ export class Solicitation extends ZModel {
         return new Solicitation();
     }
 
-    createdBy: User = null;
-    professor: User = null;
-    updatedBy: User = null;
-    status: SolicitationStatus = null;
-    equipment: Equipment = null;
     project: Project = null;
-    methodologyDescription: String = null;
-    form: Object = null;
     projectNature: SolicitationProjectNature = null;
     otherProjectNature: String = null;
-    scheduleDate: Date = null;
+    professor: User = null;
+
+    createdBy: User = null;
+    updatedBy: User = null;
     createdAt: Date = null;
     updatedAt: Date = null;
+
+    status: SolicitationStatus = null;
+    equipment: Equipment = null;
+    methodologyDescription: string = null;
+    form: Object = null;
+
+    scheduleDate: Date = null;
+    analysis: Analysis = null;
+    solicitationAttachments: SolicitationAttachments[] = [];
+
     price: number = null;
     amountHours: number = null;
     amountSamples: number = null;
     totalPrice: number = null;
-    solicitationAttachments: SolicitationAttachments[] = [];
-    analysis: Analysis = null;
-    observation: String = null;
+
+    observation: string = null;
 
 }

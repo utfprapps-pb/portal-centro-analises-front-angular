@@ -1,4 +1,5 @@
-import { Hidden, Prop, Title } from '../../../core/decorators/decorators';
+import { Enum, Hidden, Prop, Title } from '../../../core/decorators/decorators';
+import { SolicitationProjectNature } from '../../../core/enums/solicitation-project-nature.enum';
 import { ZModel } from '../../../generics/zmodel';
 import { User } from '../../cadastros/user/model/user.model';
 
@@ -22,6 +23,15 @@ export class Project extends ZModel {
 
     @Hidden()
     students: User[] = []
+
+    @Title('Natureza')
+    @Prop('enum')
+    @Enum('SolicitationProjectNature')
+    projectNature: SolicitationProjectNature = null;
+
+    @Title('Outra Natureza')
+    @Prop('text')
+    otherProjectNature: string = null;
 
 }
 

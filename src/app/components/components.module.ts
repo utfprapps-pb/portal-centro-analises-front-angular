@@ -18,6 +18,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { StepperModule } from 'primeng/stepper';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { TextareaModule } from 'primeng/textarea';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -86,6 +87,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         FormListComponent,
         InvalidInfoComponent,
         InputTextComponent,
+        TextareaModule,
         InputPasswordComponent,
         InputEmailComponent,
         ComboboxComponent,
@@ -122,6 +124,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         FormListComponent,
         InvalidInfoComponent,
         InputTextComponent,
+        TextareaModule,
         InputMaskModule,
         InputPasswordComponent,
         InputEmailComponent,

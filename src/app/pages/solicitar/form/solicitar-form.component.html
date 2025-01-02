@@ -124,15 +124,41 @@
     </div>
 
     <ng-template #formulario>
+
         <div class="row mb-2">
             <div class="col-24">
-                <combobox label="Tipo de Formulário" [(ngModel)]="solicitationProjectNature"
-                    enum="SolicitationProjectNature" compCtrl required [showClear]="false"
-                    [placeholder]="'Escolha um formulário'">
+                <combobox label="Projeto" compCtrl required [filterBy]="'id,subject,description'"
+                    [options]="projetos" [(ngModel)]="object.project" (onChange)="onChangeProject($event)">
                 </combobox>
             </div>
         </div>
 
+        <div class="row mb-2">
+            <div class="col-24">
+                <combobox label="Natureza do Projeto" [ngModel]="object.projectNature"
+                    enum="SolicitationProjectNature" compCtrl disabled required>
+                </combobox>
+            </div>
+        </div>
+
+        <div class="row mb-2" *ngIf="object.projectNature == NATURE_OTHER">
+            <div class="ms-auto col-23">
+                <input-text label="Outra Natureza" compCtrl disabled required
+                    [ngModel]="object.otherProjectNature">
+                </input-text>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-24">
+                <combobox label="Natureza do Projeto" [ngModel]="object.projectNature"
+                    enum="SolicitationProjectNature" compCtrl disabled required>
+                </combobox>
+            </div>
+        </div>
+
+
+        methodologyDescription
 
         <div class="row pt-3">
             <div class="col-24 d-flex justify-content-center">
