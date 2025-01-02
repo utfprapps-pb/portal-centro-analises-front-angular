@@ -1,0 +1,9 @@
+<div class="form-group">
+
+    <div class="position-relative d-flex">
+        <p-checkbox #input [id]="id" [name]="name" autocomplete="off" [disabled]="disabled"
+            [(ngModel)]="innerValue" [class]="class" [styleClass]="class"
+            [binary]="true" [label]="label"/>
+        <invalid-info #invalid class="mr-icon-1" [causes]="invalidCause"></invalid-info>
+    </div>
+</div>

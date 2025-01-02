@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -19,8 +19,9 @@ import { PartnerRoutes } from './partner.routes';
         CommonModule,
         FormsModule,
         ComponentsModule,
-        HttpClientModule,
-        PartnerRoutes,
+        PartnerRoutes
+    ], providers: [
+        provideHttpClient(withInterceptorsFromDi())
     ]
 })
 export class PartnerModule { }

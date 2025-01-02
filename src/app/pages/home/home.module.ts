@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -16,9 +16,11 @@ import { HomeRoutes } from './home.routes';
     imports: [
         CommonModule,
         FormsModule,
-        HttpClientModule,
         ComponentsModule,
-        HomeRoutes,
+        HomeRoutes
+    ],
+    providers: [
+        provideHttpClient(withInterceptorsFromDi())
     ]
 })
 export class HomeModule { }

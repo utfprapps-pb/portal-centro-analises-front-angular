@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -10,6 +11,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MenubarModule } from 'primeng/menubar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PasswordModule } from 'primeng/password';
@@ -18,7 +20,6 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { StepperModule } from 'primeng/stepper';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { TextareaModule } from 'primeng/textarea';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { TooltipModule } from 'primeng/tooltip';
 
@@ -27,6 +28,7 @@ import { DateFormatterPipe } from '../core/pipes/date-formatter.pipe';
 import { ToastrService } from '../core/services/toastr.service';
 import { ToasterService } from '../core/toaster/toaster.service';
 import { UtilsModule } from '../utils/utils.module';
+import { CheckBoxComponent } from './checkbox/checkbox.component';
 import { ComboboxComponent } from './combobox/combobox.component';
 import { CompCtrlDirective } from './compctrl/compctrl.directive';
 import {
@@ -71,6 +73,7 @@ import { InputMaskComponent } from './inputs/input-mask/input-mask.component';
 import { InputNumber } from './inputs/input-number/input-number.component';
 import { InputPasswordComponent } from './inputs/input-password/input-password.component';
 import { InputTextComponent } from './inputs/input-text/input-text.component';
+import { InputTextAreaComponent } from './inputs/input-textarea/input-textarea.component';
 import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.component';
 import { RadioButtonComponent } from './radiobutton/radiobutton.component';
 
@@ -87,7 +90,8 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         FormListComponent,
         InvalidInfoComponent,
         InputTextComponent,
-        TextareaModule,
+        InputTextAreaComponent,
+        CheckBoxComponent,
         InputPasswordComponent,
         InputEmailComponent,
         ComboboxComponent,
@@ -124,7 +128,8 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         FormListComponent,
         InvalidInfoComponent,
         InputTextComponent,
-        TextareaModule,
+        InputTextAreaComponent,
+        CheckBoxComponent,
         InputMaskModule,
         InputPasswordComponent,
         InputEmailComponent,
@@ -156,6 +161,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         CommonModule,
         FormsModule,
         InputTextModule,
+        InputTextareaModule,
         InputMaskModule,
         PasswordModule,
         InputGroupModule,
@@ -172,6 +178,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         TagModule,
         DropdownModule,
         RadioButtonModule,
+        CheckboxModule,
         CalendarModule,
         DialogModule,
         StepperModule

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -17,8 +17,10 @@ import { ProfileRoutes } from './profile.routes';
         CommonModule,
         FormsModule,
         ComponentsModule,
-        HttpClientModule,
-        ProfileRoutes,
+        ProfileRoutes
+    ],
+    providers: [
+        provideHttpClient(withInterceptorsFromDi())
     ]
 })
 export class ProfileModule { }

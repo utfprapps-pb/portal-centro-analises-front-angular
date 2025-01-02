@@ -6,12 +6,12 @@
             <p-radioButton
                 [id]="id"
                 [name]="name"
-                [inputId]="option.key"
+                [inputId]="option.guid"
                 [value]="option"
                 [ngModel]="innerObject"
                 [disabled]="disabled"
                 (onClick)="writeValue(option)"/>
-            <label [for]="option.key" class="ms-2">
+            <label [for]="option.guid" class="ms-2">
                 {{ option.value }}
             </label>
         </div>

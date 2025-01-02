@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -18,8 +18,10 @@ import { ProjectRoutes } from './project.routes';
         CommonModule,
         FormsModule,
         ComponentsModule,
-        HttpClientModule,
-        ProjectRoutes,
+        ProjectRoutes
+    ],
+    providers: [
+        provideHttpClient(withInterceptorsFromDi())
     ]
 })
 export class ProjectModule { }

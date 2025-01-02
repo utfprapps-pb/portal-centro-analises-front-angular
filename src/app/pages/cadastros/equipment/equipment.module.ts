@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -19,8 +19,9 @@ import { EquipmentListComponent } from './list/equipment-list.component';
         CommonModule,
         FormsModule,
         ComponentsModule,
-        HttpClientModule,
-        EquipmentRoutes,
+        EquipmentRoutes
+    ], providers: [
+        provideHttpClient(withInterceptorsFromDi())
     ]
 })
 export class EquipmentModule { }

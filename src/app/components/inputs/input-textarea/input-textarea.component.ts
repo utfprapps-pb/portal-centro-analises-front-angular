@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 
 import { CompCtrlContainer } from '../../compctrl/compctrl.container';
 import { InputBaseComponent } from '../input-base/input-base.component';
@@ -9,14 +9,17 @@ import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
     templateUrl: './input-textarea.component.html',
     styleUrls: ['../input-base/input-base.component.scss', './input-textarea.component.scss'],
     providers: [
-        InputBaseComponent.CONTROL(InputTextComponent),
-        CompCtrlContainer.PROVIDER(InputTextComponent)
+        InputBaseComponent.CONTROL(InputTextAreaComponent),
+        CompCtrlContainer.PROVIDER(InputTextAreaComponent)
     ],
 })
-export class InputTextComponent extends InputBaseComponent {
+export class InputTextAreaComponent extends InputBaseComponent {
 
     @ViewChild('input') component: any;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
+
+    @Input('rows') rows: number = 5;
+    @Input('autoResize') autoResize: boolean = false;
 
     override getContainer(): any {
         return this.component;
@@ -26,7 +29,7 @@ export class InputTextComponent extends InputBaseComponent {
         if (!!this.invalidInfoComponent) {
             this.invalidInfoComponent.show();
         }
-        (this.component.nativeElement as HTMLInputElement).focus();
+        (this.component.nativeElement as HTMLTextAreaElement).focus();
     }
 
 }

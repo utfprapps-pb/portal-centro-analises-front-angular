@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -15,8 +15,10 @@ import { EmailConfigFormComponent } from './form/email-config-form.component';
         CommonModule,
         FormsModule,
         ComponentsModule,
-        HttpClientModule,
-        EmailConfigRoutes,
+        EmailConfigRoutes
+    ],
+    providers: [
+        provideHttpClient(withInterceptorsFromDi())
     ]
 })
 export class EmailConfigModule { }

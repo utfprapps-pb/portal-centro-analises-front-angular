@@ -1,4 +1,4 @@
-input {
+input, textarea {
     &.required {
         border-left  : 3px solid var(--bs-form-invalid-color);
         border-bottom: 1px solid var(--bs-form-invalid-color);

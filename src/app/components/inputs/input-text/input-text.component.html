@@ -2,7 +2,7 @@
     <label [for]="id" *ngIf="!!label" class="form-label bold">{{label}}</label>
 
     <div class="position-relative">
-        <textarea  #input pInputText [class]="class" [id]="id" [name]="name" autocomplete="off"
+        <input #input pInputText [class]="class" [id]="id" [name]="name" autocomplete="off"
             [placeholder]="placeholder" [disabled]="disabled" [readOnly]="disabled" [(ngModel)]="innerValue"
             [maxlength]="maxlength" style="padding-right: 30px;" />
         <i class="pi pi-times cursor-pointer mr-icon-0" *ngIf="!!innerValue && showClear && !disabled"

@@ -3,6 +3,7 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { FormCrud } from '../../../components/form-crud/form-crud';
 import { FormCrudComponent } from '../../../components/form-crud/form-crud.component';
 import { Roles } from '../../../core/enums/roles.enum';
+import { UserLoginDTO } from '../../../dtos/user-login-dto';
 import { ObjectUtils } from '../../../utils/object-utils';
 import { Project } from '../../project/model/project.model';
 import { ProjectService } from '../../project/project.service';
@@ -20,8 +21,12 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> {
     @ViewChild('formView') public formView: FormCrudComponent;
     public activeStep: number = 0;
 
-    public readonly NATURE_OTHER: any = 'OTHER';
+    public readonly OPCAO_OUTRO: any = 'OTHER';
+    public readonly NATUREZA_ORGANICA_ORGANICA: any = 'ORG';
+    public readonly NATUREZA_ORGANICA_INORGANICA: any = 'INO';
+
     public projetos: Project[] = [];
+    public responsavel: UserLoginDTO = null;
 
     constructor(
         protected override readonly injector: Injector,
@@ -44,6 +49,7 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> {
 
     public onChangeProject(project: Project): void {
         this.object.professor = null;
+        this.responsavel = this.authentication.getUserLogged();
 
         this.object.project = project;
         this.object.projectNature = project?.projectNature;
@@ -53,8 +59,38 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> {
             if (project.user.role == Roles.ROLE_PROFESSOR) {
                 this.object.professor = project.user;
             }
+            this.responsavel = project.user;
         }
     }
+
+    public onChangeNaturezaAmostra(): void {
+        if (this.object.form.naturezaAmostra == "INO") {
+            this.object.form.descarteOrganico = null;
+            this.object.form.descarteOrganicoOutro = null;
+        } else {
+            this.object.form.descarteInorganico = null;
+            this.object.form.descarteInorganicoOutro = null;
+        }
+    }
+
+    public onChangeDescarteOrganico(): void {
+        if (this.object.form?.descarteOrganico != this.OPCAO_OUTRO) {
+            this.object.form.descarteOrganicoOutro = null;
+        }
+    }
+
+    public onChangeDescarteInorganico(): void {
+        if (this.object.form?.descarteInorganico != this.OPCAO_OUTRO) {
+            this.object.form.descarteInorganicoOutro = null;
+        }
+    }
+
+    public onChangeDescarteUsuario(): void {
+        if (this.object.form?.descarteOrganico != this.OPCAO_OUTRO) {
+            this.object.form.descarteUsuarioOutro = null;
+        }
+    }
+
 
 
 }

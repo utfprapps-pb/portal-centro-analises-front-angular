@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,15 +19,17 @@ import { AuthService } from './core/services/auth.service';
     declarations: [
         AppComponent,
     ],
+    bootstrap: [
+        AppComponent
+    ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
         FormsModule,
-        HttpClientModule,
         ComponentsModule,
         ToastModule,
-        MessagesModule,
+        MessagesModule
     ],
     providers: [
         AuthService,
@@ -47,7 +49,7 @@ import { AuthService } from './core/services/auth.service';
             useClass: DateHttpInterceptor,
             multi: true,
         },
-    ],
-    bootstrap: [AppComponent]
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
 })
 export class AppModule { }
