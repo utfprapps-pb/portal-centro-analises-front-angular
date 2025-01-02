@@ -8,7 +8,7 @@ export class DatatableColumn {
     enumname: string = null;
     mask: string = null;
     width: string = null;
-    minWidth: string = '180px';
+    minWidth: string = '200px';
     maxWidth: string = null;
     align: 'left' | 'center' | 'right' = 'left';
 

@@ -1,10 +1,12 @@
 @import './assets/themes/bootstrap4-light-blue.scss';
 @import '../node_modules/primeicons/primeicons.css';
 
-$font-size-default: 13px;
+:root {
+    --font-size-default: 13px;
+}
 
 * {
-    font-size: $font-size-default;
+    // font-size: $font-size-default;
 }
 
 body {
@@ -21,7 +23,7 @@ body {
 }
 
 .small-text {
-    font-size  : ($font-size-default - 2px);
+    font-size  : (var(--font-size-default) - 2px);
     color      : var(--surface-600);
     font-weight: bold;
     line-height: 1;

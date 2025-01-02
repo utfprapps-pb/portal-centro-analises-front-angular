@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 
-import { Equipament } from './model/equipament.model';
 import { HttpClientService } from '../../../core/services/httpclient.service';
 import { GenericCrudService } from '../../../generics/generic-crud.service';
+import { Equipment } from './model/equipment.model';
 
 @Injectable({
     providedIn: 'root'
 })
-export class EquipamentService extends GenericCrudService<Equipament> {
+export class EquipmentService extends GenericCrudService<Equipment> {
 
     constructor(
         protected override http: HttpClientService,
     ) {
-        super(http, '/equipamentos', Equipament)
+        super(http, '/equipamentos', Equipment)
     }
 
 }

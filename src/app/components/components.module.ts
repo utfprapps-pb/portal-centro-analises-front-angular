@@ -2,24 +2,25 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { CalendarModule } from 'primeng/calendar';
+import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PasswordModule } from 'primeng/password';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { StepperModule } from 'primeng/stepper';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { CalendarModule } from 'primeng/calendar';
-import { DialogModule } from 'primeng/dialog';
-import { InputMaskModule } from 'primeng/inputmask';
-import { RadioButtonModule } from 'primeng/radiobutton';
 import { CurrencyFormatterPipe } from '../core/pipes/currency-formatter.pipe';
 import { DateFormatterPipe } from '../core/pipes/date-formatter.pipe';
 import { ToastrService } from '../core/services/toastr.service';
@@ -27,15 +28,25 @@ import { ToasterService } from '../core/toaster/toaster.service';
 import { UtilsModule } from '../utils/utils.module';
 import { ComboboxComponent } from './combobox/combobox.component';
 import { CompCtrlDirective } from './compctrl/compctrl.directive';
-import { BooleanColumnTemplateComponent } from './datatable/datatable-columns/boolean-column-template/boolean-column-template.component';
+import {
+    BooleanColumnTemplateComponent,
+} from './datatable/datatable-columns/boolean-column-template/boolean-column-template.component';
 import { ColumnTemplateComponent } from './datatable/datatable-columns/column-template/column-template.component';
-import { CurrencyColumnTemplateComponent } from './datatable/datatable-columns/currency-column-template/currency-column-template.component';
-import { DateColumnTemplateComponent } from './datatable/datatable-columns/date-column-template/date-column-template.component';
+import {
+    CurrencyColumnTemplateComponent,
+} from './datatable/datatable-columns/currency-column-template/currency-column-template.component';
+import {
+    DateColumnTemplateComponent,
+} from './datatable/datatable-columns/date-column-template/date-column-template.component';
 import {
     EnumColumnTemplateComponent,
 } from './datatable/datatable-columns/enum-column-template/enum-column-template.component';
-import { BooleanFilterTemplateComponent } from './datatable/datatable-filters/boolean-filter-template/boolean-filter-template.component';
-import { DateFilterTemplateComponent } from './datatable/datatable-filters/date-filter-template/date-filter-template.component';
+import {
+    BooleanFilterTemplateComponent,
+} from './datatable/datatable-filters/boolean-filter-template/boolean-filter-template.component';
+import {
+    DateFilterTemplateComponent,
+} from './datatable/datatable-filters/date-filter-template/date-filter-template.component';
 import {
     EnumFilterTemplateComponent,
 } from './datatable/datatable-filters/enum-filter-template/enum-filter-template.component';
@@ -136,6 +147,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         EnumFilterTemplateComponent,
         BooleanFilterTemplateComponent,
         DateFilterTemplateComponent,
+        StepperModule
     ],
     imports: [
         CommonModule,
@@ -158,7 +170,8 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         DropdownModule,
         RadioButtonModule,
         CalendarModule,
-        DialogModule
+        DialogModule,
+        StepperModule
     ],
     providers: [
         ToastrService,

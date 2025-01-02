@@ -29,7 +29,7 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
     @Input() id: string = Guid.raw();
     @Input() name: string = Guid.raw();
     @Input() label: string = null;
-    @Input() placeholder: string = '';
+    @Input() placeholder: string = null;
     @Input() class: string = 'w-100';
     @Input() defaultValue: string = null;
     @Input() filterBy: string = null;

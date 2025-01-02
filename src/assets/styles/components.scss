@@ -83,6 +83,15 @@ p-inputnumber.form-control {
 }
 
 p-dropdown.p-element {
-    height: 27.6px;
+    height : 27.6px;
     display: grid;
+}
+
+datatable {
+
+    span,
+    input {
+        font-size: var(--font-size-default);
+    }
+
 }

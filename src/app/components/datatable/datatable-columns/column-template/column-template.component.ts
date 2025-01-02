@@ -19,7 +19,7 @@ export class ColumnTemplateComponent {
     @Input() headerAlign: string = 'left';
 
     @Input() width: string = '40';
-    @Input() minWidth: string = '180px';
+    @Input() minWidth: string = '200px';
     @Input() maxWidth: string = null;
     @Input() align: 'left' | 'center' | 'right' = 'left';
 

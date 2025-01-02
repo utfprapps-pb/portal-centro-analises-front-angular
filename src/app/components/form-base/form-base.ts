@@ -134,28 +134,31 @@ export abstract class FormBase implements OnDestroy {
         }
     }
 
-    private validForm(): Map<string, boolean> {
+    private validForm(alert: boolean): Map<string, boolean> {
         const mapResult = new Map<string, boolean>();
 
         const fieldsRequired = this.getFieldsCompCtrl().filter(it => it['_required']);
 
         let firstInvalidField: CompCtrlDirective;;
         for (const field of fieldsRequired) {
-            if (!field.validate(false)) {
+            if (!field.validate(false, alert)) {
                 if (!firstInvalidField) {
                     firstInvalidField = field;
                 }
                 mapResult.set(field.compCtrl, false);
             }
         }
-        if (!!firstInvalidField) {
-            firstInvalidField.setFocus();
+        if (alert) {
+            if (!!firstInvalidField) {
+                firstInvalidField.setFocus();
+            }
         }
+
         return mapResult;
     }
 
-    public validateForm(): boolean {
-        return this.validForm().size == 0;
+    public validateForm(alert: boolean = true): boolean {
+        return this.validForm(alert).size == 0;
     }
 
     public getPageTitle(): string {

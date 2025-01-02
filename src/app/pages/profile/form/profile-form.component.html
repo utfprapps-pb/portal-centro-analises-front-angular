@@ -11,14 +11,14 @@
             </combobox>
         </div>
     </div>
-    <div class="row" [ngClass]="{'mb-2': isStudant()}">
-        <div [ngClass]="isStudant() ? 'col-12' : 'col-16'">
+    <div class="row" [ngClass]="{'mb-2': isAluno}">
+        <div [ngClass]="isAluno ? 'col-12' : 'col-16'">
             <input-email label="Email" compCtrl [disabled]="true" required [ngModel]="object.email" [minlength]="4"
                 [maxlength]="255">
             </input-email>
         </div>
-        <div class="col-4" *ngIf="isStudant()">
-            <input-number label="RA" compCtrl required [ngModel]="object.raSiape" [disabled]="true" [minlength]="6"
+        <div class="col-4" *ngIf="isAluno">
+            <input-number label="RA" compCtrl required [ngModel]="object.raSiape" [disabled]="startedWithRA" [minlength]="6"
                 [maxlength]="10">
             </input-number>
         </div>

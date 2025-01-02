@@ -5,7 +5,8 @@
         <p-dropdown #input [id]="id" [name]="name" [options]="_options" [ngModel]="innerObject"
             [focusOnHover]="true" [disabled]="disabled" [readonly]="disabled" [optionLabel]="!!_enum ? 'key' : 'id'"
             [showClear]="showClear && !disabled && !!innerObject" [class]="class" (onClear)="forceClear()"
-            (onChange)="onChangeDropdown($event.value)" [filterBy]="filterBy" [filter]="!!filterBy">
+            (onChange)="onChangeDropdown($event.value)" [filterBy]="filterBy" [filter]="!!filterBy"
+            [placeholder]="placeholder">
 
             <ng-template pTemplate="selectedItem">
                 <span>{{displayValue}}</span>

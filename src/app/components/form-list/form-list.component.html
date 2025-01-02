@@ -1,5 +1,5 @@
 <p-progressSpinner *ngIf="facades.size()" ariaLabel="loading" animationDuration="3"></p-progressSpinner>
-<div class="container-fluid pt-1" [ngStyle]="{'padding-bottom': showFooter() ? '3.75rem' : '0.25rem'}">
+<div class="container-fluid pt-1" [ngStyle]="{'padding-bottom': showFooter() ? '50px' : '0.25rem'}">
     <form-base #formBase>
         <div class="p-2 py-3 mt-2">
             <div class="row">
@@ -15,11 +15,11 @@
     </form-base>
 </div>
 <div class="footer px-3" *ngIf="showFooter()">
-    <button *ngIf="showButtons('novo')" class="btn btn-md btn-primary me-2" (click)="onClickAddNovo()">
+    <button *ngIf="showButtons('novo')" class="btn btn-sm btn-primary me-2" (click)="onClickAddNovo()">
         <i class="fa fa-inbox-arrow-down me-1"></i>
         Adicionar Novo
     </button>
-    <button *ngIf="showButtons('cancelar')" class="btn btn-md btn-secondary" (click)="onClickCancelar()">
+    <button *ngIf="showButtons('cancelar')" class="btn btn-sm btn-secondary" (click)="onClickCancelar()">
         <i class="fa fa-ban me-1"></i>
         Cancelar
     </button>

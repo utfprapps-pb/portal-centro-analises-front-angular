@@ -6,5 +6,6 @@ export class UserLoginDTO extends ZModel {
     displayName: string = null;
     email: string = null;
     role: Roles = null;
+    raSiape: string = null;
 
 }

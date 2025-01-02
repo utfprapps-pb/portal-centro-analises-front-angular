@@ -2,10 +2,10 @@ import { ColumnMinWidth, Enum, Hidden, Prop, Title } from '../../../../core/deco
 import { StatusAI } from '../../../../core/enums/statusai.enum';
 import { ZModel } from '../../../../generics/zmodel';
 
-export class Equipament extends ZModel {
+export class Equipment extends ZModel {
 
-    public static override createInstance(): Equipament {
-        return new Equipament();
+    public static override createInstance(): Equipment {
+        return new Equipment();
     }
 
     @ColumnMinWidth('250px', '250px')
@@ -34,17 +34,17 @@ export class Equipament extends ZModel {
     @Prop('currency')
     valueHourExternal: number = null;
 
-    @ColumnMinWidth('180px')
+    @ColumnMinWidth('200px')
     @Title('UTFPR - $/Amostra', 'center')
     @Prop('currency')
     valueSampleUtfpr: number = null;
 
-    @ColumnMinWidth('180px')
+    @ColumnMinWidth('200px')
     @Title('Parceiro - $/Amostra', 'center')
     @Prop('currency')
     valueSamplePartner: number = null;
 
-    @ColumnMinWidth('180px')
+    @ColumnMinWidth('200px')
     @Title('Externo - $/Amostra', 'center')
     @Prop('currency')
     valueSampleExternal: number = null;

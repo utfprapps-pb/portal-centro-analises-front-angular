@@ -2,14 +2,14 @@
     <p-menubar [model]="items" [autoHide]="true">
         <ng-template pTemplate="start">
             <a href="/#/inicio">
-                <img src="../../../assets/images/logo.png" height="34" class="mr-2" />
+                <img src="../../../assets/images/UTFPR_logo.svg" height="34" class="mr-2" />
             </a>
         </ng-template>
         <ng-template pTemplate="end">
             <span class="align-text-top">
                 Olá,
             </span>
-            <button id="buttonUser" class="btn btn-md btn-link bold px-1 py-0 text-dark"
+            <button id="buttonUser" class="btn btn-sm btn-link bold px-1 py-0 text-dark"
                 (click)="tiredMenu.toggle($event)">
                 {{user.displayName}}
                 <i class="fa fa-chevron-down"></i>

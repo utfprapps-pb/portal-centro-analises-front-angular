@@ -1,0 +1,159 @@
+<form-crud #formView [pageTitle]="'Solicitação'">
+
+    <div class="row">
+        <div class="col-24">
+            <p-stepper [linear]="true" [(activeStep)]="activeStep">
+                <p-stepperPanel>
+                    <ng-template pTemplate="header" let-index="index">
+                        <span
+                            class="d-flex text-dark rounded border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                            [ngClass]="{
+                                'bg-primary border-primary text-white': index <= activeStep,
+                                'border': index > activeStep
+                            }">
+                            <i class="fa fa-exclamation"></i>
+                        </span>
+                    </ng-template>
+                    <ng-template pTemplate="content" let-nextCallback="nextCallback">
+                        <h2 class="text-center pb-2 text-decoration-underline text-danger">
+                            IMPORTANTE
+                        </h2>
+                        <p>
+                            Solicita-se que o nome <b>CENTRAL DE ANÁLISES &minus; UTFPR Campus Pato Branco</b>
+                            seja mencionado nos agradecimentos em todos os tipos de publicações que
+                            resultarem da utilização de suas instalações.
+                        </p>
+                        <p>
+                            Solicita-se que os arquivos com as referências de todos os tipos de trabalhos
+                            (comunicações em congressos, trabalhos completos, monografias, etc.) sejam
+                            enviados para o e-mail da Central de Análises.
+                        </p>
+
+                        <div class="d-flex pt-4 justify-content-end">
+                            <ng-container [ngTemplateOutlet]="btnAvancar"
+                                [ngTemplateOutletContext]="{ $implicit: nextCallback}">
+                            </ng-container>
+                        </div>
+                    </ng-template>
+                </p-stepperPanel>
+
+                <p-stepperPanel>
+                    <ng-template pTemplate="header" let-index="index">
+                        <span
+                            class="d-flex text-dark rounded border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                            [ngClass]="{
+                                    'bg-primary border-primary text-white': index <= activeStep,
+                                    'border': index > activeStep
+                                }">
+                            <i class="fal fa-file-signature"></i>
+                        </span>
+                    </ng-template>
+                    <ng-template pTemplate="content" let-prevCallback="prevCallback"
+                        let-nextCallback="nextCallback">
+                        <h2 class="text-center pb-2 text-decoration-underline text-warning">
+                            OS USUÁRIOS SE COMPROMETEM EM:
+                        </h2>
+                        <ol>
+                            <li>
+                                <p>
+                                    Providenciar a preparação das amostras (verificar os métodos de preparação
+                                    para a amostra de interesse, etc.) antecipadamente na Central de Análises
+                                    ou em outro local;
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    Interpretar os resultados fornecidos;
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    Chegar no horário estipulado (em caso de atraso, a reserva será
+                                    transferida para outro usuário após 15 minutos);
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    Avisar ao responsável pelo equipamento, com no mínimo 24 horas de
+                                    antecedência, quando não puder comparecer no horário estipulado;
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    Respeitar os horários estipulados, de modo a não interferir nos horários
+                                    de outros usuários.
+                                </p>
+                            </li>
+                        </ol>
+
+                        <div class="d-flex pt-4 justify-content-between">
+                            <ng-container [ngTemplateOutlet]="btnVoltar"
+                                [ngTemplateOutletContext]="{ $implicit: prevCallback}">
+                            </ng-container>
+                            <ng-container [ngTemplateOutlet]="btnAvancar"
+                                [ngTemplateOutletContext]="{ $implicit: nextCallback}">
+                            </ng-container>
+                        </div>
+                    </ng-template>
+                </p-stepperPanel>
+
+                <p-stepperPanel>
+                    <ng-template pTemplate="header" let-index="index">
+                        <span
+                            class="d-flex text-dark rounded border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                            [ngClass]="{
+                                'bg-primary border-primary text-white': index <= activeStep,
+                                'border': index > activeStep
+                            }">
+                            <i class="fa fa-file-lines"></i>
+                        </span>
+                    </ng-template>
+                    <ng-template pTemplate="content">
+
+                        <div class="row">
+                            <div class="col-24">
+                                <ng-container *ngTemplateOutlet="formulario">
+                                </ng-container>
+                            </div>
+                        </div>
+
+                    </ng-template>
+                </p-stepperPanel>
+            </p-stepper>
+        </div>
+    </div>
+
+    <ng-template #formulario>
+        <div class="row mb-2">
+            <div class="col-24">
+                <combobox label="Tipo de Formulário" [(ngModel)]="solicitationProjectNature"
+                    enum="SolicitationProjectNature" compCtrl required [showClear]="false"
+                    [placeholder]="'Escolha um formulário'">
+                </combobox>
+            </div>
+        </div>
+
+
+        <div class="row pt-3">
+            <div class="col-24 d-flex justify-content-center">
+                <button class="btn btn-sm btn-primary">
+                    {{validateForm(false)}}
+                </button>
+            </div>
+        </div>
+    </ng-template>
+</form-crud>
+
+<ng-template #btnVoltar let-emitter>
+    <button class="btn btn-sm btn-primary" (click)="emitter.emit()">
+        <i class="fa fa-arrow-left"></i>
+        Voltar
+    </button>
+</ng-template>
+
+<ng-template #btnAvancar let-emitter>
+    <button class="btn btn-sm btn-primary" (click)="emitter.emit()">
+        Avançar
+        <i class="fa fa-arrow-right"></i>
+    </button>
+</ng-template>

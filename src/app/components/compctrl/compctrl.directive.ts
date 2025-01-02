@@ -90,14 +90,16 @@ export class CompCtrlDirective implements OnInit {
     }
 
     @Output()
-    public validate(setFocus: boolean): boolean {
+    public validate(setFocus: boolean, alert: boolean = true): boolean {
         const causes: string[] = this.verify(this.compCtrlContainer.getValue());
         this._valid = ObjectUtils.isEmpty(causes);
         if (setFocus && !this._valid) {
             this.setFocus();
         }
-        this._valid ? this.setClassValid() : this.setClassInvalid();
-        this.compCtrlContainer.setInvalidCause(causes);
+        if (alert) {
+            this._valid ? this.setClassValid() : this.setClassInvalid();
+            this.compCtrlContainer.setInvalidCause(causes);
+        }
         return this._valid;
     }
 

@@ -14,6 +14,17 @@ export const routes: Routes = [
         loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
     },
 
+    {
+        path: 'solicitar',
+        // data: {
+        //     authorities: [
+        //         Roles.ROLE_ADMIN
+        //     ]
+        // },
+        canActivate: [AuthGuard.canActivate],
+        canDeactivate: [AuthGuard.canDeactivate],
+        loadChildren: () => import('./pages/solicitar/solicitar.module').then(m => m.SolicitarModule),
+    },
 
     {
         path: 'vinculos',
@@ -70,7 +81,7 @@ export const routes: Routes = [
         // },
         canActivate: [AuthGuard.canActivate],
         canDeactivate: [AuthGuard.canDeactivate],
-        loadChildren: () => import('./pages/cadastros/equipament/equipament.module').then(m => m.EquipamentModule),
+        loadChildren: () => import('./pages/cadastros/equipment/equipment.module').then(m => m.EquipmentModule),
     },
     {
         path: 'usuarios',

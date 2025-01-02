@@ -68,12 +68,12 @@ export class HeaderComponent implements OnDestroy {
 
         this.items = this.items = [
             {
-                label: 'File',
-                icon: 'fa fa-file',
+                label: 'Formulários',
+                icon: 'far fa-file-lines',
+                url: '/#/solicitar',
+                target: '_self',
                 styleClass: "ms-3",
-                command(event) {
-                    console.log(event)
-                },
+                // visible: admin
             },
             {
                 label: 'Vínculos Existentes',

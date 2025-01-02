@@ -4087,12 +4087,14 @@
     .p-paginator .p-paginator-first,
     .p-paginator .p-paginator-prev,
     .p-paginator .p-paginator-next,
-    .p-paginator .p-paginator-last {
+    .p-paginator .p-paginator-last,
+    .p-paginator .p-paginator-current,
+    .p-paginator .p-paginator-pages .p-paginator-page {
         background-color: #ffffff;
         border          : 1px solid #dee2e6;
         color           : #007bff;
-        min-width       : 2.357rem;
-        height          : 2.357rem;
+        min-width       : 30px !important;
+        height          : 30px !important;
         margin          : 0 0 0 -1px;
         transition      : box-shadow 0.15s;
         border-radius   : 0;
@@ -4120,7 +4122,7 @@
     .p-paginator .p-dropdown {
         margin-left : 0.5rem;
         margin-right: 0.5rem;
-        height      : 2.357rem;
+        // height      : 2.357rem;
     }
 
     .p-paginator .p-dropdown .p-dropdown-label {
@@ -4140,8 +4142,6 @@
         background-color: #ffffff;
         border          : 1px solid #dee2e6;
         color           : #007bff;
-        min-width       : 2.357rem;
-        height          : 2.357rem;
         margin          : 0 0 0 -1px;
         padding         : 0 0.5rem;
         margin-left     : auto;
@@ -4151,8 +4151,6 @@
         background-color: #ffffff;
         border          : 1px solid #dee2e6;
         color           : #007bff;
-        min-width       : 2.357rem;
-        height          : 2.357rem;
         margin          : 0 0 0 -1px;
         transition      : box-shadow 0.15s;
         border-radius   : 0;
