@@ -1,4 +1,5 @@
 import { Component, Injector, ViewChild } from '@angular/core';
+import { NgxJsonViewerComponent } from 'ngx-json-viewer';
 
 import { FormCrud } from '../../../components/form-crud/form-crud';
 import { FormCrudComponent } from '../../../components/form-crud/form-crud.component';
@@ -19,6 +20,7 @@ import { SolicitarService } from '../solicitar.service';
 export class SolicitarFormComponent extends FormCrud<Solicitation> {
 
     @ViewChild('formView') public formView: FormCrudComponent;
+    @ViewChild('viewer') public viewer: NgxJsonViewerComponent;
     public activeStep: number = 0;
 
     public readonly OPCAO_OUTRO: any = 'OTHER';
@@ -44,6 +46,12 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> {
         await this.projectService.findAllSelf().then(async data => {
             this.projetos = data;
         });
+        this.updateJson();
+    }
+
+    public objectJson: any = null;
+    public updateJson(): void {
+        this.objectJson = { ...this.object };
     }
 
     public onChangeProject(project: Project): void {

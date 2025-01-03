@@ -68,6 +68,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
                     this.errorHandler(error);
                 } else {
                     this.toastrService.showError(this.pageTitle, 'Erro ao carregar Registro!');
+                    this.onCancel();
                 }
             }).finally(() => {
                 this.releaseForm();

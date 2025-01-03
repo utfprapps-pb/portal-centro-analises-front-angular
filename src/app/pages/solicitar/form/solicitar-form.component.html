@@ -368,7 +368,13 @@
         </div>
     </ng-template>
 
-    <pre>{{object.form | json}}</pre>
+    <div class="row">
+        <div class="col-24">
+            <button class="btn btn-primary" (click)="updateJson()">UPDATE JSON</button>
+            <ngx-json-viewer #viewer [json]="objectJson" [expanded]="false"></ngx-json-viewer>
+        </div>
+    </div>
+
 </form-crud>
 
 <ng-template #btnVoltar let-emitter>
