@@ -1,0 +1,24 @@
+<div class="form-group overflow-x-auto">
+    <label *ngIf="!!label" class="form-label bold">{{label}}</label>
+
+    <div class="table-responsive rounded-div" [ngClass]="class">
+
+        <i class="pi pi-trash cursor-pointer text-danger ms-2" *ngIf="!!innerValue && !disabled"
+            (click)="forceClear()">
+        </i>
+        <invalid-info #invalid class="ms-2" [causes]="invalidCause"></invalid-info>
+        <span class="ms-2">{{elementosSelecionados}}</span>
+
+        <table #input class="tabela-periodica w-100">
+            <tbody>
+                <tr *ngFor="let linha of tabelaPeriodica; let indexLinha = index">
+                    <td *ngFor="let elemento of linha; let indexColuna = index" class="align-content-start">
+                        <periodic-table-element [data]="elemento" (onClick)="onSelectElement(elemento)">
+                        </periodic-table-element>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

@@ -75,6 +75,8 @@ import { InputPasswordComponent } from './inputs/input-password/input-password.c
 import { InputTextComponent } from './inputs/input-text/input-text.component';
 import { InputTextAreaComponent } from './inputs/input-textarea/input-textarea.component';
 import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.component';
+import { PeriodicTableElementComponent } from './periodic-table/periodic-table-element/periodic-table-element.component';
+import { PeriodicTableComponent } from './periodic-table/periodic-table.component';
 import { RadioButtonComponent } from './radiobutton/radiobutton.component';
 
 @NgModule({
@@ -100,6 +102,9 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         InputNumber,
         InputCurrency,
         DatePicker,
+
+        PeriodicTableComponent,
+        PeriodicTableElementComponent,
 
         DatatableComponent,
         DatatableHeaderButtonComponent,
@@ -139,7 +144,9 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         InputNumber,
         InputCurrency,
         DatePicker,
-        TableModule,
+
+        PeriodicTableComponent,
+        PeriodicTableElementComponent,
 
         DatatableComponent,
         DatatableHeaderButtonComponent,
@@ -155,7 +162,8 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         EnumFilterTemplateComponent,
         BooleanFilterTemplateComponent,
         DateFilterTemplateComponent,
-        StepperModule
+        StepperModule,
+        TableModule,
     ],
     imports: [
         CommonModule,
@@ -181,7 +189,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         CheckboxModule,
         CalendarModule,
         DialogModule,
-        StepperModule
+        StepperModule,
     ],
     providers: [
         ToastrService,

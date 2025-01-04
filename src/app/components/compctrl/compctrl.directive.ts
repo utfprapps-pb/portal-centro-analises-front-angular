@@ -38,8 +38,8 @@ export class CompCtrlDirective implements OnInit {
             value = this.compCtrlContainer.getLabel();
         }
         if (!(!!value)) {
-            console.error('Identificado do compCtrl não informado', this);
-            throw new Error('Identificado do compCtrl não informado');
+            console.error('Identificador do compCtrl não informado', this);
+            throw new Error('Identificador do compCtrl não informado');
         }
         this._compCtrl = value;
     }
@@ -97,8 +97,9 @@ export class CompCtrlDirective implements OnInit {
             if (setFocus && !this._valid) {
                 this.setFocus();
             }
-            this.compCtrlContainer.setInvalidCause(causes);
         }
+        this.compCtrlContainer.setInvalidCause(causes);
+
         this._valid ? this.setClassValid() : this.setClassInvalid();
         return this._valid;
     }
@@ -124,17 +125,12 @@ export class CompCtrlDirective implements OnInit {
     }
 
     public setClassValid() {
-        this.compCtrlContainer.removeClass('required-invalid');
-
         this.compCtrlContainer.removeClass('valid');
         this.compCtrlContainer.addClass('valid');
     }
 
     public setClassInvalid() {
         this.compCtrlContainer.removeClass('valid');
-
-        this.compCtrlContainer.removeClass('required-invalid');
-        this.compCtrlContainer.addClass('required-invalid');
     }
 
 }

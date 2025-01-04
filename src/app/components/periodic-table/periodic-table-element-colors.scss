@@ -1,0 +1,35 @@
+$categories: (nonmetal: #a1d344,
+    noble-gas: #3d9ee3,
+    alkali-metal: #f1b200,
+    alkaline-earth-metal: #eada00,
+    metalloid: #4db6ac,
+    halogen: #70cbeb,
+    transition-metal: #eb8e8e,
+    lanthanide: #90e3e9,
+    actinide: #dcadd6,
+    unknown-metal: #a2c7d3);
+
+$darken-perc: 10%;
+
+@each $category,
+$color in $categories {
+    .#{$category} {
+        background-color: lighten($color, 5);
+
+        &.hoverable:hover {
+            background-color: darken($color, $darken-perc);
+        }
+    }
+
+    .glow-#{$category} {
+        background-color: darken($color, $darken-perc);
+        filter          : drop-shadow(2px 4px 6px darken($color, $darken-perc * 3));
+        border-width    : 2px !important;
+        border-style    : dashed !important;
+        border-color    : darken($color, $darken-perc * 5) !important;
+    }
+
+    .darken-#{$category} {
+        background-color: darken($color, $darken-perc);
+    }
+}

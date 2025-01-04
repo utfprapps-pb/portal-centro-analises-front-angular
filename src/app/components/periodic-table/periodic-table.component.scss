@@ -1,0 +1,21 @@
+@import './periodic-table-element-colors';
+
+td:not(table td) {
+    min-width: 5.55%;
+    width    : 5.55%;
+    max-width: 5.55%;
+}
+
+.tr51 {
+    min-height: 51px;
+    height    : 51px;
+}
+
+.tr102 {
+    min-height: 102px;
+    height    : 102px;
+}
+
+.rounded-div {
+    border-bottom-left-radius: 3px;
+}

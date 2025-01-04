@@ -6,6 +6,7 @@ import { Equipment } from '../../cadastros/equipment/model/equipment.model';
 import { User } from '../../cadastros/user/model/user.model';
 import { Project } from '../../project/model/project.model';
 import { Analysis } from './analysis.model';
+import { SolicitationAmostra } from './solicitation-amostra.model';
 import { SolicitationAttachments } from './solicitation-attachments.model';
 
 
@@ -27,13 +28,19 @@ export class Solicitation extends ZModel {
 
     solicitationType: SolicitationFormType = null;
 
-    methodologyDescription: string = null;
-
     status: SolicitationStatus = null;
     equipment: Equipment = null;
     form: any = {
         'retirada': 'FALSE',
         'citacao': false,
+
+        'amostras': [new SolicitationAmostra()],
+
+        'methodologyDescription': null,
+        'limitesConcentracao': null,
+        'forno': null,
+        'elementos': null,
+        'curvaConcentracao': null,
     };
 
     scheduleDate: Date = null;
@@ -42,9 +49,10 @@ export class Solicitation extends ZModel {
 
     price: number = null;
     amountHours: number = null;
-    amountSamples: number = null;
+    amountSamples: number = 1;
     totalPrice: number = null;
 
     observation: string = null;
+    paid: boolean = false;
 
 }

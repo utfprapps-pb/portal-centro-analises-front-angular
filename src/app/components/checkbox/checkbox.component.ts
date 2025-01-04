@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
+import { Checkbox } from 'primeng/checkbox';
 
 import { ConvertUtilsService } from '../../utils/convert-utils.service';
 import { Guid } from '../../utils/models/guid';
@@ -18,7 +19,7 @@ import { InvalidInfoComponent } from '../inputs/invalid-info/invalid-info.compon
 })
 export class CheckBoxComponent extends CompCtrlContainer implements ControlValueAccessor {
 
-    @ViewChild('input') component: ElementRef<HTMLDivElement>;
+    @ViewChild('input') component: ElementRef<Checkbox>;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
     @Input() id: string = Guid.raw();
@@ -170,7 +171,7 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
     }
 
     override getContainer(): any {
-        return this.component.nativeElement.firstChild;
+        return this.component.nativeElement;
     }
 
     override setFocus() {
@@ -178,7 +179,7 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
             this.invalidInfoComponent.show();
         }
         setTimeout(() => {
-            (this.component.nativeElement.firstChild as any).focus();
+            (this.component.nativeElement as any).focus();
         });
     }
 }

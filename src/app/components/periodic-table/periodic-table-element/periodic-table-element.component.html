@@ -1,0 +1,7 @@
+<div class="elemento hoverable pointer" *ngIf="elemento" [ngClass]="getClasses()" (click)="onClick()">
+    <div class="d-flex">
+        <label class="numero">{{ elemento.number }}</label>
+        <label class="h5 bold simbolo text-center">{{ elemento.symbol }}</label>
+    </div>
+    <label class="w-100 nome">{{ elemento.name }}</label>
+</div>

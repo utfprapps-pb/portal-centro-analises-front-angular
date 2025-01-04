@@ -1,3 +1,4 @@
+import { AAForno, getAAFornoColor, getAAFornoTranslation } from './aa-forno.enum';
 import { Action, getActionColor, getActionTranslation } from './action.enum';
 import { Boolean, getBooleanColor, getBooleanTranslation } from './boolean.enum';
 import {
@@ -70,6 +71,8 @@ export function getEnum(enumName: string): any {
             return DescarteInorganico;
         case 'DescarteUsuario':
             return DescarteUsuario;
+            case 'AAForno':
+            return AAForno;
         default:
             console.error(`getEnum: Enum não mapeado no enum-mapper.ts \t ${enumName}`);
             throw new Error(`getEnum: Enum não mapeado no enum-mapper.ts \t ${enumName}`);
@@ -108,6 +111,8 @@ export function getEnumColor(enumName: string, enumValue: any): string {
             return getDescarteInorganicoColor(enumValue);
         case 'DescarteUsuario':
             return getDescarteUsuarioColor(enumValue);
+            case 'AAForno':
+            return getAAFornoColor(enumValue);
         default:
             console.error(`getEnumColor: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
             throw new Error(`getEnumColor: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
@@ -146,6 +151,8 @@ export function getEnumTranslation(enumName: string, enumValue: any): string {
             return getDescarteInorganicoTranslation(enumValue);
         case 'DescarteUsuario':
             return getDescarteUsuarioTranslation(enumValue);
+            case 'AAForno':
+            return getAAFornoTranslation(enumValue);
         default:
             console.error(`getEnumTranslation: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
             throw new Error(`getEnumTranslation: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);

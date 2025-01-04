@@ -109,25 +109,111 @@
                                 'bg-primary border-primary text-white': index <= activeStep,
                                 'border': index > activeStep
                             }">
+                            <i class="fa fa-file-circle-info"></i>
+                        </span>
+                    </ng-template>
+
+                    <ng-template pTemplate="content" let-prevCallback="prevCallback"
+                        let-nextCallback="nextCallback">
+                        <div class="row mb-2">
+                            <div class="col-24">
+                                <h4 class="text-center">Informações das Amostras</h4>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-24">
+                                <ol>
+                                    <li class="mb-2">
+                                        <b>RETIRADA</b>
+                                        <div class="row mb-2">
+                                            <div class="col-24">
+                                                Deseja buscar/obter suas amostras já analisadas de volta?
+                                                <div class="row mb-2">
+                                                    <div class="col-24">
+                                                        <radio-button [(ngModel)]="object.form.retirada"
+                                                            enum="RetiradaAmostra">
+                                                        </radio-button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-2">
+                                        <b>REPETIÇÃO DE ANÁLISES</b>
+                                        <div class="row mb-2">
+                                            <div class="col-24">
+                                                Caso seja necessário repetir a análise de alguma amostra,
+                                                entrar em contato
+                                                dentro do prazo de 7 dias.
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-2">
+                                        <b>DESCARTE</b>
+                                        <div class="row mb-2">
+                                            <div class="col-24">
+                                                <p>
+                                                    Seguindo Protocolo de "Normas Gerais de Gerenciamento de
+                                                    Resíduos Químicos
+                                                    no Instituto de Química - Unesp Revisão 2017" e também do
+                                                    guia da UTFPR,
+                                                    para RESÍDUOS DE LABORATÓRIOS. (acessados em :
+                                                    <a href="https://drive.google.com/file/d/1VpqnpSd0GMohhL2BKlZsaKlpr7sxdRKc/view"
+                                                        target="_blank">
+                                                        https://drive.google.com/file/d/1VpqnpSd0GMohhL2BKlZsaKlpr7sxdRKc/view</a>)
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-2">
+                                        <b>CITAÇÃO</b>
+                                        <div class="row mb-2">
+                                            <div class="col-24">
+                                                <checkbox [(ngModel)]="object.form.citacao"
+                                                    [label]="'Aceito e me comprometo a mencionar a \'Central de Análises - UTFPR Campus Pato Branco\' nos agradecimentos em todos os tipos de publicações que resultarem da utilização de suas instalações.'" />
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="d-flex pt-4 justify-content-between" *ngIf="hasViewInitializated">
+                            <ng-container [ngTemplateOutlet]="btnVoltar"
+                                [ngTemplateOutletContext]="{ $implicit: prevCallback}">
+                            </ng-container>
+
+                            <ng-container [ngTemplateOutlet]="btnAvancar"
+                                [ngTemplateOutletContext]="{ $implicit: nextCallback, disable: !isValidForm() || object.form.citacao == undefined || !object.form.citacao }">
+                            </ng-container>
+
+                        </div>
+                    </ng-template>
+                </p-stepperPanel>
+
+                <p-stepperPanel>
+                    <ng-template pTemplate="header" let-index="index">
+                        <span
+                            class="d-flex text-dark rounded border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                            [ngClass]="{
+                                'bg-primary border-primary text-white': index <= activeStep,
+                                'border': index > activeStep
+                            }">
                             <i class="fa fa-file-lines"></i>
                         </span>
                     </ng-template>
                     <ng-template pTemplate="content" let-prevCallback="prevCallback"
                         let-nextCallback="nextCallback">
 
-                        <div class="row mb-2">
-                            <div class="col-24">
-                                <ng-container *ngTemplateOutlet="formulario">
-                                </ng-container>
-                            </div>
-                        </div>
+                        <ng-container *ngTemplateOutlet="formulario"></ng-container>
 
-                        <div class="d-flex pt-4 justify-content-between">
+                        <div class="d-flex pt-4 justify-content-between" *ngIf="hasViewInitializated">
                             <ng-container [ngTemplateOutlet]="btnVoltar"
                                 [ngTemplateOutletContext]="{ $implicit: prevCallback}">
                             </ng-container>
                             <ng-container [ngTemplateOutlet]="btnAvancar"
-                                [ngTemplateOutletContext]="{ $implicit: nextCallback, disable: !validateForm(false) }">
+                                [ngTemplateOutletContext]="{ $implicit: nextCallback, disable: !isValidForm() }">
                             </ng-container>
                         </div>
 
@@ -147,19 +233,163 @@
                     </ng-template>
 
                     <ng-template pTemplate="content" let-prevCallback="prevCallback">
-                        <div class="row">
-                            <div class="col-24">
-                                <ng-container *ngTemplateOutlet="informacoesAmostras"></ng-container>
-                            </div>
-                        </div>
+                        <h3 class="m-0 text-center">Informações adicionais das Amostras</h3>
 
-                        <div class="d-flex pt-4 justify-content-between">
+                        <ng-container *ngFor="let amostra of object.form.amostras; let index = index">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3" style="background-color: var(--green-300);">
+                                            <h4 class="mb-0 text-center">Amostra nº {{index +1}}</h4>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>Identificação</th>
+                                        <th>Descrição</th>
+                                        <th>Quantidade de leituras por amostra</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input-text compCtrl="Identificação" required disabled
+                                                [ngModel]="amostra.identification">
+                                            </input-text>
+                                        </td>
+                                        <td>
+                                            <input-text compCtrl="Descrição" disabled
+                                                [ngModel]="amostra.description">
+                                            </input-text>
+                                        </td>
+                                        <td>
+                                            <input-number compCtrl="Quantidade de leituras por amostra"
+                                                required disabled [ngModel]="amostra.leituras"
+                                                [maxlength]="2">
+                                            </input-number>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="99">
+                                            <div class="row mb-2">
+                                                <div class="col-24">
+                                                    <ol>
+                                                        <li class="mb-2">
+                                                            <b>COMPOSIÇÃO</b>
+                                                            <div class="row mb-2">
+                                                                <div class="col-24">
+                                                                    <ol type="a">
+                                                                        <li class="mb-2">
+                                                                            <input-text
+                                                                                label="Composição da Amostra"
+                                                                                compCtrl required
+                                                                                [(ngModel)]="amostra.composicao">
+                                                                            </input-text>
+                                                                        </li>
+                                                                        <li class="mb-2">
+                                                                            <radio-button label="É tóxica?"
+                                                                                compCtrl
+                                                                                [(ngModel)]="amostra.toxic"
+                                                                                enum="Boolean" required
+                                                                                [vertical]="false">
+                                                                            </radio-button>
+                                                                        </li>
+                                                                    </ol>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li *ngIf="object.form.retirada == 'TRUE'">
+                                                            <div class="row mb-2">
+                                                                <div class="col-24">
+                                                                    <radio-button label="Natureza da Amostra"
+                                                                        compCtrl required
+                                                                        [(ngModel)]="amostra.naturezaAmostra"
+                                                                        enum="NaturezaAmostra"
+                                                                        (onChange)="onChangeNaturezaAmostra()">
+                                                                    </radio-button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-24 table-responsive">
+                                                                    <table
+                                                                        class="table table-striped table-bordered">
+                                                                        <tbody>
+                                                                            <tr
+                                                                                *ngIf="amostra.naturezaAmostra == NATUREZA_ORGANICA_ORGANICA">
+                                                                                <td colspan="2">
+                                                                                    <radio-button
+                                                                                        [(ngModel)]="amostra.descarteOrganico"
+                                                                                        enum="DescarteOrganico"
+                                                                                        compCtrl="Descartes - Orgânico"
+                                                                                        required
+                                                                                        (onChange)="onChangeDescarteOrganico()">
+                                                                                    </radio-button>
+                                                                                    <input-text label="Outro"
+                                                                                        compCtrl required
+                                                                                        *ngIf="amostra.descarteOrganico == OPCAO_OUTRO"
+                                                                                        [(ngModel)]="amostra.descarteOrganicoOutro">
+                                                                                    </input-text>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr
+                                                                                *ngIf="amostra.naturezaAmostra == NATUREZA_ORGANICA_INORGANICA">
+                                                                                <td colspan="2">
+                                                                                    <radio-button
+                                                                                        [(ngModel)]="amostra.descarteInorganico"
+                                                                                        enum="DescarteInorganico"
+                                                                                        compCtrl="Descartes - Inorgânico"
+                                                                                        required
+                                                                                        (onChange)="onChangeDescarteInorganico()">
+                                                                                    </radio-button>
+                                                                                    <input-text label="Outro"
+                                                                                        compCtrl required
+                                                                                        *ngIf="amostra.descarteInorganico == OPCAO_OUTRO"
+                                                                                        [(ngModel)]="amostra.descarteInorganicoOutro">
+                                                                                    </input-text>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    Recomendação de descarte
+                                                                                    pelo usuário
+                                                                                    <radio-button
+                                                                                        [(ngModel)]="amostra.descarteUsuario"
+                                                                                        enum="DescarteUsuario"
+                                                                                        compCtrl="Descartes - Usuário"
+                                                                                        required
+                                                                                        (onChange)="onChangeDescarteUsuario()">
+                                                                                    </radio-button>
+                                                                                    <input-textarea
+                                                                                        label="Outro" compCtrl
+                                                                                        required
+                                                                                        *ngIf="amostra.descarteUsuario == OPCAO_OUTRO"
+                                                                                        [(ngModel)]="amostra.descarteUsuarioOutro">
+                                                                                    </input-textarea>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ol>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr *ngIf="index - 1 < object.form.amostras.length">
+                        </ng-container>
+
+
+                        <div class="d-flex pt-4 justify-content-between" *ngIf="hasViewInitializated">
                             <ng-container [ngTemplateOutlet]="btnVoltar"
                                 [ngTemplateOutletContext]="{ $implicit: prevCallback}">
                             </ng-container>
 
-                            <button class="btn btn-sm btn-primary"
-                                [disabled]="!validateForm(false) || object.form.citacao == undefined || !object.form.citacao">
+                            <button class="btn btn-sm btn-primary" [disabled]="!isValidForm()"
+                                (click)="onClickFinalizar()">
                                 Concluir
                             </button>
                         </div>
@@ -206,8 +436,22 @@
 
             <div class="row mb-2">
                 <div class="col-24">
+                    <combobox label="Formulário de Solicitação" [(ngModel)]="object.solicitationType"
+                        enum="SolicitationFormType" compCtrl required>
+                    </combobox>
+                </div>
+            </div>
+        </ng-container>
+
+        <hr>
+
+        <ng-container *ngIf="getSolicitationType() == 'AA'">
+            <ng-container *ngTemplateOutlet="tableAmostrasSimples"></ng-container>
+
+            <div class="row mb-2">
+                <div class="col-24">
                     <input-textarea label="Metodologia" compCtrl required
-                        [(ngModel)]="object.methodologyDescription" [maxlength]="255"
+                        [(ngModel)]="object.form.methodologyDescription" [maxlength]="255"
                         [placeholder]="'Descreva detalhadamente a metodologia de preparo que será adotada para as amostras a serem analisadas, incluindo todas as etapas que garantam a qualidade e a reprodutibilidade do processo.'">
                     </input-textarea>
                 </div>
@@ -215,157 +459,111 @@
 
             <div class="row mb-2">
                 <div class="col-24">
-                    <combobox label="Formulário de Solicitação" [(ngModel)]="object.solicitationType"
-                        enum="SolicitationFormType" compCtrl required>
-                    </combobox>
+                    <input-textarea label="Limites" compCtrl required
+                        [(ngModel)]="object.form.limitesConcentracao" [maxlength]="255"
+                        [placeholder]="'Limites mínimo e máximo de concentração das amostras.'">
+                    </input-textarea>
                 </div>
             </div>
+
+            <div class="row mb-2">
+                <div class="col-24">
+                    <radio-button label="Forno" compCtrl required [(ngModel)]="object.form.forno"
+                        enum="AAForno" [vertical]="false">
+                    </radio-button>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-24">
+                    <periodic-table label="Elementos para analisar" compCtrl required
+                        [(ngModel)]="object.form.elementos">
+                    </periodic-table>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-24">
+                    <input-textarea label="Concentrações" compCtrl [(ngModel)]="object.form.curvaConcentracao"
+                        [maxlength]="255"
+                        [placeholder]="'Concentrações da curva de calibração.\nPadrão: 20; 15; 10; 5; 2,5; 1; 0,5 e 0,1 ppm (mg/L).'">
+                    </input-textarea>
+                    <b>Caso a faixa de concentração da amostra não estiver dentro desta faixa, o usuário
+                        será responsável por trazer a curva em concentrações adequadas para cada elemento
+                        analisado.
+                    </b>
+                </div>
+            </div>
+
         </ng-container>
-        <hr>
 
         DESENVOLVER FORMULÁRIOS AQUI
 
+        <hr>
+
+        <div class="row mb-2">
+            <div class="col-24">
+                <input-textarea label="Observações adicionais" compCtrl [(ngModel)]="object.observation"
+                    [maxlength]="255">
+                </input-textarea>
+            </div>
+        </div>
     </ng-template>
 
-    <ng-template #informacoesAmostras>
+    <ng-template #tableAmostrasSimples>
         <div class="row mb-2">
-            <div class="col-24">
-                <h4 class="text-center">Informações das Amostras</h4>
+            <div class="col-24 table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan="6">
+                                <h3 class="m-0 text-center">Amostras</h3>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="index-column">Nº</th>
+                            <th class="button-column"></th>
+                            <th class="button-column"></th>
+                            <th class="">Identificação</th>
+                            <th class="">Descrição</th>
+                            <th class="">Quantidade de leituras por amostra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let amostra of object.form.amostras; let index = index">
+                            <td>
+                                <b>{{index +1}}</b>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-success" (click)="onClickAddAmostra()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" (click)="onClickRemoveAmostra(index)">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Identificação" required
+                                    [(ngModel)]="amostra.identification">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Descrição" [(ngModel)]="amostra.description">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-number compCtrl="Quantidade de leituras por amostra" required
+                                    [(ngModel)]="amostra.leituras" [maxlength]="2">
+                                </input-number>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <div class="row mb-2">
-            <div class="col-24">
-                <ol>
-                    <li class="mb-2">
-                        <b>COMPOSIÇÃO</b>
-                        <div class="row mb-2">
-                            <div class="col-24">
-                                <ol type="a">
-                                    <li class="mb-2">
-                                        <input-text label="Composição da Amostra" compCtrl required
-                                            [(ngModel)]="object.form.composicao">
-                                        </input-text>
-                                    </li>
-                                    <li class="mb-2">
-                                        <radio-button label="É tóxica?" compCtrl
-                                            [(ngModel)]="object.form.toxic" enum="Boolean" required
-                                            [vertical]="false">
-                                        </radio-button>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-2">
-                        <b>RETIRADA</b>
-                        <div class="row mb-2">
-                            <div class="col-24">
-                                Deseja buscar/obter suas amostras já analisadas de volta?
-                                <div class="row mb-2">
-                                    <div class="col-24">
-                                        <radio-button [(ngModel)]="object.form.retirada"
-                                            enum="RetiradaAmostra">
-                                        </radio-button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-2">
-                        <b>REPETIÇÃO DE ANÁLISES</b>
-                        <div class="row mb-2">
-                            <div class="col-24">
-                                Caso seja necessário repetir a análise de alguma amostra, entrar em contato
-                                dentro do prazo de 7 dias.
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-2">
-                        <b>DESCARTE</b>
-                        <div class="row mb-2">
-                            <div class="col-24">
-                                <p>
-                                    Seguindo Protocolo de "Normas Gerais de Gerenciamento de Resíduos Químicos
-                                    no Instituto de Química - Unesp Revisão 2017" e também do guia da UTFPR,
-                                    para RESÍDUOS DE LABORATÓRIOS. (acessados em :
-                                    <a href="https://drive.google.com/file/d/1VpqnpSd0GMohhL2BKlZsaKlpr7sxdRKc/view"
-                                        target="_blank">
-                                        https://drive.google.com/file/d/1VpqnpSd0GMohhL2BKlZsaKlpr7sxdRKc/view</a>)
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="row mb-2">
-                            <div class="col-24">
-                                <radio-button label="Natureza da Amostra" compCtrl required
-                                    [(ngModel)]="object.form.naturezaAmostra" enum="NaturezaAmostra"
-                                    (onChange)="onChangeNaturezaAmostra()">
-                                </radio-button>
-                            </div>
-                        </div>
-
-                        <div class="row mb-2">
-                            <div class="col-24 table-responsive">
-                                <table class="table table-striped table-bordered">
-                                    <tbody>
-                                        <tr
-                                            *ngIf="object.form?.naturezaAmostra == NATUREZA_ORGANICA_ORGANICA">
-                                            <td colspan="2">
-                                                <radio-button [(ngModel)]="object.form.descarteOrganico"
-                                                    enum="DescarteOrganico" compCtrl="Descartes - Orgânico"
-                                                    required (onChange)="onChangeDescarteOrganico()">
-                                                </radio-button>
-                                                <input-text label="Outro" compCtrl required
-                                                    *ngIf="object.form?.descarteOrganico == OPCAO_OUTRO"
-                                                    [(ngModel)]="object.form.descarteOrganicoOutro">
-                                                </input-text>
-                                            </td>
-                                        </tr>
-                                        <tr
-                                            *ngIf="object.form?.naturezaAmostra == NATUREZA_ORGANICA_INORGANICA">
-                                            <td colspan="2">
-                                                <radio-button [(ngModel)]="object.form.descarteInorganico"
-                                                    enum="DescarteInorganico"
-                                                    compCtrl="Descartes - Inorgânico" required
-                                                    (onChange)="onChangeDescarteInorganico()">
-                                                </radio-button>
-                                                <input-text label="Outro" compCtrl required
-                                                    *ngIf="object.form?.descarteInorganico == OPCAO_OUTRO"
-                                                    [(ngModel)]="object.form.descarteInorganicoOutro">
-                                                </input-text>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Recomendação de descarte pelo usuário
-                                                <radio-button [(ngModel)]="object.form.descarteUsuario"
-                                                    enum="DescarteUsuario" compCtrl="Descartes - Usuário"
-                                                    required (onChange)="onChangeDescarteUsuario()">
-                                                </radio-button>
-                                                <input-textarea label="Outro" compCtrl required
-                                                    *ngIf="object.form?.descarteUsuario == OPCAO_OUTRO"
-                                                    [(ngModel)]="object.form.descarteUsuarioOutro">
-                                                </input-textarea>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="mb-2">
-                        <b>CITAÇÃO</b>
-                        <div class="row mb-2">
-                            <div class="col-24">
-                                <checkbox [(ngModel)]="object.form.citacao"
-                                    [label]="'Aceito e me comprometo a mencionar a \'Central de Análises - UTFPR Campus Pato Branco\' nos agradecimentos em todos os tipos de publicações que resultarem da utilização de suas instalações.'" />
-                            </div>
-                        </div>
-                    </li>
-                </ol>
-            </div>
-        </div>
     </ng-template>
 
     <div class="row">
@@ -375,6 +573,7 @@
         </div>
     </div>
 
+    <ng-container *ngIf="isValidForm()"></ng-container>
 </form-crud>
 
 <ng-template #btnVoltar let-emitter>

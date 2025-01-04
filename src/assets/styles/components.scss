@@ -10,6 +10,18 @@ input, textarea {
     }
 }
 
+periodic-table div:first-of-type {
+    &.required {
+        border-left  : 4px solid var(--bs-form-invalid-color);
+        border-bottom: 2px solid var(--bs-form-invalid-color);
+    }
+
+    &.valid {
+        border-left-color  : var(--bs-form-valid-color) !important;
+        border-bottom-color: var(--bs-form-valid-color) !important;
+    }
+}
+
 radio-button {
     & .required {
         & div.p-radiobutton-box {
