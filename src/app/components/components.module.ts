@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgxTooltip } from '@ngx-popovers/tooltip';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -164,6 +165,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         DateFilterTemplateComponent,
         StepperModule,
         TableModule,
+        NgxTooltip,
     ],
     imports: [
         CommonModule,
@@ -190,6 +192,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         CalendarModule,
         DialogModule,
         StepperModule,
+        NgxTooltip,
     ],
     providers: [
         ToastrService,

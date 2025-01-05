@@ -24,7 +24,7 @@ export class UserListComponent extends FormList<User> {
     }
 
     public override showButtons(button: string): boolean {
-        return ['cancelar'].indexOf(button) != -1;
+        return ['cancelar'].includes(button);
     }
 
 }

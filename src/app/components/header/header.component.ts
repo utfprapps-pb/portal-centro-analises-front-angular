@@ -72,7 +72,6 @@ export class HeaderComponent implements OnDestroy {
                 icon: 'far fa-file-lines',
                 url: '/#/solicitar',
                 target: '_self',
-                styleClass: "ms-3",
                 // visible: admin
             },
             {

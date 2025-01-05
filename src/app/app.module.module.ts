@@ -29,7 +29,7 @@ import { AuthService } from './core/services/auth.service';
         FormsModule,
         ComponentsModule,
         ToastModule,
-        MessagesModule
+        MessagesModule,
     ],
     providers: [
         AuthService,

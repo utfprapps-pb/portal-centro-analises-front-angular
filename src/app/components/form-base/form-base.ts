@@ -1,6 +1,6 @@
 import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 import pageSettings from '../../core/constants/page-settings';
 import { Roles } from '../../core/enums/roles.enum';
@@ -18,6 +18,7 @@ import { FormBaseComponent } from './form-base.component';
 export abstract class FormBase implements OnDestroy {
 
     public abstract formView: FormBaseComponent;
+    private destroy$ = new Subject<void>();
 
     public isAdmin: boolean = false;
     public isProfessor: boolean = false;
@@ -66,6 +67,8 @@ export abstract class FormBase implements OnDestroy {
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach(it => it.unsubscribe());
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
     public getFieldsCompCtrl(): CompCtrlDirective[] {

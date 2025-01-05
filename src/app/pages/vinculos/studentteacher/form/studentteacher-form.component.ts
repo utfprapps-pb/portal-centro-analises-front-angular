@@ -50,7 +50,7 @@ export class StudentTeacherFormComponent extends FormCrud<StudentTeacher> implem
 
     public override showButtons(button: string): boolean {
         if (this.objectUpdating()) {
-            return ['excluir', 'cancelar'].indexOf(button) != -1;
+            return ['excluir', 'cancelar'].includes(button);
         } else {
             return true;
         }

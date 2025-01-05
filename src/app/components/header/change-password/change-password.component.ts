@@ -27,7 +27,7 @@ export class ChangePasswordComponent extends FormCrud<UserDTO> {
     }
 
     public override showButtons(button: string): boolean {
-        return ['salvar', 'cancelar'].indexOf(button) != -1;
+        return ['salvar', 'cancelar'].includes(button);
     }
 
     public override showHeader(): boolean {

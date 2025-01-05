@@ -21,6 +21,8 @@
         "@angular/platform-browser": "^17.2.0",
         "@angular/platform-browser-dynamic": "^17.2.0",
         "@angular/router": "^17.2.0",
+        "@ngx-popovers/core": "^17.0.0",
+        "@ngx-popovers/tooltip": "^17.0.0",
         "ngx-json-viewer": "^3.2.1",
         "primeicons": "^7.0.0",
         "primeng": "^17.11.0",

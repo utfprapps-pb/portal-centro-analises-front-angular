@@ -33,7 +33,7 @@ export class UserFormComponent extends FormCrud<User> {
     }
 
     public override showButtons(button: string): boolean {
-        return ['excluir'].indexOf(button) == -1;
+        return !['excluir'].includes(button);
     }
 
     public override onLoadObject(object: User): void {

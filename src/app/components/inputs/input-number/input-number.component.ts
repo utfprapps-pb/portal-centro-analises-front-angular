@@ -22,6 +22,9 @@ export class InputNumber extends InputBaseComponent {
     @Input('max') max: number = null;
     @Input('min') min: number = 0;
 
+    @Input('minFractionDigits') minFractionDigits: number = 0;
+    @Input('maxFractionDigits') maxFractionDigits: number = 0;
+
     override getContainer(): any {
         return this.component;
     }

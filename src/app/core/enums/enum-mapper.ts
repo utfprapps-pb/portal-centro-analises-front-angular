@@ -1,6 +1,8 @@
 import { AAForno, getAAFornoColor, getAAFornoTranslation } from './aa-forno.enum';
 import { Action, getActionColor, getActionTranslation } from './action.enum';
 import { Boolean, getBooleanColor, getBooleanTranslation } from './boolean.enum';
+import { CLAEModoEluicao, getCLAEModoEluicaoColor, getCLAEModoEluicaoTranslation } from './clae-modo-eluicao.enum';
+import { CORTipoLeitura, getCORTipoLeituraColor, getCORTipoLeituraTranslation } from './cor-tipo-leitura.enum';
 import {
     DescarteInorganico,
     getDescarteInorganicoColor,
@@ -71,8 +73,13 @@ export function getEnum(enumName: string): any {
             return DescarteInorganico;
         case 'DescarteUsuario':
             return DescarteUsuario;
-            case 'AAForno':
+        case 'AAForno':
             return AAForno;
+        case 'CLAEModoEluicao':
+            return CLAEModoEluicao;
+        case 'CORTipoLeitura':
+            return CORTipoLeitura;
+
         default:
             console.error(`getEnum: Enum não mapeado no enum-mapper.ts \t ${enumName}`);
             throw new Error(`getEnum: Enum não mapeado no enum-mapper.ts \t ${enumName}`);
@@ -111,8 +118,12 @@ export function getEnumColor(enumName: string, enumValue: any): string {
             return getDescarteInorganicoColor(enumValue);
         case 'DescarteUsuario':
             return getDescarteUsuarioColor(enumValue);
-            case 'AAForno':
+        case 'AAForno':
             return getAAFornoColor(enumValue);
+        case 'CLAEModoEluicao':
+            return getCLAEModoEluicaoColor(enumValue);
+        case 'CORTipoLeitura':
+            return getCORTipoLeituraColor(enumValue);
         default:
             console.error(`getEnumColor: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
             throw new Error(`getEnumColor: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
@@ -151,8 +162,12 @@ export function getEnumTranslation(enumName: string, enumValue: any): string {
             return getDescarteInorganicoTranslation(enumValue);
         case 'DescarteUsuario':
             return getDescarteUsuarioTranslation(enumValue);
-            case 'AAForno':
+        case 'AAForno':
             return getAAFornoTranslation(enumValue);
+        case 'CLAEModoEluicao':
+            return getCLAEModoEluicaoTranslation(enumValue);
+        case 'CORTipoLeitura':
+            return getCORTipoLeituraTranslation(enumValue);
         default:
             console.error(`getEnumTranslation: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
             throw new Error(`getEnumTranslation: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);

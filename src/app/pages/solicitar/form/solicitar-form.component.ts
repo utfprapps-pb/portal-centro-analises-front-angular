@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Injector, ViewChild } from '@angular/core';
-import { NgxJsonViewerComponent } from 'ngx-json-viewer';
+import { Stepper } from 'primeng/stepper';
 
 import { FormCrud } from '../../../components/form-crud/form-crud';
 import { FormCrudComponent } from '../../../components/form-crud/form-crud.component';
@@ -21,7 +21,8 @@ import { SolicitarService } from '../solicitar.service';
 export class SolicitarFormComponent extends FormCrud<Solicitation> implements AfterViewInit {
 
     @ViewChild('formView') public formView: FormCrudComponent;
-    @ViewChild('viewer') public viewer: NgxJsonViewerComponent;
+    @ViewChild('stepper') public stepper: Stepper;
+
     public activeStep: number = 0;
 
     public readonly OPCAO_OUTRO: any = 'OTHER';
@@ -42,23 +43,46 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
     }
 
     public ngAfterViewInit(): void {
-        this.hasViewInitializated = true;
+        setTimeout(() => {
+            this.hasViewInitializated = true;
+        });
     }
 
     public override showButtons(button: string): boolean {
-        return ['cancelar'].indexOf(button) != -1;
+        return false; // this.activeStep == 0 && ['cancelar'].includes(button);
+    }
+
+    public onClickVoltarStep(): void {
+        if (this.activeStep > 0) {
+            this.activeStep--;
+            this.onChangeStep();
+        }
+    }
+
+    public onClickAvancarStep(): void {
+        if (this.activeStep < (this.stepper.panels.length - 1)) {
+            this.activeStep++;
+            this.onChangeStep();
+        }
+    }
+
+    public onClickFinalizar(): void {
+        if (!this.disableButtonAvancar()) {
+            this.onClickSalvar();
+        }
+    }
+
+    public disableButtonAvancar(): boolean {
+        if (this.activeStep >= 2) {
+            return !this.isValidForm() || this.object.form.citacao == undefined || !this.object.form.citacao
+        }
+        return false;
     }
 
     public override async onAfterLoadObject(object: Solicitation): Promise<void> {
         await this.projectService.findAllSelf().then(async data => {
             this.projetos = data;
         });
-        this.updateJson();
-    }
-
-    public objectJson: any = {};
-    public updateJson(): void {
-        this.objectJson = { ...this.object } || {};
     }
 
     public onChangeProject(project: Project): void {
@@ -106,6 +130,7 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
     }
 
     public onChangeStep(): void {
+        document.querySelector('html').scrollTop = 0
         if (this.activeStep == 2) {
             this.object.form.citacao = false;
         }
@@ -113,10 +138,6 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
 
     public getSolicitationType(): string {
         return this.object.solicitationType;
-    }
-
-    public onClickFinalizar(): void {
-        this.onClickSalvar();
     }
 
     public isValidForm(): boolean {
@@ -131,6 +152,36 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
             delete object.form.elementos;
             delete object.form.curvaConcentracao;
         }
+
+        if (this.getSolicitationType() == 'CLAE') {
+            if (object.form.utilizaPDA != true) {
+                object.form.compOndaCanal1 = null;
+                object.form.compOndaCanal2 = null;
+            }
+            if (object.form.modoEluicao == 'ISO') {
+                object.form.condicoesGradiente = null;
+            } else {
+                object.form.composicaoFaseMovel = null;
+            }
+        } else {
+            delete object.form.coluna;
+            delete object.form.fluxo;
+            delete object.form.tempoAnalise;
+            delete object.form.volumeInjetado;
+            delete object.form.temperaturaFornoColuna;
+            delete object.form.utilizaPDA;
+            delete object.form.compOndaCanal1;
+            delete object.form.compOndaCanal2;
+            delete object.form.modoEluicao;
+            delete object.form.composicaoFaseMovel;
+            delete object.form.condicoesGradiente;
+        }
+
+        if (this.getSolicitationType() != 'COR') {
+            delete object.form.locationMed;
+            delete object.form.tipoLeitura;
+        }
+
         return null;
     }
 
@@ -149,6 +200,24 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
 
     private updateAmostraNumber(): void {
         this.object.amountSamples = this.object.form.amostras.length;
+    }
+
+    public onClickReplicarDadosAmostras(index: number): void {
+        const origem: SolicitationAmostra = this.convertUtilsService.cloneObject(this.object.form.amostras[index]);
+
+        for (let i = 0; i < this.object.form.amostras.length; i++) {
+            if (i != index) {
+                const identificationOrigem = this.convertUtilsService.cloneObject(this.object.form.amostras[i].identification);
+                const descriptionOrigem = this.convertUtilsService.cloneObject(this.object.form.amostras[i].description);
+                const leiturasOrigem = this.convertUtilsService.cloneObject(this.object.form.amostras[i].leituras);
+
+                this.object.form.amostras[i] = this.convertUtilsService.cloneObject(origem);
+                this.object.form.amostras[i].identification = identificationOrigem;
+                this.object.form.amostras[i].description = descriptionOrigem;
+                this.object.form.amostras[i].leituras = leiturasOrigem;
+            }
+        }
+
     }
 
 }
