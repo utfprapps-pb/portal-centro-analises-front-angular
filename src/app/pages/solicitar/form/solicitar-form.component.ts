@@ -146,11 +146,11 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
 
     protected override onBeforeSave(object: Solicitation): Promise<void> {
         if (this.getSolicitationType() != 'AA') {
-            delete object.form.methodologyDescription;
-            delete object.form.limitesConcentracao;
-            delete object.form.forno;
-            delete object.form.elementos;
-            delete object.form.curvaConcentracao;
+            // delete object.form.methodologyDescription;
+            // delete object.form.limitesConcentracao;
+            // delete object.form.forno;
+            // delete object.form.elementos;
+            // delete object.form.curvaConcentracao;
         }
 
         if (this.getSolicitationType() == 'CLAE') {
@@ -164,29 +164,34 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
                 object.form.composicaoFaseMovel = null;
             }
         } else {
-            delete object.form.coluna;
-            delete object.form.fluxo;
-            delete object.form.tempoAnalise;
-            delete object.form.volumeInjetado;
-            delete object.form.temperaturaFornoColuna;
-            delete object.form.utilizaPDA;
-            delete object.form.compOndaCanal1;
-            delete object.form.compOndaCanal2;
-            delete object.form.modoEluicao;
-            delete object.form.composicaoFaseMovel;
-            delete object.form.condicoesGradiente;
+            // delete object.form.coluna;
+            // delete object.form.fluxo;
+            // delete object.form.tempoAnalise;
+            // delete object.form.volumeInjetado;
+            // delete object.form.temperaturaFornoColuna;
+            // delete object.form.utilizaPDA;
+            // delete object.form.compOndaCanal1;
+            // delete object.form.compOndaCanal2;
+            // delete object.form.modoEluicao;
+            // delete object.form.composicaoFaseMovel;
+            // delete object.form.condicoesGradiente;
         }
 
         if (this.getSolicitationType() != 'COR') {
-            delete object.form.locationMed;
-            delete object.form.tipoLeitura;
+            // delete object.form.locationMed;
+            // delete object.form.tipoLeitura;
+        }
+
+        if (this.getSolicitationType() != 'DRX') {
+            // delete object.form.modoAnalise;
         }
 
         return null;
     }
 
     public onClickAddAmostra(): void {
-        this.object.form.amostras.push(new SolicitationAmostra());
+        const novaAmostra: SolicitationAmostra = new SolicitationAmostra();
+        this.object.form.amostras.push(novaAmostra);
         this.updateAmostraNumber();
     }
 

@@ -7,13 +7,27 @@
 }
 
 .index-column {
-    min-width: 40px;
-    width: 40px;
-    max-width: 40px;
+    min-width: 32px;
+    width: 32px;
+    max-width: 32px;
 }
 
 .button-column {
-    min-width: 40px;
-    width: 40px;
-    max-width: 40px;
+    min-width: 32px;
+    width: 32px;
+    max-width: 32px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.min-180 {
+    min-width: 180px;
+}
+
+.min-250 {
+    min-width: 250px;
+}
+
+.vertical-middle {
+    vertical-align: middle;
 }

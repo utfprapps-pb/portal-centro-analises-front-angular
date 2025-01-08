@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 import { AAForno, getAAFornoColor, getAAFornoTranslation } from './aa-forno.enum';
 import { Action, getActionColor, getActionTranslation } from './action.enum';
 import { Boolean, getBooleanColor, getBooleanTranslation } from './boolean.enum';
@@ -10,6 +12,17 @@ import {
 } from './descarte-inorganico.enum';
 import { DescarteOrganico, getDescarteOrganicoColor, getDescarteOrganicoTranslation } from './descarte-organico.enum';
 import { DescarteUsuario, getDescarteUsuarioColor, getDescarteUsuarioTranslation } from './descarte-usuario.enum';
+import { DRXModoAnalise, getDRXModoAnaliseColor, getDRXModoAnaliseTranslation } from './drx-modo-analise.enum';
+import { DRXStep, getDRXStepColor, getDRXStepTranslation } from './drx-step.enum';
+import { DSCAtmosfera, getDSCAtmosferaColor, getDSCAtmosferaTranslation } from './dsc-atmosfera.enum';
+import { DSCTecnica, getDSCTecnicaColor, getDSCTecnicaTranslation } from './dsc-tecnica.enum';
+import { FTMIREstado, getFTMIREstadoColor, getFTMIREstadoTranslation } from './ftmir-estado.enum';
+import {
+    FTMIRRegistroEspectro,
+    getFTMIRRegistroEspectroColor,
+    getFTMIRRegistroEspectroTranslation,
+} from './ftmir-registro-espectro.enum';
+import { FTMIRServico, getFTMIRServicoColor, getFTMIRServicoTranslation } from './ftmir-servico.enum';
 import { getNaturezaAmostraColor, getNaturezaAmostraTranslation, NaturezaAmostra } from './natureza-amostra.enum';
 import { getRetiradaAmostraColor, getRetiradaAmostraTranslation, RetiradaAmostra } from './retirada-amostras.enum';
 import { getRolesColor, getRolesTranslation, Roles } from './roles.enum';
@@ -79,9 +92,22 @@ export function getEnum(enumName: string): any {
             return CLAEModoEluicao;
         case 'CORTipoLeitura':
             return CORTipoLeitura;
-
+        case 'DRXModoAnalise':
+            return DRXModoAnalise;
+        case 'DRXStep':
+            return DRXStep;
+        case 'DSCTecnica':
+            return DSCTecnica;
+        case 'DSCAtmosfera':
+            return DSCAtmosfera;
+        case 'FTMIRServico':
+            return FTMIRServico;
+        case 'FTMIREstado':
+            return FTMIREstado;
+        case 'FTMIRRegistroEspectro':
+            return FTMIRRegistroEspectro;
         default:
-            console.error(`getEnum: Enum não mapeado no enum-mapper.ts \t ${enumName}`);
+            Swal.fire({ title: enumName, text: `getEnum: Enum não mapeado no enum-mapper.ts \t ${enumName}` });
             throw new Error(`getEnum: Enum não mapeado no enum-mapper.ts \t ${enumName}`);
     }
 }
@@ -124,8 +150,22 @@ export function getEnumColor(enumName: string, enumValue: any): string {
             return getCLAEModoEluicaoColor(enumValue);
         case 'CORTipoLeitura':
             return getCORTipoLeituraColor(enumValue);
+        case 'DRXModoAnalise':
+            return getDRXModoAnaliseColor(enumValue);
+        case 'DRXStep':
+            return getDRXStepColor(enumValue);
+        case 'DSCTecnica':
+            return getDSCTecnicaColor(enumValue);
+        case 'DSCAtmosfera':
+            return getDSCAtmosferaColor(enumValue);
+        case 'FTMIRServico':
+            return getFTMIRServicoColor(enumValue);
+        case 'FTMIREstado':
+            return getFTMIREstadoColor(enumValue);
+        case 'FTMIRRegistroEspectro':
+            return getFTMIRRegistroEspectroColor(enumValue);
         default:
-            console.error(`getEnumColor: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
+            Swal.fire({ title: enumValue, text: `getEnumColor: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}` });
             throw new Error(`getEnumColor: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
     }
 }
@@ -168,8 +208,22 @@ export function getEnumTranslation(enumName: string, enumValue: any): string {
             return getCLAEModoEluicaoTranslation(enumValue);
         case 'CORTipoLeitura':
             return getCORTipoLeituraTranslation(enumValue);
+        case 'DRXModoAnalise':
+            return getDRXModoAnaliseTranslation(enumValue);
+        case 'DRXStep':
+            return getDRXStepTranslation(enumValue);
+        case 'DSCTecnica':
+            return getDSCTecnicaTranslation(enumValue);
+        case 'DSCAtmosfera':
+            return getDSCAtmosferaTranslation(enumValue);
+        case 'FTMIRServico':
+            return getFTMIRServicoTranslation(enumValue);
+        case 'FTMIREstado':
+            return getFTMIREstadoTranslation(enumValue);
+        case 'FTMIRRegistroEspectro':
+            return getFTMIRRegistroEspectroTranslation(enumValue);
         default:
-            console.error(`getEnumTranslation: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
+            Swal.fire({ title: enumValue, text: `getEnumTranslation: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}` });
             throw new Error(`getEnumTranslation: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
     }
 }

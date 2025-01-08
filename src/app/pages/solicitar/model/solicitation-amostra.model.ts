@@ -16,4 +16,21 @@ export class SolicitationAmostra {
     descarteUsuario: string = null;
     descarteUsuarioOutro: string = null;
 
+    // DRX
+    faixaVarredura: number = null;
+    step: string = '_002';
+    velocidadeVarredura: number = null;
+    tempoPasso: number = null;
+
+    // DSC
+    expande: boolean = null
+    liberaGas: boolean = null
+    gasLiberado: string = null
+    massa: number = null
+    tecnica: string = null
+    atmosfera: string = null
+    fluxoGas: number = null
+    taxaAquecimento: number = null
+    intervaloTemperatura: number = null
+
 }

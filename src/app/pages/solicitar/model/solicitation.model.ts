@@ -36,11 +36,32 @@ export class Solicitation extends ZModel {
 
         'amostras': [new SolicitationAmostra()],
 
+        // AA
         'methodologyDescription': null,
         'limitesConcentracao': null,
         'forno': null,
         'elementos': null,
         'curvaConcentracao': null,
+
+        // CLAE
+        'coluna': null,
+        'fluxo': null,
+        'tempoAnalise': null,
+        'volumeInjetado': null,
+        'temperaturaFornoColuna': null,
+        'utilizaPDA': null,
+        'compOndaCanal1': null,
+        'compOndaCanal2': null,
+        'modoEluicao': null,
+        'composicaoFaseMovel': null,
+        'condicoesGradiente': null,
+
+        // COR
+        'locationMed': null,
+        'tipoLeitura': null,
+
+        // DRX
+        'modoAnalise': 'CN',
     };
 
     scheduleDate: Date = null;
