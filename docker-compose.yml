@@ -17,7 +17,7 @@ services:
       # Traefik Config
       - "traefik.enable=true"
       - "traefik.http.routers.portal-ca-lab.tls=true"
-      - "traefik.http.routers.portal-ca-lab.rule=Host(`ca-dev-v2.app.pb.utfpr.edu.br`)"
+      - "traefik.http.routers.portal-ca-lab.rule=Host(`ca-dev.app.pb.utfpr.edu.br`)"
       - "traefik.http.routers.portal-ca-lab.tls.certresolver=letsencrypt"
       - "traefik.http.routers.portal-ca-lab.entrypoints=websecure"
 
