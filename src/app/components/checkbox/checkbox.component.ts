@@ -29,7 +29,7 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
     @Input() class: string = 'd-contents';
     @Input() vertical: boolean = true;
 
-    @Output('onChange') onChangeEventEmmiter: EventEmitter<number> = new EventEmitter();
+    @Output('onChange') onChangeEventEmitter: EventEmitter<number> = new EventEmitter();
 
     private _innerObject: any;
     private _innerValue: string = null;
@@ -103,7 +103,7 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
         if (value !== this.innerValue) {
             this._innerValue = value;
             this.onChange(value);
-            this.onChangeEventEmmiter.emit(value);
+            this.onChangeEventEmitter.emit(value);
         }
     }
 

@@ -38,7 +38,7 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
 
     @Input('showClear') showClear: boolean = true;
 
-    @Output('onChange') onChangeEventEmmiter: EventEmitter<any> = new EventEmitter();
+    @Output('onChange') onChangeEventEmitter: EventEmitter<any> = new EventEmitter();
 
     public displayValue: string = null;
     public mappedDisplayValues: Map<any, string> = new Map();
@@ -166,7 +166,7 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
         if (value !== this.innerValue) {
             this._innerValue = value;
             this.onChange(value);
-            this.onChangeEventEmmiter.emit(value);
+            this.onChangeEventEmitter.emit(value);
         }
     }
 
@@ -296,4 +296,5 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
             this.component.focus();
         });
     }
+
 }

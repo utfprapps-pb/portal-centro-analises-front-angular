@@ -4,6 +4,7 @@ import { ControlValueAccessor } from '@angular/forms';
 import { getEnum, getEnumTranslation } from '../../core/enums/enum-mapper';
 import { ConvertUtilsService } from '../../utils/convert-utils.service';
 import { Guid } from '../../utils/models/guid';
+import { ObjectUtils } from '../../utils/object-utils';
 import { CompCtrlContainer } from '../compctrl/compctrl.container';
 import { InputBaseComponent } from '../inputs/input-base/input-base.component';
 import { InvalidInfoComponent } from '../inputs/invalid-info/invalid-info.component';
@@ -28,10 +29,12 @@ export class RadioButtonComponent extends CompCtrlContainer implements ControlVa
     @Input() placeholder: string = '';
     @Input() class: string = 'field-checkbox d-flex';
     @Input() vertical: boolean = true;
+    @Input() ignore: string = null;
+    @Input() disables: string = null;
 
     @Input('showClear') showClear: boolean = true;
 
-    @Output('onChange') onChangeEventEmmiter: EventEmitter<number> = new EventEmitter();
+    @Output('onChange') onChangeEventEmitter: EventEmitter<number> = new EventEmitter();
 
     private _innerObject: any;
     private _innerValue: string = null;
@@ -42,10 +45,20 @@ export class RadioButtonComponent extends CompCtrlContainer implements ControlVa
     @Input('enum') set enum(name: string) {
         const enu = getEnum(name);
         for (const key in enu) {
-            this.options.push({ guid: Guid.raw(), key: key, value: getEnumTranslation(name, key) })
+            this._options.push({ guid: Guid.raw(), key: key, value: getEnumTranslation(name, key) })
         }
     };
-    public options: any[] = []
+    public _options: any[] = []
+    get options(): any[] {
+        if (ObjectUtils.isEmpty(this.ignore)) {
+            return this._options;
+        }
+        return this._options.filter(it => !this.ignore.split(',').includes(it.key))
+    }
+
+    public isOptionDisabled(option: any): boolean {
+        return this.disabled || (ObjectUtils.isNotEmpty(this.disables) && this.disables.split(',').includes(option.key));
+    }
 
     constructor(protected readonly convertUtilsService: ConvertUtilsService) {
         super();
@@ -113,7 +126,7 @@ export class RadioButtonComponent extends CompCtrlContainer implements ControlVa
         if (value !== this.innerValue) {
             this._innerValue = value;
             this.onChange(value);
-            this.onChangeEventEmmiter.emit(value);
+            this.onChangeEventEmitter.emit(value);
         }
     }
 
@@ -121,9 +134,9 @@ export class RadioButtonComponent extends CompCtrlContainer implements ControlVa
     writeValue(value: any): void {
         if (value !== this.innerObject) {
             if (typeof (value) == 'string') {
-                let val = this.options.find(it => it.key == value);
+                let val = this._options.find(it => it.key == value);
                 if (val == undefined) {
-                    val = this.options.find(it => it.value == value);
+                    val = this._options.find(it => it.value == value);
                 }
                 this.innerObject = val;
             } else {

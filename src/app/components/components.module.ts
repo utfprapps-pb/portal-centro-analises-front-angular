@@ -7,6 +7,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { FileUploadModule } from 'primeng/fileupload';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputMaskModule } from 'primeng/inputmask';
@@ -79,6 +80,7 @@ import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.compone
 import { PeriodicTableElementComponent } from './periodic-table/periodic-table-element/periodic-table-element.component';
 import { PeriodicTableComponent } from './periodic-table/periodic-table.component';
 import { RadioButtonComponent } from './radiobutton/radiobutton.component';
+import { UploadfileComponent } from './uploadfile/uploadfile.component';
 
 @NgModule({
     declarations: [
@@ -103,6 +105,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         InputNumber,
         InputCurrency,
         DatePicker,
+        UploadfileComponent,
 
         PeriodicTableComponent,
         PeriodicTableElementComponent,
@@ -145,6 +148,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         InputNumber,
         InputCurrency,
         DatePicker,
+        UploadfileComponent,
 
         PeriodicTableComponent,
         PeriodicTableElementComponent,
@@ -193,6 +197,7 @@ import { RadioButtonComponent } from './radiobutton/radiobutton.component';
         DialogModule,
         StepperModule,
         NgxTooltip,
+        FileUploadModule,
     ],
     providers: [
         ToastrService,

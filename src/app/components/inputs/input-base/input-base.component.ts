@@ -27,7 +27,7 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
 
     @Input('showClear') showClear: boolean = true;
 
-    @Output('onChange') onChangeEventEmmiter: EventEmitter<number> = new EventEmitter();
+    @Output('onChange') onChangeEventEmitter: EventEmitter<number> = new EventEmitter();
 
     private _innerValue: string = null;
     private _disabled: boolean = null;
@@ -94,7 +94,7 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
         if (v !== this.innerValue) {
             this._innerValue = v;
             this.onChange(v);
-            this.onChangeEventEmmiter.emit(v);
+            this.onChangeEventEmitter.emit(v);
         }
     }
 

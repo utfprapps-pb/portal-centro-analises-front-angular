@@ -8,9 +8,11 @@ import { UserLoginDTO } from '../../../dtos/user-login-dto';
 import { ObjectUtils } from '../../../utils/object-utils';
 import { Project } from '../../project/model/project.model';
 import { ProjectService } from '../../project/project.service';
+import { SolicitationAmostraFoto } from '../model/solicitation-amostra-foto.model';
 import { SolicitationAmostra } from '../model/solicitation-amostra.model';
 import { Solicitation } from '../model/solicitation.model';
 import { SolicitarService } from '../solicitar.service';
+import { SolicitationFormType } from './../../../core/enums/solicitation-form-type.enum';
 
 
 @Component({
@@ -50,6 +52,22 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
 
     public override showButtons(button: string): boolean {
         return false; // this.activeStep == 0 && ['cancelar'].includes(button);
+    }
+
+    private lastSolicitationType: SolicitationFormType = null;
+    public onChangeSolicitationType(): void {
+        if (this.lastSolicitationType == this.object.solicitationType) {
+            return;
+        }
+        this.lastSolicitationType = this.object.solicitationType
+        const preserve: string[] = ['retirada', 'citacao']
+        for (const prop in this.object.form) {
+            if (!preserve.includes(prop)) {
+                delete this.object.form[prop];
+            }
+        }
+        this.object.form.amostras = [];
+        this.onClickAddAmostra();
     }
 
     public onClickVoltarStep(): void {
@@ -145,52 +163,55 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
     }
 
     protected override onBeforeSave(object: Solicitation): Promise<void> {
-        if (this.getSolicitationType() != 'AA') {
-            // delete object.form.methodologyDescription;
-            // delete object.form.limitesConcentracao;
-            // delete object.form.forno;
-            // delete object.form.elementos;
-            // delete object.form.curvaConcentracao;
-        }
+        // if (this.getSolicitationType() != 'AA') {
+        //     // delete object.form.methodologyDescription;
+        //     // delete object.form.limitesConcentracao;
+        //     // delete object.form.forno;
+        //     // delete object.form.elementos;
+        //     // delete object.form.curvaConcentracao;
+        // }
 
-        if (this.getSolicitationType() == 'CLAE') {
-            if (object.form.utilizaPDA != true) {
-                object.form.compOndaCanal1 = null;
-                object.form.compOndaCanal2 = null;
-            }
-            if (object.form.modoEluicao == 'ISO') {
-                object.form.condicoesGradiente = null;
-            } else {
-                object.form.composicaoFaseMovel = null;
-            }
-        } else {
-            // delete object.form.coluna;
-            // delete object.form.fluxo;
-            // delete object.form.tempoAnalise;
-            // delete object.form.volumeInjetado;
-            // delete object.form.temperaturaFornoColuna;
-            // delete object.form.utilizaPDA;
-            // delete object.form.compOndaCanal1;
-            // delete object.form.compOndaCanal2;
-            // delete object.form.modoEluicao;
-            // delete object.form.composicaoFaseMovel;
-            // delete object.form.condicoesGradiente;
-        }
+        // if (this.getSolicitationType() == 'CLAE') {
+        //     if (object.form.utilizaPDA != true) {
+        //         object.form.compOndaCanal1 = null;
+        //         object.form.compOndaCanal2 = null;
+        //     }
+        //     if (object.form.modoEluicao == 'ISO') {
+        //         object.form.condicoesGradiente = null;
+        //     } else {
+        //         object.form.composicaoFaseMovel = null;
+        //     }
+        // } else {
+        //     // delete object.form.coluna;
+        //     // delete object.form.fluxo;
+        //     // delete object.form.tempoAnalise;
+        //     // delete object.form.volumeInjetado;
+        //     // delete object.form.temperaturaFornoColuna;
+        //     // delete object.form.utilizaPDA;
+        //     // delete object.form.compOndaCanal1;
+        //     // delete object.form.compOndaCanal2;
+        //     // delete object.form.modoEluicao;
+        //     // delete object.form.composicaoFaseMovel;
+        //     // delete object.form.condicoesGradiente;
+        // }
 
-        if (this.getSolicitationType() != 'COR') {
-            // delete object.form.locationMed;
-            // delete object.form.tipoLeitura;
-        }
+        // if (this.getSolicitationType() != 'COR') {
+        //     // delete object.form.locationMed;
+        //     // delete object.form.tipoLeitura;
+        // }
 
-        if (this.getSolicitationType() != 'DRX') {
-            // delete object.form.modoAnalise;
-        }
+        // if (this.getSolicitationType() != 'DRX') {
+        //     // delete object.form.modoAnalise;
+        // }
 
         return null;
     }
 
     public onClickAddAmostra(): void {
         const novaAmostra: SolicitationAmostra = new SolicitationAmostra();
+        if (this.getSolicitationType() == 'MEV') {
+            this.onClickAddFotoMev(novaAmostra);
+        }
         this.object.form.amostras.push(novaAmostra);
         this.updateAmostraNumber();
     }
@@ -215,14 +236,37 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
                 const identificationOrigem = this.convertUtilsService.cloneObject(this.object.form.amostras[i].identification);
                 const descriptionOrigem = this.convertUtilsService.cloneObject(this.object.form.amostras[i].description);
                 const leiturasOrigem = this.convertUtilsService.cloneObject(this.object.form.amostras[i].leituras);
+                const tipoAmostraOrigem = this.convertUtilsService.cloneObject(this.object.form.amostras[i].tipoAmostra);
+                const modeloMicroscopiaOrigem = this.convertUtilsService.cloneObject(this.object.form.amostras[i].modeloMicroscopia);
 
                 this.object.form.amostras[i] = this.convertUtilsService.cloneObject(origem);
                 this.object.form.amostras[i].identification = identificationOrigem;
                 this.object.form.amostras[i].description = descriptionOrigem;
                 this.object.form.amostras[i].leituras = leiturasOrigem;
+                this.object.form.amostras[i].tipoAmostra = tipoAmostraOrigem;
+                this.object.form.amostras[i].modeloMicroscopia = modeloMicroscopiaOrigem;
             }
         }
+    }
 
+    public onClickAddFotoMev(amostra: SolicitationAmostra): void {
+        if (ObjectUtils.isEmpty(amostra.fotos)) {
+            amostra.fotos = [];
+        }
+        const foto: SolicitationAmostraFoto = new SolicitationAmostraFoto();
+        amostra.fotos.push(foto);
+    }
+
+    public onClickRemoveFotoMev(amostra: SolicitationAmostra, index: number): void {
+        amostra.fotos.splice(index, 1);
+        this.updateAmostraNumber();
+        if (ObjectUtils.isEmpty(amostra.fotos)) {
+            this.onClickAddFotoMev(amostra);
+        }
+    }
+
+    public getBucketName(): string {
+        return `${this.authentication.getUserLogged().id}`
     }
 
 }

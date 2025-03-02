@@ -9,12 +9,12 @@
                 [inputId]="option.guid"
                 [value]="option"
                 [ngModel]="innerObject"
-                [disabled]="disabled"
+                [disabled]="isOptionDisabled(option)"
                 (onClick)="writeValue(option)"/>
-            <label [for]="option.guid" class="ms-2">
+            <label [for]="option.guid" class="ms-2" [ngClass]="{'disabled' : isOptionDisabled(option)}">
                 {{ option.value }}
             </label>
         </div>
-        <invalid-info #invalid class="mr-icon-1" [causes]="invalidCause"></invalid-info>
+        <!-- <invalid-info #invalid class="mr-icon-1" [causes]="invalidCause"></invalid-info> -->
     </div>
 </div>

@@ -1,3 +1,5 @@
+import { Attachment } from '../../../components/uploadfile/model/attachment.model';
+import { SolicitationAmostraFoto } from './solicitation-amostra-foto.model';
 
 
 export class SolicitationAmostra {
@@ -22,7 +24,7 @@ export class SolicitationAmostra {
     velocidadeVarredura: number = null;
     tempoPasso: number = null;
 
-    // DSC
+    // DSC - TGADTA
     expande: boolean = null
     liberaGas: boolean = null
     gasLiberado: string = null
@@ -32,5 +34,11 @@ export class SolicitationAmostra {
     fluxoGas: number = null
     taxaAquecimento: number = null
     intervaloTemperatura: number = null
+
+    // MEV
+    tipoAmostra: string = null;
+    objetivo: string = null;
+    fotos: SolicitationAmostraFoto[] = [];
+    modeloMicroscopia: Attachment[] = [];
 
 }

@@ -161,6 +161,19 @@ p-progressspinner {
     padding        : 3px;
 }
 
+p-fileupload {
+    & p-progressbar {
+        display: none
+    }
+}
+
+uploadfile {
+    & .p-datatable {
+        & .p-datatable-wrapper {
+            min-height: 0px !important;
+        }
+    }
+}
 
 .p-datatable {
     &>& p-overlay & .p-overlay.p-component {
@@ -244,4 +257,9 @@ barsicon {
 
 p-overlay div.p-overlay.p-component {
     max-width: 70vw;
+}
+
+.p-fileupload-content .p-progressbar {
+    position: relative;
+    height: 20px;
 }

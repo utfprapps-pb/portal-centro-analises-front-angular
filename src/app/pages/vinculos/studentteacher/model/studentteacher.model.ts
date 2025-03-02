@@ -11,13 +11,18 @@ export class StudentTeacher extends ZModel {
         return new StudentTeacher();
     }
 
+    @Title('Status')
+    @Prop('enum')
+    @Enum('StudentTeacherApproved')
+    approved: StudentTeacherApproved = null;
+
     @Title('Estudante')
-    @Prop(User.createInstance(), ['id', 'name', 'email', 'status', 'raSiape'])
+    @Prop(User.createInstance(), ['id', 'name', 'email', 'raSiape'])
     @Hidden(!!AuthService.USER_LOGGED && Roles.ROLE_STUDENT == AuthService.USER_LOGGED.role)
     student: User = new User();
 
     @Title('Professor')
-    @Prop(User.createInstance(), ['id', 'name', 'email', 'status'])
+    @Prop(User.createInstance(), ['id', 'name', 'email'])
     @Hidden(!!AuthService.USER_LOGGED && Roles.ROLE_PROFESSOR == AuthService.USER_LOGGED.role)
     professor: User = new User();
 
@@ -26,10 +31,6 @@ export class StudentTeacher extends ZModel {
     @Hidden()
     createdAt: Date = null;
 
-    @Title('Status')
-    @Prop('enum')
-    @Enum('StudentTeacherApproved')
-    approved: StudentTeacherApproved = null;
 
 }
 

@@ -17,6 +17,11 @@ export class Equipment extends ZModel {
     @Prop('text')
     shortName: string = null;
 
+    @Title('Status')
+    @Prop('enum')
+    @Enum('StatusAI')
+    status: StatusAI = null;
+
     @Hidden()
     @Title('Modelo')
     @Prop('text')
@@ -49,8 +54,4 @@ export class Equipment extends ZModel {
     @Prop('currency')
     valueSampleExternal: number = null;
 
-    @Title('Status')
-    @Prop('enum')
-    @Enum('StatusAI')
-    status: StatusAI = null;
 }

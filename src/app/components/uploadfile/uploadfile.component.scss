@@ -1,0 +1,60 @@
+.big-icon {
+    height   : 50px;
+    width    : 50px;
+    font-size: xxx-large;
+}
+
+// Definindo variáveis para as cores de cada tipo de ícone
+$color-audio     : #6f42c1; // Roxo para arquivos de áudio
+$color-archive   : #fd7e14; // Laranja para arquivos de arquivo compactado
+$color-word      : #2a5699; // Azul escuro para arquivos do Word
+$color-powerpoint: #d24726; // Vermelho/laranja para arquivos de PowerPoint
+$color-excel     : #207245; // Verde para arquivos de Excel
+$color-pdf       : #d63384; // Rosa avermelhado para arquivos em PDF
+$color-video     : #6610f2; // Azul para arquivos de vídeo
+$color-text      : #6c757d; // Cinza para arquivos de texto
+$color-image     : #20c997; // Verde água para arquivos de imagem
+$color-default   : #6c757d; // Cinza padrão para demais arquivos
+
+// Classes para os ícones
+.fa-file-audio {
+    color: $color-audio;
+}
+
+.fa-file-archive {
+    color: $color-archive;
+}
+
+.fa-file-word {
+    color: $color-word;
+}
+
+.fa-file-powerpoint {
+    color: $color-powerpoint;
+}
+
+.fa-file-excel {
+    color: $color-excel;
+}
+
+.fa-file-pdf {
+    color: $color-pdf;
+}
+
+.fa-file-video {
+    color: $color-video;
+}
+
+.fa-file-alt {
+    color: $color-text;
+}
+
+.fa-file-image {
+    color: $color-image;
+}
+
+// Ícone padrão (incluindo o caso 'far fa-file')
+.fa-file,
+.far.fa-file {
+    color: $color-default;
+}

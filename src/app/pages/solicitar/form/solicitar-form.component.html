@@ -177,7 +177,6 @@
                         </span>
                     </ng-template>
                     <ng-template pTemplate="content">
-
                         <ng-container *ngTemplateOutlet="formulario"></ng-container>
                     </ng-template>
                 </p-stepperPanel>
@@ -196,171 +195,56 @@
 
                     <ng-template pTemplate="content">
                         <h3 class="m-0 text-center">Informações adicionais das Amostras</h3>
+                        <ng-container *ngFor="let amostra of object.form.amostras; let index = index">
+                            <div class="table-responsive">
+                                <ng-container
+                                    *ngIf="['AA', 'AW', 'CLAE', 'COR', 'FTMIR'].includes(getSolicitationType())">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="99" style="background-color: var(--green-300);">
+                                                    <h4 class="mb-0 text-center">
+                                                        Amostra nº {{index +1}}
+                                                        <i class="far fa-copy float-right cursor-pointer"
+                                                            *ngIf="object.form.amostras.length > 1"
+                                                            ngxTooltip="Replicar Dados" arrow
+                                                            (click)="onClickReplicarDadosAmostras(index)">
+                                                        </i>
+                                                    </h4>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th>Identificação</th>
+                                                <th>Descrição</th>
+                                                <th>Quantidade de leituras por amostra</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input-text compCtrl="Identificação" required disabled
+                                                        [ngModel]="amostra.identification">
+                                                    </input-text>
+                                                </td>
+                                                <td>
+                                                    <input-text compCtrl="Descrição" disabled
+                                                        [ngModel]="amostra.description">
+                                                    </input-text>
+                                                </td>
+                                                <td>
+                                                    <input-number
+                                                        compCtrl="Quantidade de leituras por amostra" required
+                                                        disabled [ngModel]="amostra.leituras" [maxlength]="2">
+                                                    </input-number>
+                                                </td>
+                                            </tr>
+                                            <ng-container
+                                                *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
+                                        </tbody>
+                                    </table>
+                                </ng-container>
 
-                        <ng-container
-                            *ngIf="['AA', 'AW', 'CLAE', 'COR', 'FTMIR'].includes(getSolicitationType())">
-                            <ng-container *ngFor="let amostra of object.form.amostras; let index = index">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="99" style="background-color: var(--green-300);">
-                                                <h4 class="mb-0 text-center">
-                                                    Amostra nº {{index +1}}
-                                                    <i class="far fa-copy float-right cursor-pointer"
-                                                        *ngIf="object.form.amostras.length > 1"
-                                                        ngxTooltip="Replicar Dados" arrow
-                                                        (click)="onClickReplicarDadosAmostras(index)">
-                                                    </i>
-                                                </h4>
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <th>Identificação</th>
-                                            <th>Descrição</th>
-                                            <th>Quantidade de leituras por amostra</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <input-text compCtrl="Identificação" required disabled
-                                                    [ngModel]="amostra.identification">
-                                                </input-text>
-                                            </td>
-                                            <td>
-                                                <input-text compCtrl="Descrição" disabled
-                                                    [ngModel]="amostra.description">
-                                                </input-text>
-                                            </td>
-                                            <td>
-                                                <input-number compCtrl="Quantidade de leituras por amostra"
-                                                    required disabled [ngModel]="amostra.leituras"
-                                                    [maxlength]="2">
-                                                </input-number>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="99">
-                                                <div class="row mb-2">
-                                                    <div class="col-24">
-                                                        <ol>
-                                                            <li class="mb-2">
-                                                                <b>COMPOSIÇÃO</b>
-                                                                <div class="row mb-2">
-                                                                    <div class="col-24">
-                                                                        <ol type="a">
-                                                                            <li class="mb-2">
-                                                                                <input-text
-                                                                                    label="Composição da Amostra"
-                                                                                    compCtrl required
-                                                                                    [(ngModel)]="amostra.composicao">
-                                                                                </input-text>
-                                                                            </li>
-                                                                            <li class="mb-2">
-                                                                                <radio-button
-                                                                                    label="É tóxica?" compCtrl
-                                                                                    [(ngModel)]="amostra.toxic"
-                                                                                    enum="Boolean" required
-                                                                                    [vertical]="false">
-                                                                                </radio-button>
-                                                                            </li>
-                                                                        </ol>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li *ngIf="object.form.retirada == 'TRUE'">
-                                                                <div class="row mb-2">
-                                                                    <div class="col-24">
-                                                                        <radio-button
-                                                                            label="Natureza da Amostra"
-                                                                            compCtrl required
-                                                                            [(ngModel)]="amostra.naturezaAmostra"
-                                                                            enum="NaturezaAmostra"
-                                                                            (onChange)="onChangeNaturezaAmostra()">
-                                                                        </radio-button>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="row mb-2">
-                                                                    <div class="col-24 table-responsive">
-                                                                        <table
-                                                                            class="table table-striped table-bordered">
-                                                                            <tbody>
-                                                                                <tr
-                                                                                    *ngIf="amostra.naturezaAmostra == NATUREZA_ORGANICA_ORGANICA">
-                                                                                    <td colspan="2">
-                                                                                        <radio-button
-                                                                                            [(ngModel)]="amostra.descarteOrganico"
-                                                                                            enum="DescarteOrganico"
-                                                                                            compCtrl="Descartes - Orgânico"
-                                                                                            required
-                                                                                            (onChange)="onChangeDescarteOrganico()">
-                                                                                        </radio-button>
-                                                                                        <input-text
-                                                                                            label="Outro"
-                                                                                            compCtrl required
-                                                                                            *ngIf="amostra.descarteOrganico == OPCAO_OUTRO"
-                                                                                            [(ngModel)]="amostra.descarteOrganicoOutro">
-                                                                                        </input-text>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr
-                                                                                    *ngIf="amostra.naturezaAmostra == NATUREZA_ORGANICA_INORGANICA">
-                                                                                    <td colspan="2">
-                                                                                        <radio-button
-                                                                                            [(ngModel)]="amostra.descarteInorganico"
-                                                                                            enum="DescarteInorganico"
-                                                                                            compCtrl="Descartes - Inorgânico"
-                                                                                            required
-                                                                                            (onChange)="onChangeDescarteInorganico()">
-                                                                                        </radio-button>
-                                                                                        <input-text
-                                                                                            label="Outro"
-                                                                                            compCtrl required
-                                                                                            *ngIf="amostra.descarteInorganico == OPCAO_OUTRO"
-                                                                                            [(ngModel)]="amostra.descarteInorganicoOutro">
-                                                                                        </input-text>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        Recomendação de
-                                                                                        descarte
-                                                                                        pelo usuário
-                                                                                        <radio-button
-                                                                                            [(ngModel)]="amostra.descarteUsuario"
-                                                                                            enum="DescarteUsuario"
-                                                                                            compCtrl="Descartes - Usuário"
-                                                                                            required
-                                                                                            (onChange)="onChangeDescarteUsuario()">
-                                                                                        </radio-button>
-                                                                                        <input-textarea
-                                                                                            label="Outro"
-                                                                                            compCtrl required
-                                                                                            *ngIf="amostra.descarteUsuario == OPCAO_OUTRO"
-                                                                                            [(ngModel)]="amostra.descarteUsuarioOutro">
-                                                                                        </input-textarea>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                        </ol>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <hr *ngIf="index - 1 < object.form.amostras.length">
-                            </ng-container>
-                        </ng-container>
-
-                        <ng-container *ngIf="['DRX'].includes(getSolicitationType())">
-                            <ng-container *ngFor="let amostra of object.form.amostras; let index = index">
-                                <div class="table-responsive">
+                                <ng-container *ngIf="['DRX'].includes(getSolicitationType())">
                                     <table class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
@@ -424,135 +308,13 @@
                                                     </input-number>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td colspan="99">
-                                                    <div class="row mb-2">
-                                                        <div class="col-24">
-                                                            <ol>
-                                                                <li class="mb-2">
-                                                                    <b>COMPOSIÇÃO</b>
-                                                                    <div class="row mb-2">
-                                                                        <div class="col-24">
-                                                                            <ol type="a">
-                                                                                <li class="mb-2">
-                                                                                    <input-text
-                                                                                        label="Composição da Amostra"
-                                                                                        compCtrl required
-                                                                                        [(ngModel)]="amostra.composicao">
-                                                                                    </input-text>
-                                                                                </li>
-                                                                                <li class="mb-2">
-                                                                                    <radio-button
-                                                                                        label="É tóxica?"
-                                                                                        compCtrl
-                                                                                        [(ngModel)]="amostra.toxic"
-                                                                                        enum="Boolean"
-                                                                                        required
-                                                                                        [vertical]="false">
-                                                                                    </radio-button>
-                                                                                </li>
-                                                                            </ol>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                                <li *ngIf="object.form.retirada == 'TRUE'">
-                                                                    <div class="row mb-2">
-                                                                        <div class="col-24">
-                                                                            <radio-button
-                                                                                label="Natureza da Amostra"
-                                                                                compCtrl required
-                                                                                [(ngModel)]="amostra.naturezaAmostra"
-                                                                                enum="NaturezaAmostra"
-                                                                                (onChange)="onChangeNaturezaAmostra()">
-                                                                            </radio-button>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="row mb-2">
-                                                                        <div class="col-24 table-responsive">
-                                                                            <table
-                                                                                class="table table-striped table-bordered">
-                                                                                <tbody>
-                                                                                    <tr
-                                                                                        *ngIf="amostra.naturezaAmostra == NATUREZA_ORGANICA_ORGANICA">
-                                                                                        <td colspan="2">
-                                                                                            <radio-button
-                                                                                                [(ngModel)]="amostra.descarteOrganico"
-                                                                                                enum="DescarteOrganico"
-                                                                                                compCtrl="Descartes - Orgânico"
-                                                                                                required
-                                                                                                (onChange)="onChangeDescarteOrganico()">
-                                                                                            </radio-button>
-                                                                                            <input-text
-                                                                                                label="Outro"
-                                                                                                compCtrl
-                                                                                                required
-                                                                                                *ngIf="amostra.descarteOrganico == OPCAO_OUTRO"
-                                                                                                [(ngModel)]="amostra.descarteOrganicoOutro">
-                                                                                            </input-text>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr
-                                                                                        *ngIf="amostra.naturezaAmostra == NATUREZA_ORGANICA_INORGANICA">
-                                                                                        <td colspan="2">
-                                                                                            <radio-button
-                                                                                                [(ngModel)]="amostra.descarteInorganico"
-                                                                                                enum="DescarteInorganico"
-                                                                                                compCtrl="Descartes - Inorgânico"
-                                                                                                required
-                                                                                                (onChange)="onChangeDescarteInorganico()">
-                                                                                            </radio-button>
-                                                                                            <input-text
-                                                                                                label="Outro"
-                                                                                                compCtrl
-                                                                                                required
-                                                                                                *ngIf="amostra.descarteInorganico == OPCAO_OUTRO"
-                                                                                                [(ngModel)]="amostra.descarteInorganicoOutro">
-                                                                                            </input-text>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td>
-                                                                                            Recomendação de
-                                                                                            descarte
-                                                                                            pelo usuário
-                                                                                            <radio-button
-                                                                                                [(ngModel)]="amostra.descarteUsuario"
-                                                                                                enum="DescarteUsuario"
-                                                                                                compCtrl="Descartes - Usuário"
-                                                                                                required
-                                                                                                (onChange)="onChangeDescarteUsuario()">
-                                                                                            </radio-button>
-                                                                                            <input-textarea
-                                                                                                label="Outro"
-                                                                                                compCtrl
-                                                                                                required
-                                                                                                *ngIf="amostra.descarteUsuario == OPCAO_OUTRO"
-                                                                                                [(ngModel)]="amostra.descarteUsuarioOutro">
-                                                                                            </input-textarea>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                            </ol>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            <ng-container
+                                                *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
                                         </tbody>
                                     </table>
-                                </div>
+                                </ng-container>
 
-                                <hr *ngIf="index - 1 < object.form.amostras.length">
-                            </ng-container>
-                        </ng-container>
-
-                        <ng-container *ngIf="['DSC', 'TGADTA'].includes(getSolicitationType())">
-                            <ng-container *ngFor="let amostra of object.form.amostras; let index = index">
-                                <div class="table-responsive">
+                                <ng-container *ngIf="['DSC', 'TGADTA'].includes(getSolicitationType())">
                                     <table class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
@@ -654,129 +416,152 @@
                                                     </input-number>
                                                 </td>
                                             </tr>
+                                            <ng-container
+                                                *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
+                                        </tbody>
+                                    </table>
+                                </ng-container>
+
+                                <ng-container *ngIf="['MEV'].includes(getSolicitationType())">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="99" style="background-color: var(--green-300);">
+                                                    <h4 class="mb-0 text-center">
+                                                        Amostra nº {{index +1}}
+                                                        <i class="far fa-copy float-right cursor-pointer"
+                                                            *ngIf="object.form.amostras.length > 1"
+                                                            ngxTooltip="Replicar Dados" arrow
+                                                            (click)="onClickReplicarDadosAmostras(index)">
+                                                        </i>
+                                                    </h4>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th>Identificação</th>
+                                                <th>Descrição</th>
+                                                <th>Tipo de Amostra</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input-text compCtrl="Identificação" required disabled
+                                                        [ngModel]="amostra.identification">
+                                                    </input-text>
+                                                </td>
+                                                <td>
+                                                    <input-text compCtrl="Descrição" disabled
+                                                        [ngModel]="amostra.description">
+                                                    </input-text>
+                                                </td>
+                                                <td>
+                                                    <input-text compCtrl="Tipo de Amostra" required disabled
+                                                        [(ngModel)]="amostra.tipoAmostra">
+                                                    </input-text>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td colspan="99">
                                                     <div class="row mb-2">
                                                         <div class="col-24">
-                                                            <ol>
-                                                                <li class="mb-2">
-                                                                    <b>COMPOSIÇÃO</b>
-                                                                    <div class="row mb-2">
-                                                                        <div class="col-24">
-                                                                            <ol type="a">
-                                                                                <li class="mb-2">
-                                                                                    <input-text
-                                                                                        label="Composição da Amostra"
-                                                                                        compCtrl required
-                                                                                        [(ngModel)]="amostra.composicao">
-                                                                                    </input-text>
-                                                                                </li>
-                                                                                <li class="mb-2">
-                                                                                    <radio-button
-                                                                                        label="É tóxica?"
-                                                                                        compCtrl
-                                                                                        [(ngModel)]="amostra.toxic"
-                                                                                        enum="Boolean"
-                                                                                        required
-                                                                                        [vertical]="false">
-                                                                                    </radio-button>
-                                                                                </li>
-                                                                            </ol>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                                <li *ngIf="object.form.retirada == 'TRUE'">
-                                                                    <div class="row mb-2">
-                                                                        <div class="col-24">
-                                                                            <radio-button
-                                                                                label="Natureza da Amostra"
-                                                                                compCtrl required
-                                                                                [(ngModel)]="amostra.naturezaAmostra"
-                                                                                enum="NaturezaAmostra"
-                                                                                (onChange)="onChangeNaturezaAmostra()">
-                                                                            </radio-button>
-                                                                        </div>
-                                                                    </div>
+                                                            <div class="row mb-2">
+                                                                <div class="col-24">
+                                                                    <input-textarea
+                                                                        label="Objetivo da Análise" compCtrl
+                                                                        [(ngModel)]="amostra.objetivo"
+                                                                        [maxlength]="255">
+                                                                    </input-textarea>
+                                                                </div>
+                                                            </div>
 
-                                                                    <div class="row mb-2">
-                                                                        <div class="col-24 table-responsive">
-                                                                            <table
-                                                                                class="table table-striped table-bordered">
-                                                                                <tbody>
-                                                                                    <tr
-                                                                                        *ngIf="amostra.naturezaAmostra == NATUREZA_ORGANICA_ORGANICA">
-                                                                                        <td colspan="2">
-                                                                                            <radio-button
-                                                                                                [(ngModel)]="amostra.descarteOrganico"
-                                                                                                enum="DescarteOrganico"
-                                                                                                compCtrl="Descartes - Orgânico"
-                                                                                                required
-                                                                                                (onChange)="onChangeDescarteOrganico()">
-                                                                                            </radio-button>
-                                                                                            <input-text
-                                                                                                label="Outro"
-                                                                                                compCtrl
-                                                                                                required
-                                                                                                *ngIf="amostra.descarteOrganico == OPCAO_OUTRO"
-                                                                                                [(ngModel)]="amostra.descarteOrganicoOutro">
-                                                                                            </input-text>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr
-                                                                                        *ngIf="amostra.naturezaAmostra == NATUREZA_ORGANICA_INORGANICA">
-                                                                                        <td colspan="2">
-                                                                                            <radio-button
-                                                                                                [(ngModel)]="amostra.descarteInorganico"
-                                                                                                enum="DescarteInorganico"
-                                                                                                compCtrl="Descartes - Inorgânico"
-                                                                                                required
-                                                                                                (onChange)="onChangeDescarteInorganico()">
-                                                                                            </radio-button>
-                                                                                            <input-text
-                                                                                                label="Outro"
-                                                                                                compCtrl
-                                                                                                required
-                                                                                                *ngIf="amostra.descarteInorganico == OPCAO_OUTRO"
-                                                                                                [(ngModel)]="amostra.descarteInorganicoOutro">
-                                                                                            </input-text>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td>
-                                                                                            Recomendação de
-                                                                                            descarte
-                                                                                            pelo usuário
-                                                                                            <radio-button
-                                                                                                [(ngModel)]="amostra.descarteUsuario"
-                                                                                                enum="DescarteUsuario"
-                                                                                                compCtrl="Descartes - Usuário"
-                                                                                                required
-                                                                                                (onChange)="onChangeDescarteUsuario()">
-                                                                                            </radio-button>
-                                                                                            <input-textarea
-                                                                                                label="Outro"
-                                                                                                compCtrl
-                                                                                                required
-                                                                                                *ngIf="amostra.descarteUsuario == OPCAO_OUTRO"
-                                                                                                [(ngModel)]="amostra.descarteUsuarioOutro">
-                                                                                            </input-textarea>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                            </ol>
+                                                            <div class="row mb-2">
+                                                                <div class="col-24 table-responsive">
+                                                                    <table class="table table-striped">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="index-column">Nº
+                                                                                </th>
+                                                                                <th class="button-column">
+                                                                                </th>
+                                                                                <th class="button-column">
+                                                                                </th>
+                                                                                <th class="">Aproximações
+                                                                                    desejadas (50x - 2000x)
+                                                                                </th>
+                                                                                <th class="">Quantidade de
+                                                                                    fotos por aproximação</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr
+                                                                                *ngFor="let foto of amostra.fotos; let indexMev = index">
+                                                                                <td>
+                                                                                    <b>{{indexMev +1}}</b>
+                                                                                </td>
+                                                                                <td class="button-column">
+                                                                                    <button
+                                                                                        class="btn btn-sm btn-success"
+                                                                                        (click)="onClickAddFotoMev(amostra)">
+                                                                                        <i
+                                                                                            class="fa fa-plus"></i>
+                                                                                    </button>
+                                                                                </td>
+                                                                                <td class="button-column">
+                                                                                    <button
+                                                                                        class="btn btn-sm btn-danger"
+                                                                                        (click)="onClickRemoveFotoMev(amostra, indexMev)">
+                                                                                        <i
+                                                                                            class="fa fa-minus"></i>
+                                                                                    </button>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input-number
+                                                                                        compCtrl="Aproximações desejadas"
+                                                                                        required
+                                                                                        [(ngModel)]="foto.aproximacoes"
+                                                                                        [min]="50"
+                                                                                        [max]="2000"
+                                                                                        [maxlength]="4">
+                                                                                    </input-number>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input-number
+                                                                                        compCtrl="Quantidade de fotos por aproximação"
+                                                                                        required
+                                                                                        [(ngModel)]="foto.qtdFotosAproximacao"
+                                                                                        [min]="1">
+                                                                                    </input-number>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col-24">
+                                                                    <uploadfile
+                                                                        [label]="'Imagem modelo de microscopia'"
+                                                                        [(ngModel)]="amostra.modeloMicroscopia"
+                                                                        [multiple]="false"
+                                                                        [bucket]="getBucketName()"
+                                                                        [subfolder]="object.project.id"
+                                                                        [uploader]="amostra.modeloMicroscopia == null || amostra.modeloMicroscopia.length == 0">
+                                                                    </uploadfile>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
+                                            <ng-container
+                                                *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
                                         </tbody>
                                     </table>
-                                </div>
+                                </ng-container>
                                 <hr *ngIf="index - 1 < object.form.amostras.length">
-                            </ng-container>
+                            </div>
                         </ng-container>
                     </ng-template>
                 </p-stepperPanel>
@@ -822,7 +607,7 @@
             <div class="row mb-2">
                 <div class="col-24">
                     <combobox label="Formulário de Solicitação" [(ngModel)]="object.solicitationType"
-                        enum="SolicitationFormType" compCtrl required>
+                        enum="SolicitationFormType" compCtrl required (onChange)="onChangeSolicitationType()">
                     </combobox>
                 </div>
             </div>
@@ -856,7 +641,7 @@
             <div class="row mb-2">
                 <div class="col-24">
                     <radio-button label="Forno" compCtrl required [(ngModel)]="object.form.forno"
-                        enum="AAForno" [vertical]="false">
+                        enum="AAForno" [vertical]="false" [ignore]="'FG'">
                     </radio-button>
                 </div>
             </div>
@@ -1051,7 +836,9 @@
             </div>
         </ng-container>
 
-        TODO: Falta fazer o MEV
+        <ng-container *ngIf="getSolicitationType() == 'MEV'">
+            <ng-container *ngTemplateOutlet="tableMEV"></ng-container>
+        </ng-container>
 
         <hr>
 
@@ -1117,7 +904,6 @@
                 </table>
             </div>
         </div>
-
     </ng-template>
 
     <ng-template #tableDRX_TGADTA>
@@ -1195,7 +981,6 @@
                 </table>
             </div>
         </div>
-
     </ng-template>
 
     <ng-template #tableDSC>
@@ -1306,7 +1091,157 @@
                 </b>
             </div>
         </div>
+    </ng-template>
 
+    <ng-template #tableMEV>
+        <div class="row mb-2">
+            <div class="col-24 table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan="6">
+                                <h3 class="m-0 text-center">Amostras</h3>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="index-column">Nº</th>
+                            <th class="button-column"></th>
+                            <th class="button-column"></th>
+                            <th class="">Identificação</th>
+                            <th class="">Descrição</th>
+                            <th class="">Tipo de Amostra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let amostra of object.form.amostras; let index = index">
+                            <td>
+                                <b>{{index +1}}</b>
+                            </td>
+                            <td class="button-column">
+                                <button class="btn btn-sm btn-success" (click)="onClickAddAmostra()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </td>
+                            <td class="button-column">
+                                <button class="btn btn-sm btn-danger" (click)="onClickRemoveAmostra(index)">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Identificação" required
+                                    [(ngModel)]="amostra.identification">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Descrição" [(ngModel)]="amostra.description">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Tipo de Amostra" required
+                                    [(ngModel)]="amostra.tipoAmostra">
+                                </input-text>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #posFormularioRetirada let-amostra>
+        <tr>
+            <td colspan="99">
+                <div class="row mb-2">
+                    <div class="col-24">
+                        <ol>
+                            <li class="mb-2">
+                                <b>COMPOSIÇÃO</b>
+                                <div class="row mb-2">
+                                    <div class="col-24">
+                                        <ol type="a">
+                                            <li class="mb-2">
+                                                <input-text label="Composição da Amostra" compCtrl required
+                                                    [(ngModel)]="amostra.composicao">
+                                                </input-text>
+                                            </li>
+                                            <li class="mb-2">
+                                                <radio-button label="É tóxica?" compCtrl
+                                                    [(ngModel)]="amostra.toxic" enum="Boolean" required
+                                                    [vertical]="false">
+                                                </radio-button>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </li>
+                            <li *ngIf="object.form.retirada == 'FALSE'">
+                                <div class="row mb-2">
+                                    <div class="col-24">
+                                        <radio-button label="Natureza da Amostra" compCtrl required
+                                            [(ngModel)]="amostra.naturezaAmostra" enum="NaturezaAmostra"
+                                            (onChange)="onChangeNaturezaAmostra()">
+                                        </radio-button>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="col-24 table-responsive">
+                                        <table class="table table-striped table-bordered">
+                                            <tbody>
+                                                <tr
+                                                    *ngIf="amostra.naturezaAmostra == NATUREZA_ORGANICA_ORGANICA">
+                                                    <td colspan="2">
+                                                        <radio-button [(ngModel)]="amostra.descarteOrganico"
+                                                            enum="DescarteOrganico"
+                                                            compCtrl="Descartes - Orgânico" required
+                                                            (onChange)="onChangeDescarteOrganico()">
+                                                        </radio-button>
+                                                        <input-text label="Outro" compCtrl required
+                                                            *ngIf="amostra.descarteOrganico == OPCAO_OUTRO"
+                                                            [(ngModel)]="amostra.descarteOrganicoOutro">
+                                                        </input-text>
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    *ngIf="amostra.naturezaAmostra == NATUREZA_ORGANICA_INORGANICA">
+                                                    <td colspan="2">
+                                                        <radio-button [(ngModel)]="amostra.descarteInorganico"
+                                                            enum="DescarteInorganico"
+                                                            compCtrl="Descartes - Inorgânico" required
+                                                            (onChange)="onChangeDescarteInorganico()">
+                                                        </radio-button>
+                                                        <input-text label="Outro" compCtrl required
+                                                            *ngIf="amostra.descarteInorganico == OPCAO_OUTRO"
+                                                            [(ngModel)]="amostra.descarteInorganicoOutro">
+                                                        </input-text>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Recomendação de
+                                                        descarte
+                                                        pelo usuário
+                                                        <radio-button [(ngModel)]="amostra.descarteUsuario"
+                                                            enum="DescarteUsuario"
+                                                            compCtrl="Descartes - Usuário" required
+                                                            (onChange)="onChangeDescarteUsuario()">
+                                                        </radio-button>
+                                                        <input-textarea label="Outro" compCtrl required
+                                                            *ngIf="amostra.descarteUsuario == OPCAO_OUTRO"
+                                                            [(ngModel)]="amostra.descarteUsuarioOutro">
+                                                        </input-textarea>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </td>
+        </tr>
     </ng-template>
 
     <div bbuttons>
