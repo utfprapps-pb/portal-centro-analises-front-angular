@@ -13,13 +13,10 @@ export class UploadfileService {
     ) { }
 
 
-    public postFile(file: File, bucket: string, subfolder?: string): Observable<HttpEvent<any>> {
+    public postFile(file: File, bucket: string): Observable<HttpEvent<any>> {
         const formData = new FormData();
         formData.append('file', file, file.name);
         formData.append('bucket', bucket)
-        if (subfolder) {
-            formData.append('subfolder', subfolder)
-        }
         return this.http.post<HttpEvent<any>>('/minio/upload', formData, {
             headers: {
                 'Content-Disposition': 'attachment'

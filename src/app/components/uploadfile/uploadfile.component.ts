@@ -50,7 +50,6 @@ export class UploadfileComponent extends CompCtrlContainer implements ControlVal
     @Input() uploader: boolean = true;
     @Input() multiple: boolean = true;
     @Input() bucket: string = null;
-    @Input() subfolder: any = null;
 
     private subscriptions: Subscription[] = []
 
@@ -100,7 +99,7 @@ export class UploadfileComponent extends CompCtrlContainer implements ControlVal
             }
             this.uploading.push(uploadingFile);
             this.subscriptions.push(
-                this.service.postFile(file, this.bucket, this.subfolder?.toString()).subscribe((event) => {
+                this.service.postFile(file, this.bucket).subscribe((event) => {
                     const subindo: Attachment = this.uploading.find(it => it.fileName == file.name);
                     if (subindo) {
                         if (event.type === HttpEventType.UploadProgress && event.total) {
