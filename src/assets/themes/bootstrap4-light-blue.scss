@@ -228,6 +228,12 @@
     padding      : 0.5rem 0;
 }
 
+.ql-picker.ql-color-picker.ql-expanded {
+    & .ql-picker-options {
+        width        : 380px;
+    }
+}
+
 .p-editor-container .p-editor-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options .ql-picker-item {
     color: #212529;
 }
@@ -248,6 +254,22 @@
 
 .p-editor-container .p-editor-content.ql-snow {
     border: 1px solid #dee2e6;
+}
+
+.ql-editor {
+    font-family: var(--font-family);
+    font-feature-settings: var(--font-feature-settings, normal);
+    font-size: 1rem;
+    font-weight: normal;
+
+    display      : grid;
+    min-height   : 25vh;
+    line-height  : 1.5rem;
+    align-content: baseline;
+
+    // &[contenteditable="false"] {
+    //     padding-bottom: 0px
+    // }
 }
 
 .p-editor-container .p-editor-content .ql-editor {

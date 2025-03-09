@@ -11,9 +11,9 @@ import {
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 
+import { CompCtrlDirective } from '../../core/directives/compctrl/compctrl.directive';
 import { ToasterService } from '../../core/toaster/toaster.service';
 import { Stack } from '../../utils/models/stack';
-import { CompCtrlDirective } from '../compctrl/compctrl.directive';
 import { DialogService } from './../../core/services/dialog.service';
 import { ToastrService } from './../../core/services/toastr.service';
 

@@ -175,6 +175,14 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         if (this.validateForm()) {
             this.blockForm();
             await this.onBeforeSave(object);
+            for (const prop in this.object) {
+                const value: any = (this.object as any)[prop];
+                if (value && value instanceof ZModel) {
+                    if (value.id == null) {
+                        (this.object as any)[prop] = null;
+                    }
+                }
+            }
             this.service.save(object).then(async (data) => {
                 await this.onAfterSave(object, data);
                 this.toastrService.showSuccess(this.pageTitle, 'Registro salvo com sucesso!');

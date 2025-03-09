@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-
 import { Calendar } from 'primeng/calendar';
-import { CompCtrlContainer } from '../compctrl/compctrl.container';
+
+import { CompCtrlContainer } from '../../core/directives/compctrl/compctrl.container';
 import { InputBaseComponent } from '../inputs/input-base/input-base.component';
-import { InvalidInfoComponent } from '../inputs/invalid-info/invalid-info.component';
+import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
 
 @Component({
     selector: 'datepicker',

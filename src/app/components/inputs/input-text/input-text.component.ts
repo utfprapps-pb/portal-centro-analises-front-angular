@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { CompCtrlContainer } from '../../compctrl/compctrl.container';
-import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
+import { CompCtrlContainer } from '../../../core/directives/compctrl/compctrl.container';
+import { InvalidInfoComponent } from '../../invalid-info/invalid-info.component';
 import { InputBaseComponent } from './../input-base/input-base.component';
 
 @Component({

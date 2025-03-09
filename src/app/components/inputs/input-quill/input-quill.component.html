@@ -1,0 +1,9 @@
+<div class="form-group">
+    <label [for]="id" *ngIf="!!label" class="form-label bold">{{label}}</label>
+
+    <div class="position-relative">
+        <p-editor #input [(ngModel)]="innerValue" (onTextChange)="onTextChange($event)" [style]="style"
+            [class]="class" (onInit)="onQuillInit($event)"/>
+        <invalid-info #invalid class="mr-icon-2" [causes]="invalidCause"></invalid-info>
+    </div>
+</div>

@@ -126,6 +126,18 @@ export const routes: Routes = [
     },
 
     {
+        path: 'termos-de-uso',
+        // data: {
+        //     authorities: [
+        //         Roles.ROLE_ADMIN
+        //     ]
+        // },
+        canActivate: [AuthGuard.canActivate],
+        canDeactivate: [AuthGuard.canDeactivate],
+        loadChildren: () => import('./pages/termsofuse/termsofuse.module').then(m => m.TermsOfUseModule),
+    },
+
+    {
         path: 'inicio',
         // data: {
         //     authorities: [Roles.ROLE_STUDENT],

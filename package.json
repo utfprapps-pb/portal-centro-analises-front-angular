@@ -26,6 +26,7 @@
         "ngx-json-viewer": "^3.2.1",
         "primeicons": "^7.0.0",
         "primeng": "^17.11.0",
+        "quill": "^2.0.3",
         "reflect-metadata": "^0.2.2",
         "rxjs": "~7.8.0",
         "sass": "^1.71.1",

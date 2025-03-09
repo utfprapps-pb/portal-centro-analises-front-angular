@@ -11,12 +11,13 @@ import {
 } from '@angular/core';
 import { TableState } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { ObjectUtils as ObjectUtilsPrimeNg } from 'primeng/utils';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastrService } from '../../../core/services/toastr.service';
 import { GenericCrudService } from '../../../generics/generic-crud.service';
 import { ZModel } from '../../../generics/zmodel';
-import { ObjectUtils } from '../../../utils/object-utils';
+import { ObjectUtils as ObjectUtilsInternal } from '../../../utils/object-utils';
 import { ColumnTemplateComponent } from '../datatable-columns/column-template/column-template.component';
 import { DatatableColumn } from '../datatable-columns/datatable-column';
 import { DatatableFilterColumn } from '../datatable-columns/datatable-filter-column';
@@ -100,13 +101,62 @@ export class DatatableComponent implements AfterViewInit {
             this.table.stateKey = `${this.name}_${AuthService.USER_LOGGED.id}`;
             this.table.stateStorage = 'local';
             const state = localStorage.getItem(this.table.stateKey);
-            if (ObjectUtils.isNotEmpty(state)) {
+            if (ObjectUtilsInternal.isNotEmpty(state)) {
                 const stateObject: TableState = JSON.parse(state);
                 this.table.rows = stateObject.rows || this.rowsPerPageOptions[0];
             }
         }
         this.table.rowSelectable = this.allowSelectRowDatatableInternal.bind(this);
+        this.table.multisortField = this.multisortField.bind(this);
+        this.table.sortMultiple = this.sortMultiple.bind(this);
+
         this.sortColumnOrder();
+    }
+
+    // SOBREESCRITO DO COMPONENTE
+    private sortMultiple(): void {
+        // if (this.table.groupRowsBy) {
+        //     if (!this.table._multiSortMeta)
+        //         this.table._multiSortMeta = [this.table.getGroupRowsMeta()];
+        //     else if (this.table.multiSortMeta[0].field !== this.table.groupRowsBy)
+        //         this.table._multiSortMeta = [this.table.getGroupRowsMeta(), ...this.table._multiSortMeta];
+        // }
+        if (this.table.multiSortMeta) {
+            if (this.table.lazy) {
+                this.table.onLazyLoad.emit(this.table.createLazyLoadMetadata());
+            }
+            else if (this.table.value) {
+                if (this.table.customSort) {
+                    this.table.sortFunction.emit({
+                        data: this.table.value,
+                        mode: this.table.sortMode,
+                        multiSortMeta: this.table.multiSortMeta
+                    });
+                } else {
+                    this.table.value.sort((data1, data2) => {
+                        return this.table.multisortField(data1, data2, this.table.multiSortMeta, 0);
+                    });
+                    this.table._value = [...this.table.value];
+                }
+                if (this.table.hasFilter()) {
+                    this.table._filter();
+                }
+            }
+            this.table.onSort.emit({
+                multisortmeta: this.table.multiSortMeta
+            });
+            this.table.tableService.onSort(this.table.multiSortMeta);
+        }
+    }
+
+    // SOBREESCRITO DO COMPONENTE
+    private multisortField(data1: any, data2: any, multiSortMeta: any[], index: number): any {
+        const value1 = ObjectUtilsPrimeNg.resolveFieldData(data1, multiSortMeta[index]?.field);
+        const value2 = ObjectUtilsPrimeNg.resolveFieldData(data2, multiSortMeta[index]?.field);
+        if (ObjectUtilsPrimeNg.compare(value1, value2, this.table.filterLocale) === 0) {
+            return multiSortMeta.length - 1 > index ? this.multisortField(data1, data2, multiSortMeta, index + 1) : 0;
+        }
+        return this.table.compareValuesOnSort(value1, value2, multiSortMeta[index].order);
     }
 
     public async saveState(): Promise<void> {
@@ -131,7 +181,7 @@ export class DatatableComponent implements AfterViewInit {
             if (!Reflect.getMetadata('column:title', this.emptyObject, prop) || false) continue;
 
             const additionalcolumn: string[] = Reflect.getMetadata('column:additionalcolumn', this.emptyObject, prop);
-            if (ObjectUtils.isNotEmpty(additionalcolumn)) {
+            if (ObjectUtilsInternal.isNotEmpty(additionalcolumn)) {
                 for (const col of additionalcolumn) {
                     if (!Reflect.getMetadata('column:title', this.emptyObject[prop] || {}, col) || false) continue;
 
@@ -168,10 +218,10 @@ export class DatatableComponent implements AfterViewInit {
     private sortColumnOrder(): void {
         if (this.reorderableColumns) {
             const state = localStorage.getItem(this.table?.stateKey);
-            if (ObjectUtils.isNotEmpty(state)) {
+            if (ObjectUtilsInternal.isNotEmpty(state)) {
                 const stateObject: TableState = JSON.parse(state);
                 const order: string[] = stateObject.columnOrder || [];
-                if (ObjectUtils.isNotEmpty(order)) {
+                if (ObjectUtilsInternal.isNotEmpty(order)) {
                     for (let i = 0; i < order.length; i++) {
                         const col = this.table.columns.find(it => it.field == order[i]);
                         if (col) {
@@ -182,6 +232,7 @@ export class DatatableComponent implements AfterViewInit {
                 }
             }
         }
+        this.table.multiSortMeta = []
     }
 
     public getColumnData(data: any, field: string): String | number {
@@ -208,7 +259,7 @@ export class DatatableComponent implements AfterViewInit {
         title = title.charAt(0).toUpperCase() + title.substring(1);
 
         const reflectionTitle: string = Reflect.getMetadata('column:title', data, prop);
-        if (ObjectUtils.isNotEmpty(reflectionTitle)) {
+        if (ObjectUtilsInternal.isNotEmpty(reflectionTitle)) {
             title = reflectionTitle;
         }
         if (!!parent) {
@@ -294,7 +345,7 @@ export class DatatableComponent implements AfterViewInit {
     }
 
     public async onClickClear(): Promise<void> {
-        if (ObjectUtils.isNotEmpty(this._originalColumnOrder)) {
+        if (ObjectUtilsInternal.isNotEmpty(this._originalColumnOrder)) {
             for (let i = 0; i < this._originalColumnOrder.length; i++) {
                 const col = this.table.columns.find(it => it.field == this._originalColumnOrder[i]);
                 if (col) {
@@ -394,8 +445,8 @@ export class DatatableComponent implements AfterViewInit {
     }
 
     private hasErrorMapped(error: any): boolean {
-        return ObjectUtils.isNotEmpty(error) &&
-            ((ObjectUtils.isNotEmpty(error.error) && !!error.error.mapped) ||
+        return ObjectUtilsInternal.isNotEmpty(error) &&
+            ((ObjectUtilsInternal.isNotEmpty(error.error) && !!error.error.mapped) ||
                 (!!error.mapped));
     }
 
@@ -403,13 +454,13 @@ export class DatatableComponent implements AfterViewInit {
         if (!this.hasErrorMapped(error)) {
             return;
         } else {
-            if (ObjectUtils.isEmpty(title)) {
+            if (ObjectUtilsInternal.isEmpty(title)) {
                 title = this.getPageTitle();
             }
 
             let message: string = '';
             let errosCompCtrl: any = null;
-            if ((ObjectUtils.isNotEmpty(error.error) && !!error.error.mapped)) {
+            if ((ObjectUtilsInternal.isNotEmpty(error.error) && !!error.error.mapped)) {
                 message = error.error.message;
                 errosCompCtrl = error.error.erros;
             } else {
@@ -417,7 +468,7 @@ export class DatatableComponent implements AfterViewInit {
                 errosCompCtrl = error.errors;
             }
 
-            if (ObjectUtils.isNotEmpty(message)) {
+            if (ObjectUtilsInternal.isNotEmpty(message)) {
                 this.toastrService.showError(title, message);
             } else {
                 console.error('Erro não mapeado:', error);

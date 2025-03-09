@@ -150,15 +150,6 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="mb-2">
-                                        <b>CITAÇÃO</b>
-                                        <div class="row mb-2">
-                                            <div class="col-24">
-                                                <checkbox [(ngModel)]="object.form.citacao"
-                                                    [label]="'Aceito e me comprometo a mencionar a \'Central de Análises - UTFPR Campus Pato Branco\' nos agradecimentos em todos os tipos de publicações que resultarem da utilização de suas instalações.'" />
-                                            </div>
-                                        </div>
-                                    </li>
                                 </ol>
                             </div>
                         </div>
@@ -562,6 +553,22 @@
                                 <hr *ngIf="index - 1 < object.form.amostras.length">
                             </div>
                         </ng-container>
+                    </ng-template>
+                </p-stepperPanel>
+
+                <p-stepperPanel>
+                    <ng-template pTemplate="header" let-index="index">
+                        <span
+                            class="d-flex text-dark rounded border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                            [ngClass]="{
+                                'bg-primary border-primary text-white': index <= activeStep,
+                                'border': index > activeStep
+                            }">
+                            <i class="fa fa-diploma"></i>
+                        </span>
+                    </ng-template>
+                    <ng-template pTemplate="content">
+                        <ng-container *ngTemplateOutlet="termosTemplate"></ng-container>
                     </ng-template>
                 </p-stepperPanel>
             </p-stepper>
@@ -1243,6 +1250,38 @@
         </tr>
     </ng-template>
 
+    <ng-template #termosTemplate>
+        <div class="row">
+            <div class="col-24">
+                <b>CITAÇÃO</b>
+                <div class="row mb-2">
+                    <div class="col-24">
+                        <checkbox [(ngModel)]="object.form.citacao" required compCtrl="citacao"
+                            [label]="'Aceito e me comprometo a mencionar a \'Central de Análises - UTFPR Campus Pato Branco\' nos agradecimentos em todos os tipos de publicações que resultarem da utilização de suas instalações.'" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ng-container *ngFor="let term of object.termsOfUses">
+            <hr>
+
+            <div class="row">
+                <div class="col-24">
+                    <h3>
+                        {{term.termofuse.title}}
+                    </h3>
+                    <div [quillReader]="term.termofuse.form"></div>
+                    <div class="mt-2">
+                        <checkbox [(ngModel)]="term.accepted" required compCtrl="Termo"
+                            [label]="term.termofuse.description" />
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+    </ng-template>
+
     <div bbuttons>
         <ng-container *ngIf="activeStep > 0">
             <button class="btn btn-sm btn-primary" (click)="onClickVoltarStep()">
@@ -1254,6 +1293,12 @@
 
     <div arbuttons>
         <ng-container *ngIf="hasViewInitializated">
+            <ng-container *ngIf="disableButtonAvancar()">
+                <button class="btn btn-sm btn-primary me-2" (click)="validateForm(true)">
+                    Verificar
+                </button>
+            </ng-container>
+
             <ng-container *ngIf="activeStep < (stepper.panels.length -1); else finalizarButtonTemplate">
                 <button class="btn btn-sm btn-primary" (click)="onClickAvancarStep()"
                     [disabled]="disableButtonAvancar()">
@@ -1268,6 +1313,7 @@
                     Concluir
                 </button>
             </ng-template>
+
         </ng-container>
     </div>
 </form-crud>

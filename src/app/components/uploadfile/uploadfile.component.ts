@@ -5,12 +5,12 @@ import { PrimeNGConfig } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { Subscription } from 'rxjs';
 
+import { CompCtrlContainer } from '../../core/directives/compctrl/compctrl.container';
 import { ToastrService } from '../../core/services/toastr.service';
 import { ConvertUtilsService } from '../../utils/convert-utils.service';
 import { ObjectUtils } from '../../utils/object-utils';
-import { CompCtrlContainer } from '../compctrl/compctrl.container';
 import { InputBaseComponent } from '../inputs/input-base/input-base.component';
-import { InvalidInfoComponent } from '../inputs/invalid-info/invalid-info.component';
+import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
 import { Attachment } from './model/attachment.model';
 import { UploadfileService } from './uploadfile.service';
 

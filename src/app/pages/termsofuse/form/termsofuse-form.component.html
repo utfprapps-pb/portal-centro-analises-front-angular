@@ -1,0 +1,44 @@
+<form-crud #formView [pageTitle]="'Termos de Uso'">
+
+    <div class="row mb-2">
+        <div class="col-6">
+            <input-number label="Código" compCtrl="id" [ngModel]="object.id" [disabled]="true"></input-number>
+        </div>
+        <div class="col-6 ms-auto">
+            <combobox label="Status" compCtrl="status" [(ngModel)]="object.status" enum="StatusAI" required
+            [defaultValue]="'ACTIVE'">
+            </combobox>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-24">
+            <input-text label="Titulo" compCtrl="title" [(ngModel)]="object.title" required [minlength]="6"
+                [maxlength]="255">
+            </input-text>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-24">
+            <combobox label="Formulário" compCtrl="solicitationType" [(ngModel)]="object.solicitationType"
+                enum="SolicitationFormType" required>
+            </combobox>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-24">
+            <input-quill label="Termo" compCtrl="form" [(ngModel)]="object.form" required></input-quill>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-24">
+            <input-text label="Checkbox Descrição" compCtrl="description" [(ngModel)]="object.description"
+                required [maxlength]="512">
+            </input-text>
+        </div>
+    </div>
+
+</form-crud>

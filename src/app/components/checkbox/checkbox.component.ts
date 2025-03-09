@@ -1,12 +1,12 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { Checkbox } from 'primeng/checkbox';
 
+import { CompCtrlContainer } from '../../core/directives/compctrl/compctrl.container';
 import { ConvertUtilsService } from '../../utils/convert-utils.service';
 import { Guid } from '../../utils/models/guid';
-import { CompCtrlContainer } from '../compctrl/compctrl.container';
 import { InputBaseComponent } from '../inputs/input-base/input-base.component';
-import { InvalidInfoComponent } from '../inputs/invalid-info/invalid-info.component';
+import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
 
 @Component({
     selector: 'checkbox',
@@ -19,7 +19,7 @@ import { InvalidInfoComponent } from '../inputs/invalid-info/invalid-info.compon
 })
 export class CheckBoxComponent extends CompCtrlContainer implements ControlValueAccessor {
 
-    @ViewChild('input') component: ElementRef<Checkbox>;
+    @ViewChild('input') component: Checkbox;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
     @Input() id: string = Guid.raw();
@@ -158,6 +158,11 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
 
     override validate(): string[] {
         const causes: string[] = [];
+        if (this.required) {
+            if (!!this.innerValue == false) {
+                causes.push('Não assinalado');
+            }
+        }
         return causes;
     }
 
@@ -171,15 +176,13 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
     }
 
     override getContainer(): any {
-        return this.component.nativeElement;
+        return this.component.inputViewChild;
     }
 
     override setFocus() {
         if (!!this.invalidInfoComponent) {
             this.invalidInfoComponent.show();
         }
-        setTimeout(() => {
-            (this.component.nativeElement as any).focus();
-        });
+        this.component.inputViewChild.nativeElement.focus();
     }
 }

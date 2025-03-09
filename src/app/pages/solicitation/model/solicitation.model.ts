@@ -8,6 +8,7 @@ import { User } from '../../cadastros/user/model/user.model';
 import { Project } from '../../project/model/project.model';
 import { SolicitationAmostra } from './solicitation-amostra.model';
 import { SolicitationAttachments } from './solicitation-attachments.model';
+import { SolicitationTermsOfUse } from './solicitation-termsofuse.model';
 
 
 export class Solicitation extends ZModel {
@@ -108,5 +109,7 @@ export class Solicitation extends ZModel {
 
     observation: string = null;
     paid: boolean = false;
+
+    termsOfUses: SolicitationTermsOfUse[] = []
 
 }

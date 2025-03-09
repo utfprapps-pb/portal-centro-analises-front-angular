@@ -10,6 +10,7 @@ $tamanhos-de-tela: (sm: 1024px,
         @media (min-width: map-get($tamanhos-de-tela, sm)) {
             flex     : 0 0 percentage(calc($i / $numero-de-colunas)) !important;
             max-width: percentage(calc($i / $numero-de-colunas)) !important;
+            height   : 100%;
         }
     }
 }
@@ -19,6 +20,7 @@ $tamanhos-de-tela: (sm: 1024px,
         @media (min-width: map-get($tamanhos-de-tela, md)) {
             flex     : 0 0 percentage(calc($i / $numero-de-colunas)) !important;
             max-width: percentage(calc($i / $numero-de-colunas)) !important;
+            height   : 100%;
         }
     }
 }
@@ -28,6 +30,7 @@ $tamanhos-de-tela: (sm: 1024px,
         @media (min-width: map-get($tamanhos-de-tela, lg)) {
             flex     : 0 0 percentage(calc($i / $numero-de-colunas)) !important;
             max-width: percentage(calc($i / $numero-de-colunas)) !important;
+            height   : 100%;
         }
     }
 }
@@ -37,6 +40,7 @@ $tamanhos-de-tela: (sm: 1024px,
         @media (min-width: map-get($tamanhos-de-tela, xl)) {
             flex     : 0 0 percentage(calc($i / $numero-de-colunas)) !important;
             max-width: percentage(calc($i / $numero-de-colunas)) !important;
+            height   : 100%;
         }
     }
 }
@@ -45,6 +49,7 @@ $tamanhos-de-tela: (sm: 1024px,
     .col-#{$i} {
         flex     : 0 0 percentage(calc($i / $numero-de-colunas));
         max-width: percentage(calc($i / $numero-de-colunas));
+        height   : 100%;
     }
 }
 
@@ -52,6 +57,7 @@ $tamanhos-de-tela: (sm: 1024px,
     .offset-sm-#{$i} {
         @media (min-width: map-get($tamanhos-de-tela, sm)) {
             margin-left: percentage(calc($i / $numero-de-colunas)) !important;
+            height     : 100%;
         }
     }
 }
@@ -60,6 +66,7 @@ $tamanhos-de-tela: (sm: 1024px,
     .offset-md-#{$i} {
         @media (min-width: map-get($tamanhos-de-tela, md)) {
             margin-left: percentage(calc($i / $numero-de-colunas)) !important;
+            height     : 100%;
         }
     }
 }
@@ -68,6 +75,7 @@ $tamanhos-de-tela: (sm: 1024px,
     .offset-lg-#{$i} {
         @media (min-width: map-get($tamanhos-de-tela, lg)) {
             margin-left: percentage(calc($i / $numero-de-colunas)) !important;
+            height     : 100%;
         }
     }
 }
@@ -76,6 +84,7 @@ $tamanhos-de-tela: (sm: 1024px,
     .offset-xl-#{$i} {
         @media (min-width: map-get($tamanhos-de-tela, xl)) {
             margin-left: percentage(calc($i / $numero-de-colunas)) !important;
+            height     : 100%;
         }
     }
 }
@@ -83,5 +92,6 @@ $tamanhos-de-tela: (sm: 1024px,
 @for $i from $numero-de-colunas to 0 {
     .offset-#{$i} {
         margin-left: percentage(calc($i / $numero-de-colunas));
+        height     : 100%;
     }
 }

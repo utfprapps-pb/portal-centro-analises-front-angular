@@ -1,9 +1,9 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { InputNumber as PrimeInputNumber } from 'primeng/inputnumber';
 
-import { CompCtrlContainer } from '../../compctrl/compctrl.container';
+import { CompCtrlContainer } from '../../../core/directives/compctrl/compctrl.container';
+import { InvalidInfoComponent } from '../../invalid-info/invalid-info.component';
 import { InputBaseComponent } from '../input-base/input-base.component';
-import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
 
 @Component({
     selector: 'input-currency',

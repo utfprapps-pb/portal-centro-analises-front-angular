@@ -19,4 +19,10 @@ export class InvalidInfoComponent {
         }
     }
 
+    public focus() {
+        if (!!this.info) {
+            this.info.nativeElement.focus();
+        }
+    }
+
 }

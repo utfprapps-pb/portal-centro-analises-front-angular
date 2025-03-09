@@ -1,13 +1,13 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 
+import { CompCtrlContainer } from '../../core/directives/compctrl/compctrl.container';
 import { getEnum, getEnumTranslation } from '../../core/enums/enum-mapper';
 import { ConvertUtilsService } from '../../utils/convert-utils.service';
 import { Guid } from '../../utils/models/guid';
 import { ObjectUtils } from '../../utils/object-utils';
-import { CompCtrlContainer } from '../compctrl/compctrl.container';
 import { InputBaseComponent } from '../inputs/input-base/input-base.component';
-import { InvalidInfoComponent } from '../inputs/invalid-info/invalid-info.component';
+import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
 
 @Component({
     selector: 'radio-button',
@@ -206,7 +206,7 @@ export class RadioButtonComponent extends CompCtrlContainer implements ControlVa
             this.invalidInfoComponent.show();
         }
         setTimeout(() => {
-            (this.component.nativeElement.firstChild as any).focus();
+            this.component.nativeElement.querySelector('input').focus();
         });
     }
 }

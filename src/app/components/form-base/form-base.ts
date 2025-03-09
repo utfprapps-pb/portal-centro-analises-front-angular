@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 
 import pageSettings from '../../core/constants/page-settings';
+import { CompCtrlDirective } from '../../core/directives/compctrl/compctrl.directive';
 import { Roles } from '../../core/enums/roles.enum';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastrService } from '../../core/services/toastr.service';
@@ -10,7 +11,6 @@ import { ToasterService } from '../../core/toaster/toaster.service';
 import { GenericService } from '../../generics/generic.service';
 import { LoginService } from '../../login/login.service';
 import { ObjectUtils } from '../../utils/object-utils';
-import { CompCtrlDirective } from '../compctrl/compctrl.directive';
 import { ConvertUtilsService } from './../../utils/convert-utils.service';
 import { FormBaseComponent } from './form-base.component';
 

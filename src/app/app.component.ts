@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { PrimeNGConfig } from 'primeng/api';
 import { Subscription } from 'rxjs';
 
-import { PrimeNGConfig } from 'primeng/api';
 import pageSettings from '../app/core/constants/page-settings';
 import { AuthService } from './core/services/auth.service';
 import { ResizeService } from './utils/resize.service';

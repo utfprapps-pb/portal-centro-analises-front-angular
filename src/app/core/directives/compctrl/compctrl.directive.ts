@@ -1,8 +1,8 @@
 import { Directive, Input, OnInit, Optional, Output, Self } from '@angular/core';
 import { NgModel } from '@angular/forms';
 
-import { ConvertUtilsService } from '../../utils/convert-utils.service';
-import { ObjectUtils } from '../../utils/object-utils';
+import { ConvertUtilsService } from '../../../utils/convert-utils.service';
+import { ObjectUtils } from '../../../utils/object-utils';
 import { CompCtrlContainer } from './compctrl.container';
 
 @Directive({

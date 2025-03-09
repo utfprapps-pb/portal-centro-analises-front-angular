@@ -7,6 +7,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { EditorModule } from 'primeng/editor';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -26,6 +27,8 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
 import { TimelineModule } from 'primeng/timeline';
 import { TooltipModule } from 'primeng/tooltip';
 
+import { CompCtrlDirective } from '../core/directives/compctrl/compctrl.directive';
+import { QuillReaderDirective } from '../core/directives/quillreader/quillreader.directive';
 import { CurrencyFormatterPipe } from '../core/pipes/currency-formatter.pipe';
 import { DateFormatterPipe } from '../core/pipes/date-formatter.pipe';
 import { ToastrService } from '../core/services/toastr.service';
@@ -33,7 +36,6 @@ import { ToasterService } from '../core/toaster/toaster.service';
 import { UtilsModule } from '../utils/utils.module';
 import { CheckBoxComponent } from './checkbox/checkbox.component';
 import { ComboboxComponent } from './combobox/combobox.component';
-import { CompCtrlDirective } from './compctrl/compctrl.directive';
 import {
     BooleanColumnTemplateComponent,
 } from './datatable/datatable-columns/boolean-column-template/boolean-column-template.component';
@@ -75,9 +77,10 @@ import { InputEmailComponent } from './inputs/input-email/input-email.component'
 import { InputMaskComponent } from './inputs/input-mask/input-mask.component';
 import { InputNumber } from './inputs/input-number/input-number.component';
 import { InputPasswordComponent } from './inputs/input-password/input-password.component';
+import { InputQuillComponent } from './inputs/input-quill/input-quill.component';
 import { InputTextComponent } from './inputs/input-text/input-text.component';
 import { InputTextAreaComponent } from './inputs/input-textarea/input-textarea.component';
-import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.component';
+import { InvalidInfoComponent } from './invalid-info/invalid-info.component';
 import { PeriodicTableElementComponent } from './periodic-table/periodic-table-element/periodic-table-element.component';
 import { PeriodicTableComponent } from './periodic-table/periodic-table.component';
 import { RadioButtonComponent } from './radiobutton/radiobutton.component';
@@ -90,6 +93,8 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         CurrencyFormatterPipe,
 
         CompCtrlDirective,
+        QuillReaderDirective,
+
         HeaderComponent,
         ChangePasswordComponent,
         FormBaseComponent,
@@ -108,6 +113,7 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         InputCurrency,
         DatePicker,
         UploadfileComponent,
+        InputQuillComponent,
 
         EnumTemplateComponent,
 
@@ -134,6 +140,8 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         CurrencyFormatterPipe,
 
         CompCtrlDirective,
+        QuillReaderDirective,
+
         HeaderComponent,
         ChangePasswordComponent,
         FormBaseComponent,
@@ -153,6 +161,7 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         InputCurrency,
         DatePicker,
         UploadfileComponent,
+        InputQuillComponent,
 
         EnumTemplateComponent,
 
@@ -206,6 +215,7 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         NgxTooltip,
         FileUploadModule,
         TimelineModule,
+        EditorModule,
     ],
     providers: [
         ToastrService,

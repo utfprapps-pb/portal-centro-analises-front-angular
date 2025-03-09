@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 
+import { CompCtrlContainer } from '../../../core/directives/compctrl/compctrl.container';
 import { ObjectUtils } from '../../../utils/object-utils';
-import { CompCtrlContainer } from '../../compctrl/compctrl.container';
+import { InvalidInfoComponent } from '../../invalid-info/invalid-info.component';
 import { InputBaseComponent } from '../input-base/input-base.component';
-import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
 
 @Component({
     selector: 'input-email',

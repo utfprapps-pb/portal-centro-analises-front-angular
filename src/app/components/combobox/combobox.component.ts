@@ -3,14 +3,14 @@ import { ControlValueAccessor } from '@angular/forms';
 import { Dropdown } from 'primeng/dropdown';
 
 import { Debounce } from '../../core/decorators/decorators';
+import { CompCtrlContainer } from '../../core/directives/compctrl/compctrl.container';
 import { getEnum, getEnumTranslation } from '../../core/enums/enum-mapper';
 import { ZModel } from '../../generics/zmodel';
 import { ConvertUtilsService } from '../../utils/convert-utils.service';
 import { Guid } from '../../utils/models/guid';
 import { ObjectUtils } from '../../utils/object-utils';
-import { CompCtrlContainer } from '../compctrl/compctrl.container';
 import { InputBaseComponent } from '../inputs/input-base/input-base.component';
-import { InvalidInfoComponent } from '../inputs/invalid-info/invalid-info.component';
+import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
 
 @Component({
     selector: 'combobox',

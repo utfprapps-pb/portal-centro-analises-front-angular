@@ -4,15 +4,16 @@ import { Stepper } from 'primeng/stepper';
 import { FormCrud } from '../../../components/form-crud/form-crud';
 import { FormCrudComponent } from '../../../components/form-crud/form-crud.component';
 import { UserLoginDTO } from '../../../dtos/user-login-dto';
-import { ZModel } from '../../../generics/zmodel';
 import { ObjectUtils } from '../../../utils/object-utils';
 import { User } from '../../cadastros/user/model/user.model';
 import { Project } from '../../project/model/project.model';
 import { ProjectService } from '../../project/project.service';
 import { SolicitationAmostraFoto } from '../../solicitation/model/solicitation-amostra-foto.model';
 import { SolicitationAmostra } from '../../solicitation/model/solicitation-amostra.model';
+import { SolicitationTermsOfUse } from '../../solicitation/model/solicitation-termsofuse.model';
 import { Solicitation } from '../../solicitation/model/solicitation.model';
 import { SolicitationService } from '../../solicitation/solicitation.service';
+import { TermsOfUseService } from '../../termsofuse/termsofuse.service';
 import { SolicitationFormType } from './../../../core/enums/solicitation-form-type.enum';
 
 
@@ -42,6 +43,7 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
         protected override readonly injector: Injector,
         protected override readonly service: SolicitationService,
         protected readonly projectService: ProjectService,
+        protected readonly termsOfUseService: TermsOfUseService,
     ) {
         super(injector, service);
     }
@@ -93,8 +95,14 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
     }
 
     public disableButtonAvancar(): boolean {
-        if (this.activeStep >= 2) {
-            return !this.isValidForm() || this.object.form.citacao == undefined || !this.object.form.citacao
+        if (this.activeStep >= 3 && this.activeStep < 5) {
+            return !this.validateForm(false);
+        } else if (this.activeStep == 5) {
+            return !( // Inversão pois é para desabilitar o botão
+                this.validateForm(false) && // Formulário Valído
+                !!this.object.form.citacao && // Citação Marcada
+                this.object.termsOfUses.find(termo => !!termo.accepted == false) == undefined // Concordou com todos termos
+            );
         }
         return false;
     }
@@ -158,62 +166,23 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
 
     public onChangeStep(): void {
         document.querySelector('html').scrollTop = 0
-        if (this.activeStep == 2) {
+        if (this.activeStep == 5) {
+            this.blockForm();
             this.object.form.citacao = false;
+            this.termsOfUseService.findAll().then(termos => {
+                for (const data of termos) {
+                    if (ObjectUtils.isEmpty(data) || data.solicitationType == this.object.solicitationType) {
+                        const bind = new SolicitationTermsOfUse();
+                        bind.termofuse = data;
+                        this.object.termsOfUses.push(bind);
+                    }
+                }
+            }).finally(() => this.releaseForm());
         }
     }
 
     public getSolicitationType(): string {
         return this.object.solicitationType;
-    }
-
-    public isValidForm(): boolean {
-        return this.hasViewInitializated && this.validateForm(false) && ObjectUtils.isNotEmpty(this.object.form.citacao) && this.object.form.citacao;
-    }
-
-    protected override onBeforeSave(object: Solicitation): Promise<void> {
-        // if (this.getSolicitationType() != 'AA') {
-        //     // delete object.form.methodologyDescription;
-        //     // delete object.form.limitesConcentracao;
-        //     // delete object.form.forno;
-        //     // delete object.form.elementos;
-        //     // delete object.form.curvaConcentracao;
-        // }
-
-        // if (this.getSolicitationType() == 'CLAE') {
-        //     if (object.form.utilizaPDA != true) {
-        //         object.form.compOndaCanal1 = null;
-        //         object.form.compOndaCanal2 = null;
-        //     }
-        //     if (object.form.modoEluicao == 'ISO') {
-        //         object.form.condicoesGradiente = null;
-        //     } else {
-        //         object.form.composicaoFaseMovel = null;
-        //     }
-        // } else {
-        //     // delete object.form.coluna;
-        //     // delete object.form.fluxo;
-        //     // delete object.form.tempoAnalise;
-        //     // delete object.form.volumeInjetado;
-        //     // delete object.form.temperaturaFornoColuna;
-        //     // delete object.form.utilizaPDA;
-        //     // delete object.form.compOndaCanal1;
-        //     // delete object.form.compOndaCanal2;
-        //     // delete object.form.modoEluicao;
-        //     // delete object.form.composicaoFaseMovel;
-        //     // delete object.form.condicoesGradiente;
-        // }
-
-        // if (this.getSolicitationType() != 'COR') {
-        //     // delete object.form.locationMed;
-        //     // delete object.form.tipoLeitura;
-        // }
-
-        // if (this.getSolicitationType() != 'DRX') {
-        //     // delete object.form.modoAnalise;
-        // }
-
-        return null;
     }
 
     public onClickAddAmostra(): void {
@@ -223,15 +192,6 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
         }
         this.object.form.amostras.push(novaAmostra);
         this.updateAmostraNumber();
-
-        for (const prop in this.object) {
-            const value: any = (this.object as any)[prop];
-            if (value && value instanceof ZModel) {
-                if (value.id == null) {
-                    (this.object as any)[prop] = null;
-                }
-            }
-        }
     }
 
     public onClickRemoveAmostra(index: number): void {

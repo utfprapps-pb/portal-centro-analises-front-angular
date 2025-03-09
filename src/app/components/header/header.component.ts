@@ -127,6 +127,13 @@ export class HeaderComponent implements OnDestroy {
                         target: '_self',
                         // visible: admin
                     },
+                    {
+                        label: 'Termos de Uso',
+                        icon: 'fa fa-diploma',
+                        url: '/#/termos-de-uso',
+                        target: '_self',
+                        // visible: admin
+                    }
                 ]
             },
             {

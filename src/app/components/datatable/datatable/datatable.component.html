@@ -4,7 +4,9 @@
     [rowsPerPageOptions]="rowsPerPageOptions" [showCurrentPageReport]="true" [sortMode]="'multiple'"
     styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" (onFilter)="saveState()"
     (onSort)="saveState()" [currentPageReportTemplate]="currentPageReportTemplate()"
-    [reorderableColumns]="reorderableColumns" (onRowReorder)="saveState()" rowGroupMode="subheader">
+    [reorderableColumns]="reorderableColumns" (onRowReorder)="saveState()"
+    rowGroupMode="subheader"
+    groupRowsBy="id">
 
     <ng-template *ngIf="!!table" pTemplate="caption">
         <div class="text-right">
