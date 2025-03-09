@@ -1,4 +1,4 @@
-import { Component, Injector, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 
 import { FormCrud } from '../../../../components/form-crud/form-crud';
 import { FormCrudComponent } from '../../../../components/form-crud/form-crud.component';
@@ -10,7 +10,7 @@ import { EmailConfig } from '../model/emailconfig.model';
     templateUrl: './email-config-form.component.html',
     styleUrl: './email-config-form.component.scss'
 })
-export class EmailConfigFormComponent extends FormCrud<EmailConfig> {
+export class EmailConfigFormComponent extends FormCrud<EmailConfig> implements OnInit {
 
     @ViewChild('formView') public formView: FormCrudComponent;
 
@@ -19,6 +19,10 @@ export class EmailConfigFormComponent extends FormCrud<EmailConfig> {
         protected override readonly service: EmailConfigService,
     ) {
         super(injector, service);
+    }
+
+    public override getObjectIdFromUrl(): number {
+        return 1;
     }
 
 }

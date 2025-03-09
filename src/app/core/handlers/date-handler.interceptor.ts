@@ -2,6 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+
 import { ObjectUtils } from '../../utils/object-utils';
 
 @Injectable({ providedIn: 'root' })
@@ -30,8 +31,8 @@ export class DateHttpInterceptor implements HttpInterceptor {
         for (const key of Object.keys(body)) {
             const value = body[key];
             if (this.isDate(value)) {
-                const data = new Date(value);
-                body[key] = new Date(data.setHours(0, 0, 0, 0));
+                // const data = new Date(value);
+                // body[key] = new Date(data.setHours(0, 0, 0, 0));
             } else if (value != null && typeof value === 'object') {
                 this.deserialize(value);
             }

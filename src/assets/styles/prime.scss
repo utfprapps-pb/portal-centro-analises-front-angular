@@ -222,6 +222,7 @@ p-dropdown {
             width: 100%;
         }
     }
+
     & span {
         .p-dropdown-label.p-inputtext {
             padding-right: 20px;
@@ -237,16 +238,17 @@ p-calendar {
 
 .mobile-menu {
     .p-menubar-root-list {
-        width: 90%;
+        width      : 90%;
         margin-left: 2rem;
     }
+
     li.p-menuitem {
         width: 90%;
     }
 }
 
 barsicon {
-    scale: 2;
+    scale      : 2;
     margin-left: 2rem;
 }
 
@@ -261,5 +263,36 @@ p-overlay div.p-overlay.p-component {
 
 .p-fileupload-content .p-progressbar {
     position: relative;
-    height: 20px;
+    height  : 20px;
+}
+
+p-card {
+    .p-card-content {
+        padding: 0 !important;
+    }
+}
+
+p-timeline {
+    .p-timeline-event-opposite {
+        max-width: fit-content;
+    }
+
+    .p-timeline-event-opposite,
+    // .p-timeline-event-separator,
+    .p-timeline-event-content {
+        align-self: center;
+    }
+
+    .p-timeline-event-content {
+        padding-top: 5px;
+    }
+
+    // .p-timeline-event {
+    //     padding-top: 15px;
+    // }
+
+    // .p-timeline-event-connector {
+
+    // }
+
 }

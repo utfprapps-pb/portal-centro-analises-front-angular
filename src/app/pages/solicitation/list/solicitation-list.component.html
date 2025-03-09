@@ -1,0 +1,51 @@
+<form-list #formView [pageTitle]="'Solicitações'">
+
+    <datatable #formViewDatatable [name]="'solicitation_list'" [service]="service" [showDeleteButton]="false"
+        [reorderableColumns]="true" [showExpandButton]="true" [allowRowExpand]="allowRowExpand.bind(this)"
+        (onLoadData)="loadHistoricos()">
+
+        <ng-template #expansion let-rowData>
+            <p-timeline [value]="getHistoricos(rowData)">
+                <ng-template pTemplate="opposite" let-data style="width: 100px;">
+                    {{ data.createdAt | dateFormatter:'dd/MM/YYYY HH:mm:ss' }}
+                </ng-template>
+                <ng-template pTemplate="marker" let-data style="align-self: center">
+                    <span class="dot" [style]="{ 'background-color': getEnumColor(data.status) }">
+                        <i [class]="'fa fa-marker'"></i>
+                    </span>
+                </ng-template>
+
+                <ng-template pTemplate="content" let-data>
+                    <div style="max-width: fit-content;">
+                        <p-card [style]=" {
+                                'filter': 'drop-shadow(2px 2px 2px black)'
+                            }">
+                            <ng-template pTemplate="header">
+                                <div class="p-2 text-center">
+                                    <enum-template [enum]="'SolicitationStatus'" [field]="'status'"
+                                        [data]="data">
+                                    </enum-template>
+                                </div>
+                            </ng-template>
+                            <ng-container *ngIf="data.observation">
+                                <div class="row">
+                                    <div class="col-24">
+                                        <b>Observações:</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-24">
+                                        <p>{{data.observation}}</p>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </p-card>
+                    </div>
+                </ng-template>
+
+            </p-timeline>
+        </ng-template>
+
+    </datatable>
+
+</form-list>

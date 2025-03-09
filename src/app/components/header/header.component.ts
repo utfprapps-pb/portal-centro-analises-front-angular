@@ -75,6 +75,13 @@ export class HeaderComponent implements OnDestroy {
                 // visible: admin
             },
             {
+                label: 'Solicitações',
+                icon: 'far fa-table-tree',
+                url: '/#/solicitacoes',
+                target: '_self',
+                // visible: admin
+            },
+            {
                 label: 'Vínculos Existentes',
                 icon: 'fa fa-chalkboard-user',
                 url: '/#/vinculos',

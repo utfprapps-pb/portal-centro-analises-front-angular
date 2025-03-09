@@ -3,15 +3,16 @@ import { Stepper } from 'primeng/stepper';
 
 import { FormCrud } from '../../../components/form-crud/form-crud';
 import { FormCrudComponent } from '../../../components/form-crud/form-crud.component';
-import { Roles } from '../../../core/enums/roles.enum';
 import { UserLoginDTO } from '../../../dtos/user-login-dto';
+import { ZModel } from '../../../generics/zmodel';
 import { ObjectUtils } from '../../../utils/object-utils';
+import { User } from '../../cadastros/user/model/user.model';
 import { Project } from '../../project/model/project.model';
 import { ProjectService } from '../../project/project.service';
-import { SolicitationAmostraFoto } from '../model/solicitation-amostra-foto.model';
-import { SolicitationAmostra } from '../model/solicitation-amostra.model';
-import { Solicitation } from '../model/solicitation.model';
-import { SolicitarService } from '../solicitar.service';
+import { SolicitationAmostraFoto } from '../../solicitation/model/solicitation-amostra-foto.model';
+import { SolicitationAmostra } from '../../solicitation/model/solicitation-amostra.model';
+import { Solicitation } from '../../solicitation/model/solicitation.model';
+import { SolicitationService } from '../../solicitation/solicitation.service';
 import { SolicitationFormType } from './../../../core/enums/solicitation-form-type.enum';
 
 
@@ -35,10 +36,11 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
     public responsavel: UserLoginDTO = null;
 
     public hasViewInitializated: boolean = false;
+    private uniqueProject: Project = null;
 
     constructor(
         protected override readonly injector: Injector,
-        protected override readonly service: SolicitarService,
+        protected override readonly service: SolicitationService,
         protected readonly projectService: ProjectService,
     ) {
         super(injector, service);
@@ -100,11 +102,19 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
     public override async onAfterLoadObject(object: Solicitation): Promise<void> {
         await this.projectService.findAllSelf().then(async data => {
             this.projetos = data;
+            if (data.length == 1) {
+                this.uniqueProject = data[0];
+                this.object.project = this.uniqueProject;
+            }
         });
     }
 
     public onChangeProject(project: Project): void {
-        this.object.professor = null;
+        if (this.uniqueProject && project == null) {
+            this.object.project = this.uniqueProject;
+        }
+
+        this.object.responsavel = null;
         this.responsavel = this.authentication.getUserLogged();
 
         this.object.project = project;
@@ -112,11 +122,10 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
         this.object.otherProjectNature = project?.otherProjectNature;
 
         if (ObjectUtils.isNotEmpty(project)) {
-            if (project.user.role == Roles.ROLE_PROFESSOR) {
-                this.object.professor = project.user;
-            }
             this.responsavel = project.user;
         }
+        this.object.responsavel = new User();
+        this.object.responsavel.id = this.responsavel.id;
     }
 
     public onChangeNaturezaAmostra(): void {
@@ -214,6 +223,15 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
         }
         this.object.form.amostras.push(novaAmostra);
         this.updateAmostraNumber();
+
+        for (const prop in this.object) {
+            const value: any = (this.object as any)[prop];
+            if (value && value instanceof ZModel) {
+                if (value.id == null) {
+                    (this.object as any)[prop] = null;
+                }
+            }
+        }
     }
 
     public onClickRemoveAmostra(index: number): void {

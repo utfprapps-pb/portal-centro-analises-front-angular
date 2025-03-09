@@ -8,7 +8,10 @@ import { User } from '../../../cadastros/user/model/user.model';
 export class StudentTeacher extends ZModel {
 
     public static override createInstance(): StudentTeacher {
-        return new StudentTeacher();
+        const blank = new StudentTeacher();
+        blank.student = new User();
+        blank.professor = new User();
+        return blank;
     }
 
     @Title('Status')
@@ -19,12 +22,12 @@ export class StudentTeacher extends ZModel {
     @Title('Estudante')
     @Prop(User.createInstance(), ['id', 'name', 'email', 'raSiape'])
     @Hidden(!!AuthService.USER_LOGGED && Roles.ROLE_STUDENT == AuthService.USER_LOGGED.role)
-    student: User = new User();
+    student: User = null;
 
     @Title('Professor')
     @Prop(User.createInstance(), ['id', 'name', 'email'])
     @Hidden(!!AuthService.USER_LOGGED && Roles.ROLE_PROFESSOR == AuthService.USER_LOGGED.role)
-    professor: User = new User();
+    professor: User = null;
 
     @Title('Data de Criação')
     @Prop('date')

@@ -1,5 +1,5 @@
 export enum SolicitationStatus {
-    PENDING_ADVISOR = 'Aguardando Confirmação do Orientador',
+    PENDING_ADVISOR = 'Aguardando Confirmação do Responsável',
     PENDING_CORRECTION = 'Aguardando Correção',
     PENDING_LAB = 'Aguardando Confirmação do Laboratório',
     PENDING_SAMPLE = 'Aguardando amostra',

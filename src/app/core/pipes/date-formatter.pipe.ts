@@ -8,7 +8,7 @@ export class DateFormatterPipe implements PipeTransform {
 
     private dtPipe = new DatePipe('en-US');
 
-    transform(value: any): any {
+    transform(value: any, mask?: string): any {
         const args = 'dd/MM/yyyy';
 
         var parsedDate = Date.parse(value);
@@ -17,7 +17,7 @@ export class DateFormatterPipe implements PipeTransform {
         }
         else {
             let aux = new Date(parsedDate);
-            return this.dtPipe.transform(aux, args);
+            return this.dtPipe.transform(aux,  mask || args);
         }
     }
 }

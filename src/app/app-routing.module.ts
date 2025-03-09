@@ -27,6 +27,18 @@ export const routes: Routes = [
     },
 
     {
+        path: 'solicitacoes',
+        // data: {
+        //     authorities: [
+        //         Roles.ROLE_ADMIN
+        //     ]
+        // },
+        canActivate: [AuthGuard.canActivate],
+        canDeactivate: [AuthGuard.canDeactivate],
+        loadChildren: () => import('./pages/solicitation/solicitation.module').then(m => m.SolicitationModule),
+    },
+
+    {
         path: 'vinculos',
         // data: {
         //     authorities: [

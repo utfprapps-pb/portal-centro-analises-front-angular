@@ -23,6 +23,7 @@ import { StepperModule } from 'primeng/stepper';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import { TimelineModule } from 'primeng/timeline';
 import { TooltipModule } from 'primeng/tooltip';
 
 import { CurrencyFormatterPipe } from '../core/pipes/currency-formatter.pipe';
@@ -80,6 +81,7 @@ import { InvalidInfoComponent } from './inputs/invalid-info/invalid-info.compone
 import { PeriodicTableElementComponent } from './periodic-table/periodic-table-element/periodic-table-element.component';
 import { PeriodicTableComponent } from './periodic-table/periodic-table.component';
 import { RadioButtonComponent } from './radiobutton/radiobutton.component';
+import { EnumTemplateComponent } from './templates/enum-template/enum-template.component';
 import { UploadfileComponent } from './uploadfile/uploadfile.component';
 
 @NgModule({
@@ -106,6 +108,8 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         InputCurrency,
         DatePicker,
         UploadfileComponent,
+
+        EnumTemplateComponent,
 
         PeriodicTableComponent,
         PeriodicTableElementComponent,
@@ -150,6 +154,8 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         DatePicker,
         UploadfileComponent,
 
+        EnumTemplateComponent,
+
         PeriodicTableComponent,
         PeriodicTableElementComponent,
 
@@ -170,6 +176,7 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         StepperModule,
         TableModule,
         NgxTooltip,
+        TimelineModule,
     ],
     imports: [
         CommonModule,
@@ -198,6 +205,7 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         StepperModule,
         NgxTooltip,
         FileUploadModule,
+        TimelineModule,
     ],
     providers: [
         ToastrService,

@@ -6,7 +6,9 @@ import { User } from '../../cadastros/user/model/user.model';
 export class Project extends ZModel {
 
     public static override createInstance(): Project {
-        return new Project();
+        const blank = new Project();
+        blank.user = new User();
+        return blank;
     }
 
     @Title('Título')
@@ -19,7 +21,7 @@ export class Project extends ZModel {
 
     @Title('Responsável')
     @Prop(User.createInstance(), ['name', 'email'])
-    user: User = new User();
+    user: User = null;
 
     @Hidden()
     students: User[] = []

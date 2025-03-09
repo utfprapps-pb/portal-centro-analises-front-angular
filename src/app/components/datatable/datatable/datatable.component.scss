@@ -14,3 +14,10 @@
     width: 39px !important;
     max-width: 39px !important;
 }
+
+.fa-chevron-right {
+    transition : 0.2s ease-in-out all;
+    &.expanded {
+        transform: rotate(90deg);
+    }
+}

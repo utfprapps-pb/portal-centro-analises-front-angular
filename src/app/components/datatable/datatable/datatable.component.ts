@@ -1,4 +1,14 @@
-import { AfterViewInit, Component, Injector, Input, ViewChild } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ContentChild,
+    EventEmitter,
+    Injector,
+    Input,
+    Output,
+    TemplateRef,
+    ViewChild,
+} from '@angular/core';
 import { TableState } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -36,12 +46,18 @@ export class DatatableComponent implements AfterViewInit {
         this.createDatatableHeader();
     }
 
-    @Input('name') name: string;
-    @Input('allowSelectAll') allowSelectAll: boolean = false;
-    @Input('showEditButton') showEditButton: boolean = true;
-    @Input('showDeleteButton') showDeleteButton: boolean = true;
+    @Input() name: string;
+    @Input() allowSelectAll: boolean = false;
+    @Input() showEditButton: boolean = true;
+    @Input() showDeleteButton: boolean = true;
+    @Input() reorderableColumns: boolean = false;
     @Input() allowSelectRow: Function;
     @Input() allowDeleteRow: Function;
+    @Input() allowRowExpand: Function;
+    @Input() showExpandButton: boolean = false;
+    @ContentChild('expansion', { static: true }) expansion: TemplateRef<any>;
+
+    @Output() onLoadData: EventEmitter<void> = new EventEmitter;
 
     private emptyObject: any;
     public datatableSelectedObjects: any[] = [];
@@ -52,6 +68,8 @@ export class DatatableComponent implements AfterViewInit {
 
     private _columnsBefore: ColumnTemplateComponent[] = [];
     private _columnsAfter: ColumnTemplateComponent[] = [];
+
+    private _originalColumnOrder: string[] = [];
 
     get columnsBefore() {
         return this._columnsBefore.filter(it => it.visible);
@@ -88,6 +106,7 @@ export class DatatableComponent implements AfterViewInit {
             }
         }
         this.table.rowSelectable = this.allowSelectRowDatatableInternal.bind(this);
+        this.sortColumnOrder();
     }
 
     public async saveState(): Promise<void> {
@@ -98,6 +117,7 @@ export class DatatableComponent implements AfterViewInit {
 
     public async clearState(): Promise<void> {
         this.table.clear();
+        this.table.expandedRowKeys = {};
         if (!!this.name && !!this.table) {
             this.table.clearState();
             this.table.rows = this.rowsPerPageOptions[0];
@@ -113,7 +133,7 @@ export class DatatableComponent implements AfterViewInit {
             const additionalcolumn: string[] = Reflect.getMetadata('column:additionalcolumn', this.emptyObject, prop);
             if (ObjectUtils.isNotEmpty(additionalcolumn)) {
                 for (const col of additionalcolumn) {
-                    if (!Reflect.getMetadata('column:title', this.emptyObject[prop], col) || false) continue;
+                    if (!Reflect.getMetadata('column:title', this.emptyObject[prop] || {}, col) || false) continue;
 
                     const filter: DatatableFilterColumn = this.generateDatatableFilter(col, prop);
                     if (!!filter) {
@@ -123,6 +143,7 @@ export class DatatableComponent implements AfterViewInit {
                     const column: DatatableColumn = this.generateDatatableColumn(col, prop);
                     if (!!column) {
                         this.addDatatableColumn(column);
+                        this._originalColumnOrder.push(column.field);
                     }
                 }
                 continue;
@@ -135,11 +156,32 @@ export class DatatableComponent implements AfterViewInit {
                 const column: DatatableColumn = this.generateDatatableColumn(prop);
                 if (!!column) {
                     this.addDatatableColumn(column);
+                    this._originalColumnOrder.push(column.field);
                 }
             }
         }
+
         await this.loadDatatableData();
         this.loading = false;
+    }
+
+    private sortColumnOrder(): void {
+        if (this.reorderableColumns) {
+            const state = localStorage.getItem(this.table?.stateKey);
+            if (ObjectUtils.isNotEmpty(state)) {
+                const stateObject: TableState = JSON.parse(state);
+                const order: string[] = stateObject.columnOrder || [];
+                if (ObjectUtils.isNotEmpty(order)) {
+                    for (let i = 0; i < order.length; i++) {
+                        const col = this.table.columns.find(it => it.field == order[i]);
+                        if (col) {
+                            col.order = i;
+                        }
+                    }
+                    this.table._columns.sort((a, b) => a.order - b.order);
+                }
+            }
+        }
     }
 
     public getColumnData(data: any, field: string): String | number {
@@ -148,7 +190,7 @@ export class DatatableComponent implements AfterViewInit {
             const fieldPath = path.shift();
             return this.getColumnData(data[fieldPath], path.join('.'));
         } else {
-            return data[field];
+            return data?.[field] || null;
         }
     }
 
@@ -247,7 +289,22 @@ export class DatatableComponent implements AfterViewInit {
                 }
             }
             this.datatableObjects = data.sort((a, b) => a.id > b.id ? -1 : 1);
+            this.onLoadData.emit();
         });
+    }
+
+    public async onClickClear(): Promise<void> {
+        if (ObjectUtils.isNotEmpty(this._originalColumnOrder)) {
+            for (let i = 0; i < this._originalColumnOrder.length; i++) {
+                const col = this.table.columns.find(it => it.field == this._originalColumnOrder[i]);
+                if (col) {
+                    col.order = i;
+                }
+            }
+            this.table.columns.sort((a, b) => a.order - b.order);
+        }
+        await this.clearState();
+        await this.onClickRefresh();
     }
 
     public async onClickClearFilter(): Promise<void> {
@@ -274,6 +331,13 @@ export class DatatableComponent implements AfterViewInit {
             return this.allowSelectRow(!!data.data ? data.data : data);
         }
         return true;
+    }
+
+    public allowExpandRowDatatableInternal(data: any): boolean {
+        if (!!this.allowRowExpand) {
+            return this.allowRowExpand(!!data.data ? data.data : data);
+        }
+        return false;
     }
 
     public allowDeleteRowDatatableInternal(data: any): boolean {
