@@ -6,11 +6,15 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 import { ComponentsModule } from '../../components/components.module';
 import { SolicitarFormComponent } from './form/solicitar-form.component';
+import {
+    SolicitarFormularioTemplateComponent,
+} from './solicitar-formulario-template/solicitar-formulario-template.component';
 import { SolicitarRoutes } from './solicitar.routes';
 
 @NgModule({
     declarations: [
         SolicitarFormComponent,
+        SolicitarFormularioTemplateComponent,
     ],
     imports: [
         CommonModule,
@@ -18,6 +22,9 @@ import { SolicitarRoutes } from './solicitar.routes';
         ComponentsModule,
         SolicitarRoutes,
         NgxJsonViewerModule,
+    ],
+    exports: [
+        SolicitarFormularioTemplateComponent
     ],
     providers: [
         provideHttpClient(withInterceptorsFromDi())

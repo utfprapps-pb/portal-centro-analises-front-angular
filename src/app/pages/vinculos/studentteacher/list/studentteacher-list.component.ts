@@ -40,16 +40,16 @@ export class StudentTeacherListComponent extends FormList<StudentTeacher> {
             if (response != null) {
                 this.service.updateBindStatus(data, response).then(() => {
                     if (response) {
-                        this.toastrService.showSuccess(this.pageTitle, "Vínculo Aceito com Sucesso!");
+                        this.toastrService.showSuccess(this.title, "Vínculo Aceito com Sucesso!");
                     } else {
-                        this.toastrService.showSuccess(this.pageTitle, "Vínculo Recusado com Sucesso!");
+                        this.toastrService.showSuccess(this.title, "Vínculo Recusado com Sucesso!");
                     }
                     this.formViewDatatable.onClickRefresh();
                 }, (error: any) => {
                     if (this.hasErrorMapped(error)) {
                         this.errorHandler(error);
                     } else {
-                        this.toastrService.showError(this.pageTitle, 'Erro ao Aceitar/Recusar solicitação de Vínculo');
+                        this.toastrService.showError(this.title, 'Erro ao Aceitar/Recusar solicitação de Vínculo');
                     }
                 }).finally(() => this.releaseForm());
             }

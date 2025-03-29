@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxTooltip } from '@ngx-popovers/tooltip';
+import { AccordionModule } from 'primeng/accordion';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -22,6 +23,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { StepperModule } from 'primeng/stepper';
 import { TableModule } from 'primeng/table';
+import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { TimelineModule } from 'primeng/timeline';
@@ -186,6 +188,10 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         TableModule,
         NgxTooltip,
         TimelineModule,
+        AccordionModule,
+        TabViewModule,
+        TieredMenuModule,
+        DialogModule
     ],
     imports: [
         CommonModule,
@@ -216,6 +222,8 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         FileUploadModule,
         TimelineModule,
         EditorModule,
+        AccordionModule,
+        TabViewModule
     ],
     providers: [
         ToastrService,

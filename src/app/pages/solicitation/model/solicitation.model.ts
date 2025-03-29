@@ -2,16 +2,15 @@ import { ColumnMinWidth, Enum, Prop, Title } from '../../../core/decorators/deco
 import { SolicitationFormType } from '../../../core/enums/solicitation-form-type.enum';
 import { SolicitationProjectNature } from '../../../core/enums/solicitation-project-nature.enum';
 import { SolicitationStatus } from '../../../core/enums/solicitation-status.enum';
-import { ZModel } from '../../../generics/zmodel';
+import { ZModelCrud } from '../../../generics/zmodel-crud';
 import { Equipment } from '../../cadastros/equipment/model/equipment.model';
 import { User } from '../../cadastros/user/model/user.model';
 import { Project } from '../../project/model/project.model';
-import { SolicitationAmostra } from './solicitation-amostra.model';
-import { SolicitationAttachments } from './solicitation-attachments.model';
+import { SolicitationForm } from './solicitation-form.model';
 import { SolicitationTermsOfUse } from './solicitation-termsofuse.model';
 
 
-export class Solicitation extends ZModel {
+export class Solicitation extends ZModelCrud {
 
     public static override createInstance(): Solicitation {
         const blank = new Solicitation();
@@ -21,6 +20,7 @@ export class Solicitation extends ZModel {
         blank.updatedBy = new User();
         blank.equipment = new Equipment();
         blank.scheduleDate = new Date();
+        blank.form = new SolicitationForm();
         return blank;
     }
 
@@ -37,12 +37,12 @@ export class Solicitation extends ZModel {
     @Title('Criação')
     @Prop('date')
     @ColumnMinWidth('130px')
-    createdAt: Date = null;
+    override createdAt: Date = null;
 
     @Title('Alteração')
     @Prop('date')
     @ColumnMinWidth('130px')
-    updatedAt: Date = null;
+    override updatedAt: Date = null;
 
     @Title('Projeto')
     @Prop(Project.createInstance(), ['subject'])
@@ -61,46 +61,10 @@ export class Solicitation extends ZModel {
     @Prop(User.createInstance(), ['name'])
     responsavel: User = null;
 
-    createdBy: User = null;
-    updatedBy: User = null;
-
     equipment: Equipment = null;
-    form: any = {
-        'retirada': 'FALSE',
-        'citacao': false,
-
-        'amostras': [new SolicitationAmostra()],
-
-        // AA
-        'methodologyDescription': null,
-        'limitesConcentracao': null,
-        'forno': null,
-        'elementos': null,
-        'curvaConcentracao': null,
-
-        // CLAE
-        'coluna': null,
-        'fluxo': null,
-        'tempoAnalise': null,
-        'volumeInjetado': null,
-        'temperaturaFornoColuna': null,
-        'utilizaPDA': null,
-        'compOndaCanal1': null,
-        'compOndaCanal2': null,
-        'modoEluicao': null,
-        'composicaoFaseMovel': null,
-        'condicoesGradiente': null,
-
-        // COR
-        'locationMed': null,
-        'tipoLeitura': null,
-
-        // DRX
-        'modoAnalise': 'CN',
-    };
+    form: SolicitationForm = null;
 
     scheduleDate: Date = null;
-    solicitationAttachments: SolicitationAttachments[] = [];
 
     price: number = null;
     amountHours: number = null;

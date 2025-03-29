@@ -14,7 +14,10 @@
             1
         ],
         "categoria": "Não Metal",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Hélio",
@@ -31,7 +34,10 @@
             2
         ],
         "categoria": "Gás Nobre",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Lítio",
@@ -50,7 +56,10 @@
             1
         ],
         "categoria": "Metal Alcalino",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Berílio",
@@ -69,7 +78,10 @@
             2
         ],
         "categoria": "Metal Alcalino-terroso",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Boro",
@@ -87,7 +99,10 @@
             3
         ],
         "categoria": "Metaloide",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Carbono",
@@ -105,7 +120,10 @@
             4
         ],
         "categoria": "Não Metal",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Nitrogênio",
@@ -123,7 +141,10 @@
             5
         ],
         "categoria": "Não Metal",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Oxígênio",
@@ -141,7 +162,10 @@
             6
         ],
         "categoria": "Não Metal",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Flúor",
@@ -159,7 +183,10 @@
             7
         ],
         "categoria": "Halogênio",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Neônio",
@@ -177,7 +204,10 @@
             8
         ],
         "categoria": "Gás Nobre",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Sódio",
@@ -196,7 +226,10 @@
             1
         ],
         "categoria": "Metal Alcalino",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Magnésio",
@@ -215,7 +248,10 @@
             2
         ],
         "categoria": "Metal Alcalino-terroso",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Alumínio",
@@ -234,7 +270,10 @@
             3
         ],
         "categoria": "Outros Metais",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Silício",
@@ -253,7 +292,10 @@
             4
         ],
         "categoria": "Metaloide",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Fósforo",
@@ -272,7 +314,10 @@
             5
         ],
         "categoria": "Não Metal",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Enxofre",
@@ -291,7 +336,10 @@
             6
         ],
         "categoria": "Não Metal",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Cloro",
@@ -310,7 +358,10 @@
             7
         ],
         "categoria": "Halogênio",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Argônio",
@@ -329,7 +380,10 @@
             8
         ],
         "categoria": "Gás Nobre",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Potássio",
@@ -349,7 +403,10 @@
             1
         ],
         "categoria": "Metal Alcalino",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Cálcio",
@@ -369,7 +426,10 @@
             2
         ],
         "categoria": "Metal Alcalino-terroso",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Escândio",
@@ -389,7 +449,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Titânio",
@@ -409,7 +472,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Vanádio",
@@ -429,7 +495,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Crômio",
@@ -449,7 +518,10 @@
             1
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Maganês",
@@ -469,7 +541,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Ferro",
@@ -497,7 +572,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Cobalto",
@@ -525,7 +603,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Níquel",
@@ -553,7 +634,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Cobre",
@@ -581,7 +665,10 @@
             1
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Zinco",
@@ -609,7 +696,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Gálio",
@@ -637,7 +727,10 @@
             3
         ],
         "categoria": "Outros Metais",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Germânio",
@@ -665,7 +758,10 @@
             4
         ],
         "categoria": "Metaloide",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Arsênio",
@@ -693,7 +789,10 @@
             5
         ],
         "categoria": "Metaloide",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Selênio",
@@ -721,7 +820,10 @@
             6
         ],
         "categoria": "Não Metal",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Bromo",
@@ -749,7 +851,10 @@
             7
         ],
         "categoria": "Halogênio",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Criptônio",
@@ -777,7 +882,10 @@
             8
         ],
         "categoria": "Gás Nobre",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Rubídio",
@@ -806,7 +914,10 @@
             1
         ],
         "categoria": "Metal Alcalino",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Estrôncio",
@@ -835,7 +946,10 @@
             2
         ],
         "categoria": "Metal Alcalino-terroso",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Ítrio",
@@ -864,7 +978,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Zircônio",
@@ -893,7 +1010,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Nióbio",
@@ -922,7 +1042,10 @@
             1
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Molibdênio",
@@ -951,7 +1074,10 @@
             1
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Tecnécio",
@@ -980,7 +1106,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Rutênio",
@@ -1009,7 +1138,10 @@
             1
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Ródio",
@@ -1038,7 +1170,10 @@
             1
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Paládio",
@@ -1066,7 +1201,10 @@
             18
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Prata",
@@ -1095,7 +1233,10 @@
             1
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Cádmio",
@@ -1124,7 +1265,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Índio",
@@ -1153,7 +1297,10 @@
             3
         ],
         "categoria": "Outros Metais",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Estanho",
@@ -1182,7 +1329,10 @@
             4
         ],
         "categoria": "Outros Metais",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Antimônio",
@@ -1211,7 +1361,10 @@
             5
         ],
         "categoria": "Metaloide",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Telúrio",
@@ -1240,7 +1393,10 @@
             6
         ],
         "categoria": "Metaloide",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Iodo",
@@ -1269,7 +1425,10 @@
             7
         ],
         "categoria": "Halogênio",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Xenônio",
@@ -1298,7 +1457,10 @@
             8
         ],
         "categoria": "Gás Nobre",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Césio",
@@ -1328,7 +1490,10 @@
             1
         ],
         "categoria": "Metal Alcalino",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Bário",
@@ -1358,7 +1523,10 @@
             2
         ],
         "categoria": "Metal Alcalino-terroso",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Latânio",
@@ -1388,7 +1556,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Cério",
@@ -1418,7 +1589,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Praseodímio",
@@ -1448,7 +1622,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Neodímio",
@@ -1478,7 +1655,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Promécio",
@@ -1508,7 +1688,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Samário",
@@ -1538,7 +1721,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Európio",
@@ -1568,7 +1754,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Gadolínio",
@@ -1598,7 +1787,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Térbio",
@@ -1628,7 +1820,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Disprósio",
@@ -1658,7 +1853,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Hólmio",
@@ -1688,7 +1886,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Érbio",
@@ -1718,7 +1919,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Túlio",
@@ -1748,7 +1952,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Itérbio",
@@ -1778,7 +1985,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Lutécio",
@@ -1808,7 +2018,10 @@
             2
         ],
         "categoria": "Lantanídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Háfnio",
@@ -1838,7 +2051,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Tântalo",
@@ -1868,7 +2084,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Tungstênio",
@@ -1898,7 +2117,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Rênio",
@@ -1928,7 +2150,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Ósmio",
@@ -1958,7 +2183,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Irídio",
@@ -1988,7 +2216,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Platina",
@@ -2018,7 +2249,10 @@
             1
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Ouro",
@@ -2048,7 +2282,10 @@
             1
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Mercúrio",
@@ -2078,7 +2315,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Tálio",
@@ -2108,7 +2348,10 @@
             3
         ],
         "categoria": "Outros Metais",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Chumbo",
@@ -2138,7 +2381,10 @@
             4
         ],
         "categoria": "Outros Metais",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Bismuto",
@@ -2168,7 +2414,10 @@
             5
         ],
         "categoria": "Metal Pós-transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Polônio",
@@ -2198,7 +2447,10 @@
             6
         ],
         "categoria": "Metaloide",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Astato",
@@ -2228,7 +2480,10 @@
             7
         ],
         "categoria": "Halogênio",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Radênio",
@@ -2258,7 +2513,10 @@
             8
         ],
         "categoria": "Gás Nobre",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Frâncio",
@@ -2289,7 +2547,10 @@
             1
         ],
         "categoria": "Metal Alcalino",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Rádio",
@@ -2320,7 +2581,10 @@
             2
         ],
         "categoria": "Metal Alcalino-terroso",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Actínio",
@@ -2351,7 +2615,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Tório",
@@ -2382,7 +2649,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Protactínio",
@@ -2413,7 +2683,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Urânio",
@@ -2444,7 +2717,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Neptúnio",
@@ -2475,7 +2751,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Plutônio",
@@ -2506,7 +2785,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Amerício",
@@ -2537,7 +2819,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Cúrio",
@@ -2568,7 +2853,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Berquélio",
@@ -2599,7 +2887,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Califórnio",
@@ -2630,7 +2921,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Einstênio",
@@ -2661,7 +2955,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Férmio",
@@ -2692,7 +2989,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Mendelévio",
@@ -2723,7 +3023,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Nobélio",
@@ -2754,7 +3057,10 @@
             2
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Laurêncio",
@@ -2785,7 +3091,10 @@
             3
         ],
         "categoria": "actinídeo",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": true
     },
     {
         "name": "Rutherfórdio",
@@ -2816,7 +3125,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Dúbnio",
@@ -2847,7 +3159,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Saebórgio",
@@ -2878,7 +3193,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Bóhrio",
@@ -2909,7 +3227,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Hássio",
@@ -2940,7 +3261,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Meitnério",
@@ -2971,7 +3295,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Darmstádtio",
@@ -3002,7 +3329,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Roentgênio",
@@ -3033,7 +3363,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Copernício",
@@ -3064,7 +3397,10 @@
             2
         ],
         "categoria": "Metal de Transição",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Nihônio",
@@ -3095,7 +3431,10 @@
             3
         ],
         "categoria": "Outros Metais",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Fleróvio",
@@ -3126,7 +3465,10 @@
             4
         ],
         "categoria": "Outros Metais",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Moscóvio",
@@ -3157,7 +3499,10 @@
             5
         ],
         "categoria": "Outros Metais",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Livermório",
@@ -3188,7 +3533,10 @@
             6
         ],
         "categoria": "Outros Metais",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Tennesso",
@@ -3219,7 +3567,10 @@
             7
         ],
         "categoria": "Halogênio",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     },
     {
         "name": "Oganessônio",
@@ -3250,6 +3601,9 @@
             8
         ],
         "categoria": "Gás Nobre",
-        "selected": false
+        "selected": false,
+        "visible": true,
+        "disabled": false,
+        "blocked": false
     }
 ]

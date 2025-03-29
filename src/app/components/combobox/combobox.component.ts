@@ -26,7 +26,6 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
     @ViewChild('input') component: Dropdown;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
-    @Input() id: string = Guid.raw();
     @Input() name: string = Guid.raw();
     @Input() label: string = null;
     @Input() placeholder: string = null;
@@ -93,14 +92,13 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
         this.onTouched = fn;
     }
 
-    private internalDisabled: boolean = null;
     @Input() set disabled(value: any) {
-        this._disabled = this.convertUtilsService.getBoolean(value, true);
+        this._disabled = this.convertUtilsService.getBoolean(value, false);
     }
 
     get disabled() {
         if (this.internalDisabled != null) {
-            return this.internalDisabled || this._disabled;
+            return this.internalDisabled
         }
         return this._disabled;
     }

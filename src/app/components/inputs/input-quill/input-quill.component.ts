@@ -52,13 +52,16 @@ export class InputQuillComponent extends InputBaseComponent {
 
     public onQuillInit(quillEvent: EditorInitEvent): void {
         const quill: Quill = quillEvent.editor;
-        console.log(quill.editor);
 
         if (!!this.innerValue) {
             const editor = quill.container.querySelector('.ql-editor');
             if (!!editor) {
                 editor.classList.remove('ql-blank');
-                editor.innerHTML = this.innerValue;
+                setTimeout(() => {
+                    editor.innerHTML = this.innerValue;
+                });
+            } else {
+                this.onQuillInit(quillEvent);
             }
         }
     }

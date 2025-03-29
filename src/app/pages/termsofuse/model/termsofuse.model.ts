@@ -1,10 +1,10 @@
 import { Enum, Prop, Title } from '../../../core/decorators/decorators';
 import { SolicitationFormType } from '../../../core/enums/solicitation-form-type.enum';
 import { StatusAI } from '../../../core/enums/statusai.enum';
-import { ZModel } from '../../../generics/zmodel';
+import { ZModelCrud } from '../../../generics/zmodel-crud';
 import { User } from '../../cadastros/user/model/user.model';
 
-export class TermsOfUse extends ZModel {
+export class TermsOfUse extends ZModelCrud {
 
     public static override createInstance(): TermsOfUse {
         const blank = new TermsOfUse();
@@ -27,12 +27,7 @@ export class TermsOfUse extends ZModel {
     @Enum('SolicitationFormType')
     solicitationType: SolicitationFormType = null;
 
-    createdBy: User = null;
-    createdAt: Date = null;
-    updatedBy: User = null;
-    updatedAt: Date = null;
-
-    description: string = null;
+    description: string = 'Li, entendi e concordo com os termos apresentados.';
     form: string = null;
 
 }

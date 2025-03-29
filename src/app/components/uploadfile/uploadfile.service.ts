@@ -2,6 +2,9 @@ import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { HttpClientService } from './../../core/services/httpclient.service';
+import { Attachment } from './model/attachment.model';
+
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +12,8 @@ import { Observable } from 'rxjs';
 export class UploadfileService {
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private httpClientService: HttpClientService,
     ) { }
 
 
@@ -24,6 +28,10 @@ export class UploadfileService {
             observe: 'events',
             reportProgress: true
         });
+    }
+
+    public getUrl(attachemnt: Attachment): Promise<string> {
+        return this.httpClientService.getReturnText(`/minio/url/${attachemnt.bucket}/${attachemnt.fileHash}`);
     }
 
 }

@@ -1,7 +1,7 @@
 <div class="form-group">
     <label [for]="id" *ngIf="!!label" class="form-label bold">{{label}}</label>
 
-    <div class="position-relative">
+    <div class="position-relative" [ngxTooltip]="displayValue" [tooltipDisabled]="!displayValue" arrow>
         <p-dropdown #input [id]="id" [name]="name" [options]="_options" [ngModel]="innerObject"
             [focusOnHover]="true" [disabled]="disabled" [readonly]="disabled" [optionLabel]="!!_enum ? 'key' : 'id'"
             [showClear]="showClear && !disabled && !!innerObject" [class]="class" (onClear)="forceClear()"

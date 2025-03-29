@@ -88,17 +88,18 @@ export class HeaderComponent implements OnDestroy {
                 target: '_self',
                 // visible: admin
             },
-            {
-                label: 'Projetos',
-                icon: 'fa fa-diagram-project',
-                url: '/#/projetos',
-                target: '_self',
-                // visible: admin
-            },
+
             {
                 label: 'Cadastros',
                 icon: 'fa fa-plus',
                 items: [
+                    {
+                        label: 'Projetos',
+                        icon: 'fa fa-diagram-project',
+                        url: '/#/projetos',
+                        target: '_self',
+                        // visible: admin
+                    },
                     {
                         label: 'Domínios',
                         icon: 'far fa-globe',

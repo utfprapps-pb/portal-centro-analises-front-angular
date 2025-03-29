@@ -1,7 +1,18 @@
-<div class="elemento hoverable pointer" *ngIf="elemento" [ngClass]="getClasses()" (click)="onClick()">
-    <div class="d-flex">
-        <label class="numero">{{ elemento.number }}</label>
-        <label class="h5 bold simbolo text-center">{{ elemento.symbol }}</label>
-    </div>
-    <label class="w-100 nome">{{ elemento.name }}</label>
+<div class="elemento" *ngIf="elemento" [ngClass]="getClasses()" (click)="onClick()">
+    @if(elemento.visible) {
+        @if (elemento.blocked){
+            <div class="icon-lock" [ngClass]="getDisabledClass()">
+            </div>
+            <i class="icon-lock fa fa-lock-alt"></i>
+        }
+        @if (elemento.disabled){
+            <div class="icon-lock" [ngClass]="getDisabledClass()">
+            </div>
+        }
+        <div class="d-flex">
+            <label class="numero">{{ elemento.number }}</label>
+            <label class="h5 bold simbolo text-center">{{ elemento.symbol }}</label>
+        </div>
+        <label class="w-100 nome">{{ elemento.name }}</label>
+    }
 </div>

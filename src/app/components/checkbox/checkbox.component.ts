@@ -22,7 +22,6 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
     @ViewChild('input') component: Checkbox;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
-    @Input() id: string = Guid.raw();
     @Input() name: string = Guid.raw();
     @Input() label: string = null;
     @Input() placeholder: string = '';
@@ -57,17 +56,10 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
         this.onTouched = fn;
     }
 
-    private internalDisabled: boolean = null;
     @Input() set disabled(value: any) {
-        let savePermanentDisabledState;
-        if (this.disabled == null) {
-            savePermanentDisabledState = true;
-        }
         this._disabled = this.convertUtilsService.getBoolean(value, false);
-        if (savePermanentDisabledState) {
-            this.internalDisabled = this._disabled;
-        }
     }
+
     get disabled() {
         if (this.internalDisabled != null) {
             return this.internalDisabled

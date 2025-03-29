@@ -1,4 +1,6 @@
-import { Directive, forwardRef } from '@angular/core';
+import { Directive, forwardRef, Input } from '@angular/core';
+
+import { Guid } from '../../../utils/models/guid';
 
 
 @Directive()
@@ -10,6 +12,9 @@ export abstract class CompCtrlContainer {
             useExisting: forwardRef(() => component)
         }
     }
+
+    @Input() id: string = Guid.raw();
+    internalDisabled: boolean = null;
 
     abstract getContainer(): any;
     abstract getLabel(): string;

@@ -5,6 +5,7 @@ import { PrimeNGConfig } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { Subscription } from 'rxjs';
 
+import { Debounce } from '../../core/decorators/decorators';
 import { CompCtrlContainer } from '../../core/directives/compctrl/compctrl.container';
 import { ToastrService } from '../../core/services/toastr.service';
 import { ConvertUtilsService } from '../../utils/convert-utils.service';
@@ -34,9 +35,9 @@ export class UploadfileComponent extends CompCtrlContainer implements ControlVal
     @ViewChild('input') component: ElementRef<FileUpload>;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
-    @Output('onChange') onChangeEventEmitter: EventEmitter<Attachment[]> = new EventEmitter();
+    @Output('onChange') onChangeEventEmitter: EventEmitter<Attachment | Attachment[]> = new EventEmitter();
 
-    private _innerValue: Attachment[] = [];
+    private _innerValue: Attachment | Attachment[] = null;
     private _disabled: boolean = null;
     private _required: boolean = false;
     public invalidCause: string[] = null;
@@ -62,6 +63,28 @@ export class UploadfileComponent extends CompCtrlContainer implements ControlVal
         super();
     }
 
+    public getInnerValueAsArray(): Attachment[] {
+        if (this.multiple) {
+            if (ObjectUtils.isEmpty(this.innerValue)) {
+                return [];
+            }
+            if (Array.isArray(this.innerValue)) {
+                return this.innerValue;
+            } else {
+                return [this.innerValue];
+            }
+        } else {
+            if (ObjectUtils.isEmpty(this.innerValue)) {
+                return [];
+            }
+            if (Array.isArray(this.innerValue)) {
+                return [this.innerValue[0]];
+            } else {
+                return [this.innerValue]
+            }
+        }
+    }
+
     public ngOnDestroy(): void {
         for (const sub of this.subscriptions) {
             if (!sub.closed) {
@@ -81,10 +104,18 @@ export class UploadfileComponent extends CompCtrlContainer implements ControlVal
             if (file.size > this.size) {
                 continue;
             }
-            if (this.innerValue.map(it => it.fileName).includes(file.name)) {
-                this.toastrService.showError(file.name, 'Arquivo já carregado!');
-                continue;
+            if (Array.isArray(this.innerValue)) {
+                if (this.innerValue.map(it => it.fileName).includes(file.name)) {
+                    this.toastrService.showError(file.name, 'Arquivo já carregado!');
+                    continue;
+                }
+            } else {
+                if (ObjectUtils.isNotEmpty(this.innerValue) && this.innerValue.fileName == file.name) {
+                    this.toastrService.showError(file.name, 'Arquivo já carregado!');
+                    continue;
+                }
             }
+
             count++;
             const uploadingFile = new Attachment();
             uploadingFile.fileName = file.name;
@@ -107,10 +138,14 @@ export class UploadfileComponent extends CompCtrlContainer implements ControlVal
                         }
                     }
                     if (event instanceof HttpResponse) {
-                        if (ObjectUtils.isEmpty(this.innerValue)) {
-                            this.innerValue = [];
+                        if (this.multiple) {
+                            if (ObjectUtils.isEmpty(this.innerValue)) {
+                                this.innerValue = [];
+                            }
+                            this.innerValue.push(event.body);
+                        } else {
+                            this.innerValue = event.body;
                         }
-                        this.innerValue.push(event.body);
                         this.uploading = this.uploading.filter(it => it.fileName != file.name);
                         this.onRowReorder();
                     };
@@ -159,9 +194,11 @@ export class UploadfileComponent extends CompCtrlContainer implements ControlVal
     }
 
     onRowReorder(): void {
-        if (ObjectUtils.isNotEmpty(this.innerValue) && this.innerValue.length > 1) {
-            for (let i = 0; i < this.innerValue.length; i++) {
-                this.innerValue[i].index = i;
+        if (this.multiple && Array.isArray(this.innerValue) && this.innerValue.length > 1) {
+            if (ObjectUtils.isNotEmpty(this.innerValue) && this.innerValue.length > 1) {
+                for (let i = 0; i < this.innerValue.length; i++) {
+                    this.innerValue[i].index = i;
+                }
             }
         }
     }
@@ -201,30 +238,41 @@ export class UploadfileComponent extends CompCtrlContainer implements ControlVal
     }
 
     // Obtém o valor do modelo
-    get innerValue(): Attachment[] {
+    get innerValue(): Attachment | Attachment[] {
         return this._innerValue;
     }
 
     // Define o valor do modelo e chama a função de callback
-    set innerValue(value: Attachment[]) {
+    set innerValue(value: Attachment | Attachment[]) {
         if (value !== this.innerValue) {
             this._innerValue = value;
+            if (value != null) {
+                if (Array.isArray(value)) {
+                    for (const attachment of value) {
+                        if (ObjectUtils.isEmpty(attachment.url)) {
+                            this.service.getUrl(attachment).then(data => {
+                                attachment.url = data;
+                            });
+                        }
+                    }
+                } else {
+                    if (ObjectUtils.isEmpty(value.url)) {
+                        this.service.getUrl(value).then(data => {
+                            value.url = data;
+                        });
+                    }
+                }
+            }
+
             this.onChange(value);
             this.onChangeEventEmitter.emit(value);
         }
     }
 
-    private internalDisabled: boolean = null;
     @Input() set disabled(value: any) {
-        let savePermanentDisabledState;
-        if (this.disabled == null) {
-            savePermanentDisabledState = true;
-        }
         this._disabled = this.convertUtilsService.getBoolean(value, false);
-        if (savePermanentDisabledState) {
-            this.internalDisabled = this._disabled;
-        }
     }
+
     get disabled() {
         if (this.internalDisabled != null) {
             return this.internalDisabled
@@ -239,7 +287,7 @@ export class UploadfileComponent extends CompCtrlContainer implements ControlVal
         return this._required;
     }
 
-    // Escreve o valor do modelo para o componente
+    @Debounce()
     writeValue(value: any): void {
         if (value !== this.innerValue) {
             this.innerValue = value;

@@ -1,11 +1,27 @@
-@import './assets/themes/bootstrap4-light-blue.scss';
 @import '../node_modules/primeicons/primeicons.css';
-
-@import "../node_modules/quill/dist/quill.core.css";
-@import "../node_modules/quill/dist/quill.snow.css";
+@import '../node_modules/quill/dist/quill.core.css';
+@import '../node_modules/quill/dist/quill.snow.css';
+@import './assets/themes/bootstrap4-light-blue.scss';
 
 :root {
     --font-size-default: 13px;
+}
+
+@media print {
+
+    .no-print,
+    .no-print * {
+        display: none !important;
+    }
+
+    * {
+        overflow: visible !important;
+    }
+
+    body {
+        margin : 0;
+        padding: 0;
+    }
 }
 
 * {
@@ -14,6 +30,8 @@
 
 body {
     background-color: var(--green-100);
+    overflow: hidden;
+    overflow-y: auto;
 }
 
 .row {
@@ -113,4 +131,16 @@ form-crud form-base form {
     text-overflow: ellipsis;
     overflow     : hidden;
     display      : block;
+}
+
+.dot {
+    height: 24px;
+    width: 24px;
+
+    border-radius: 50%;
+
+    color: #fff;
+
+    text-align: center;
+    align-content: center;
 }

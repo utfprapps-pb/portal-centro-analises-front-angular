@@ -14,7 +14,7 @@ export class ApiHandlerInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const prefix: string = environment.apiUrl;
-        if (req.url.startsWith(prefix)) {
+        if (req.url.startsWith(prefix) || req.url.startsWith('assets')) {
             return next.handle(req);
         } else {
             const clonedReq = req.clone({ url: this.apiHandlerService.getEndpoint(req.url) });

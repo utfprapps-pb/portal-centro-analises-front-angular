@@ -16,8 +16,15 @@ $color in $categories {
     .#{$category} {
         background-color: lighten($color, 5);
 
-        &.hoverable:hover {
-            background-color: darken($color, $darken-perc);
+        &:not(.disabled) {
+            &.hoverable:hover {
+                background-color: darken($color, $darken-perc);
+            }
+        }
+
+        &.disabled {
+            background-color: lighten($color, 5);
+            opacity: 0.5;
         }
     }
 

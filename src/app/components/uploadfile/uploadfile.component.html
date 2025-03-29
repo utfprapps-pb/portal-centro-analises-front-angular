@@ -5,12 +5,11 @@
     @if(uploader) {
     <p-fileUpload #fileupload #input [multiple]="multiple" [maxFileSize]="size" auto="true"
         chooseLabel="Selecionar Arquivos" (onSelect)="onBeforeUpload($event)" customUpload="true"
-        showUploadButton="true">
+        showUploadButton="true" class="no-print">
 
         <ng-template pTemplate="header"></ng-template>
 
         <ng-template pTemplate="content" let-files let-removeFileCallback="removeFileCallback">
-
             @if(uploading && uploading.length == 0) {
             <div class="d-flex align-items-center justify-content-center flex-column">
                 <i class="pi pi-cloud-upload big-icon"></i>
@@ -42,19 +41,19 @@
         </ng-template>
     </p-fileUpload>
     }
-    @if(visualizer && innerValue?.length > 0) {
-    <p-table [value]="innerValue" (onRowReorder)="onRowReorder()">
+    @if(visualizer && getInnerValueAsArray().length > 0) {
+    <p-table [value]="getInnerValueAsArray()" (onRowReorder)="onRowReorder()">
         <ng-template pTemplate="header">
             <tr>
                 <th>#</th>
                 <th>Arquivo</th>
                 <th>Tamanho</th>
-                <th></th>
+                <th class="no-print" *ngIf="!disabled"></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-file let-index="rowIndex">
             <tr [pReorderableRow]="index">
-                <td style="width: 44px;" pReorderableRowHandle>
+                <td class="text-center" style="width: 44px;" pReorderableRowHandle>
                     @if (file.url) {
                     <img [src]="file.url" width="100" class="shadow-4" />
                     } @else {
@@ -63,7 +62,7 @@
                 </td>
                 <td class="text-ellipsis d-table-cell">{{file.fileName}}</td>
                 <td style="width: 125px">{{ formatSize(file.fileSize) }}</td>
-                <td style="width: 0;">
+                <td class="no-print" style="width: 0;" *ngIf="!disabled">
                     <button type="button" class="p-element p-button p-component"
                         (click)="removeFile($event, 0)" style="border-radius: 4px;">
                         <i class="fa fa-times"> </i>

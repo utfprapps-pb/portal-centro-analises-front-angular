@@ -1,6 +1,78 @@
-<form-crud #formView [pageTitle]="'Solicitação'">
+<form-crud #formView>
+    {{object?.status}} - {{status_AWAITING_CORRECTION}}
+    <p-tabView (onChange)="onChangeTab($event)">
+        <p-tabPanel #tabSolicitacao header="Solicitação">
+            <solicitar-formulario-template [(ngModel)]="object"
+                [disabled]="object?.status != status_AWAITING_CORRECTION" [openAll]="false">
+            </solicitar-formulario-template>
+        </p-tabPanel>
 
+        <p-tabPanel header="Histórico">
+            <p-timeline [value]="historico">
+                <ng-template pTemplate="opposite" let-data style="width: 100px;">
+                    {{ data.createdAt | dateFormatter:'dd/MM/YYYY HH:mm:ss' }}
+                    <br>
+                    {{ data.createdBy?.name }}
+                </ng-template>
+                <ng-template pTemplate="marker" let-data style="align-self: center">
+                    <span class="dot" [style]="{ 'background-color': getEnumColor(data.status) }">
+                        <i [class]="'fa fa-marker'"></i>
+                    </span>
+                </ng-template>
 
+                <ng-template pTemplate="content" let-data>
+                    <div style="max-width: fit-content;">
+                        <p-card [style]=" {
+                                'filter': 'drop-shadow(var(--surface-500) 2px 2px 2px)'
+                            }">
+                            <ng-template pTemplate="header">
+                                <div class="p-2 text-center">
+                                    <enum-template [enum]="'SolicitationStatus'" [field]="'status'"
+                                        [data]="data">
+                                    </enum-template>
+                                </div>
+                            </ng-template>
+                            <ng-container *ngIf="data.observation">
+                                <div class="row">
+                                    <div class="col-24">
+                                        <b>Observações:</b>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-24">
+                                        <p>{{data.observation}}</p>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </p-card>
+                    </div>
+                </ng-template>
 
+            </p-timeline>
+        </p-tabPanel>
+    </p-tabView>
 
+    <div bbuttons>
+        @if (activeTabIndex == 0) {
+        @if (object?.status == status_AWAITING_CORRECTION) {
+        <button class="btn btn-sm btn-primary me-2" (click)="onClickEnviarCorrecao()">
+            <i class="far fa-file-pen"></i>&nbsp;Enviar para correção
+        </button>
+        }
+
+        @if (changeStatusItens.length > 0) {
+        <p-tieredMenu #tiredMenu [model]="changeStatusItens" [popup]="true">
+            <ng-template pTemplate="item" let-item>
+                <span class="flex align-items-center p-menuitem-link py-1">
+                    <span [class]="item.icon" [ngClass]="item.iconClass" class="p-menuitem-icon"></span>
+                    <span class="ml-2">{{ item.label }}</span>
+                </span>
+            </ng-template>
+        </p-tieredMenu>
+        <button class="btn btn-sm btn-primary me-2" (click)="tiredMenu.toggle($event)">
+            <i class="far fa-pencil-mechanical"></i>&nbsp;Alterar Status
+        </button>
+        }
+        }
+    </div>
 </form-crud>

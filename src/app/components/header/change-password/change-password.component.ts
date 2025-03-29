@@ -49,7 +49,7 @@ export class ChangePasswordComponent extends FormCrud<UserDTO> {
             await this.onBeforeSave(object);
             this.service.changePassword(object).then(async (data) => {
                 await this.onAfterSave(object, data);
-                this.toastrService.showSuccess(this.pageTitle, 'Registro salvo com sucesso!');
+                this.toastrService.showSuccess(this.title, 'Registro salvo com sucesso!');
                 this.releaseForm();
                 this.onChangeComplete.emit(true);
             }, error => {
@@ -57,7 +57,7 @@ export class ChangePasswordComponent extends FormCrud<UserDTO> {
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
                 } else {
-                    this.toastrService.showError(this.pageTitle, 'Erro ao salvar Registro!');
+                    this.toastrService.showError(this.title, 'Erro ao salvar Registro!');
                 }
             });
         }

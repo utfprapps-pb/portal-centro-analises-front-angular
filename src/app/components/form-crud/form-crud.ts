@@ -1,4 +1,5 @@
 import { AfterContentInit, Injectable, Injector, OnInit } from '@angular/core';
+import { ObjectUtils } from 'primeng/utils';
 
 import { Constants } from '../../core/constants/constants';
 import { StorageManager } from '../../core/managers/storage-manager';
@@ -60,6 +61,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         const id = this.getObjectIdFromUrl();
         if (id != null) {
             await this.service.findOne(id).then(async (data: any) => {
+                console.log('data findone', data)
                 this.onLoadObject(data);
                 this.object = data;
                 await this.onAfterLoadObject(this.object);
@@ -67,7 +69,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
                 } else {
-                    this.toastrService.showError(this.pageTitle, 'Erro ao carregar Registro!');
+                    this.toastrService.showError(this.title, 'Erro ao carregar Registro!');
                     this.onCancel();
                 }
             }).finally(() => {
@@ -123,7 +125,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
     }
 
     protected objectUpdating(): boolean {
-        return !!this.object && !!this.object.id && this.object.id != null;
+        return ObjectUtils.isNotEmpty(this.object) && ObjectUtils.isNotEmpty(this.object.id);
     }
 
     protected override getFormBaseToDisable(): any {
@@ -175,17 +177,17 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         if (this.validateForm()) {
             this.blockForm();
             await this.onBeforeSave(object);
-            for (const prop in this.object) {
-                const value: any = (this.object as any)[prop];
-                if (value && value instanceof ZModel) {
-                    if (value.id == null) {
-                        (this.object as any)[prop] = null;
-                    }
-                }
-            }
+            // for (const prop in this.object) {
+            //     const value: any = (this.object as any)[prop];
+            //     if (value && value instanceof ZModel) {
+            //         if (value.id == null) {
+            //             (this.object as any)[prop] = null;
+            //         }
+            //     }
+            // }
             this.service.save(object).then(async (data) => {
                 await this.onAfterSave(object, data);
-                this.toastrService.showSuccess(this.pageTitle, 'Registro salvo com sucesso!');
+                this.toastrService.showSuccess(this.title, 'Registro salvo com sucesso!');
                 if (this.exitOnSave()) {
                     this.onCancel();
                 }
@@ -193,7 +195,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
                 } else {
-                    this.toastrService.showError(this.pageTitle, 'Erro ao salvar Registro!');
+                    this.toastrService.showError(this.title, 'Erro ao salvar Registro!');
                 }
             }).finally(() => {
                 this.releaseForm();
@@ -212,7 +214,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         if (!!object.id) {
             this.blockForm();
             this.service.delete(object.id).then(async () => {
-                this.toastrService.showSuccess(this.pageTitle, 'Registro excluido com sucesso!');
+                this.toastrService.showSuccess(this.title, 'Registro excluido com sucesso!');
                 if (this.exitOnSave()) {
                     this.onCancel();
                 }
@@ -220,7 +222,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
                 } else {
-                    this.toastrService.showError(this.pageTitle, 'Erro ao excluir Registro!');
+                    this.toastrService.showError(this.title, 'Erro ao excluir Registro!');
                 }
             }).finally(() => {
                 this.releaseForm();

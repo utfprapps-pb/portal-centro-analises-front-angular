@@ -1,6 +1,5 @@
 import { Component, Injector, ViewChild } from '@angular/core';
 import { take } from 'rxjs';
-import { UserType } from './../../core/enums/user-type.enum';
 
 import { FormBase } from '../../components/form-base/form-base';
 import { FormBaseComponent } from '../../components/form-base/form-base.component';
@@ -12,6 +11,7 @@ import { ObjectUtils } from '../../utils/object-utils';
 import { LoginService } from '../login.service';
 import { Login } from '../model/login.model';
 import { RegisterUser } from '../model/register-user.model';
+import { UserType } from './../../core/enums/user-type.enum';
 
 
 @Component({
@@ -29,7 +29,7 @@ export class LoginFormComponent extends FormBase {
     public cnpj: string = '';
 
     public template: 'login' | 'password' | 'confirm' | 'register' = 'login'
-    public title: string;
+    public formTitle: string;
     public subtitle: string;
     public buttonText: string;
 
@@ -52,9 +52,9 @@ export class LoginFormComponent extends FormBase {
             if (ObjectUtils.isNotEmpty(params)) {
                 const success: boolean = params['success'] == 'true';
                 if (success) {
-                    this.toastrService.showSuccess(this.pageTitle, 'Email validado com Sucesso! Você já pode acessar sua conta!');
+                    this.toastrService.showSuccess(this.formTitle, 'Email validado com Sucesso! Você já pode acessar sua conta!');
                 } else {
-                    this.toastrService.showError(this.pageTitle, 'Erro ao validar de e-mail, solicite um novo código e tente novamente mais tarde!');
+                    this.toastrService.showError(this.formTitle, 'Erro ao validar de e-mail, solicite um novo código e tente novamente mais tarde!');
                 }
                 this.router.navigate(['/entrar'], { replaceUrl: true });
             }
@@ -65,19 +65,19 @@ export class LoginFormComponent extends FormBase {
         this.blockForm();
         switch (template) {
             case 'login':
-                this.title = 'Bem vindo!';
+                this.formTitle = 'Bem vindo!';
                 this.subtitle = 'Digite seus dados para continuar';
                 this.buttonText = 'Entrar';
                 break;
             case 'password':
-                this.title = 'Esqueci minha senha';
+                this.formTitle = 'Esqueci minha senha';
                 this.subtitle = '';
                 this.buttonText = 'Solicitar nova Senha';
                 this.passwordRecover = new RecoverPasswordDTO();
                 this.passwordRecover.email = this.object.email;
                 break;
             case 'confirm':
-                this.title = 'Reenviar email de validação';
+                this.formTitle = 'Reenviar email de validação';
                 this.subtitle = 'Valide seu email para poder acessar o sistema.';
                 this.buttonText = 'Solicitar validação';
                 break;
@@ -90,7 +90,7 @@ export class LoginFormComponent extends FormBase {
                         })
                     }
                 } finally {
-                    this.title = 'Criar nova Conta';
+                    this.formTitle = 'Criar nova Conta';
                     this.subtitle = 'Seja bem vindo, registre-se para acessar o sistema!';
                     this.buttonText = 'Cadastrar';
                     this.newUser = new RegisterUser();
@@ -126,14 +126,14 @@ export class LoginFormComponent extends FormBase {
     }
 
     public requestEmailCode(): void {
-        const email = this.formView.contentFieldsCompCtrlForm.find(it => it.compCtrl == 'Email');
+        const email = this.formView.compCtrlDirectiveService.getDirectives().find(it => it.compCtrl == 'Email');
         if (!email.validate(true)) {
             return;
         }
         this.blockForm();
         this.loginService.sendCodeRecoverPassword(this.passwordRecover.email).then(data => {
             this.releaseForm();
-            this.toastrService.showInfo(this.pageTitle, data.message);
+            this.toastrService.showInfo(this.formTitle, data.message);
         }, error => {
             this.releaseForm();
             if (this.hasErrorMapped(error)) {
@@ -143,7 +143,7 @@ export class LoginFormComponent extends FormBase {
                 email.setClassInvalid();
                 email.setFocus();
             } else {
-                this.toastrService.showError(this.pageTitle, 'Erro ao enviar código, tente novamente mais tarde!');
+                this.toastrService.showError(this.formTitle, 'Erro ao enviar código, tente novamente mais tarde!');
             }
         })
     }
@@ -161,7 +161,7 @@ export class LoginFormComponent extends FormBase {
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
                 } else {
-                    this.toastrService.showError(this.pageTitle, 'Erro ao realizar login, tente novamente mais tarde!');
+                    this.toastrService.showError(this.formTitle, 'Erro ao realizar login, tente novamente mais tarde!');
                 }
             });
         }
@@ -170,9 +170,9 @@ export class LoginFormComponent extends FormBase {
     private onClickEsqueceuSenha(): void {
         if (this.validateForm()) {
             this.blockForm();
-            const codigo = this.formView.contentFieldsCompCtrlForm.find(it => it.compCtrl == 'Código');
+            const codigo = this.formView.compCtrlDirectiveService.getDirectives().find(it => it.compCtrl == 'Código');
             this.loginService.recoverPassword(this.passwordRecover).then(data => {
-                this.toastrService.showSuccess(this.pageTitle, data.message);
+                this.toastrService.showSuccess(this.formTitle, data.message);
                 this.changeTemplate('login');
                 this.object.email = this.passwordRecover.email;
                 this.object.password = this.passwordRecover.newPassword;
@@ -188,7 +188,7 @@ export class LoginFormComponent extends FormBase {
                         codigo.setFocus();
                     }
                 } else {
-                    this.toastrService.showError(this.pageTitle, 'Erro ao solicitar nova senha, tente novamente mais tarde!');
+                    this.toastrService.showError(this.formTitle, 'Erro ao solicitar nova senha, tente novamente mais tarde!');
                 }
             });
         }
@@ -198,7 +198,7 @@ export class LoginFormComponent extends FormBase {
         if (this.validateForm()) {
             this.blockForm();
             this.loginService.requestValidation(this.object.email).then(data => {
-                this.toastrService.showSuccess(this.pageTitle, 'Validação de email enviada com Sucesso!');
+                this.toastrService.showSuccess(this.formTitle, 'Validação de email enviada com Sucesso!');
                 this.changeTemplate('login');
                 this.releaseForm()
             }, error => {
@@ -206,7 +206,7 @@ export class LoginFormComponent extends FormBase {
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
                 } else {
-                    this.toastrService.showError(this.pageTitle, 'Erro ao solicitar validação de email, tente novamente mais tarde!');
+                    this.toastrService.showError(this.formTitle, 'Erro ao solicitar validação de email, tente novamente mais tarde!');
                 }
             });
         }
@@ -219,7 +219,7 @@ export class LoginFormComponent extends FormBase {
         if (this.validateForm()) {
             this.blockForm();
             this.loginService.createNewUser(this.newUser).then((data: any) => {
-                this.toastrService.showSuccess(this.pageTitle, "Usuário cadastrado com Sucesso!");
+                this.toastrService.showSuccess(this.formTitle, "Usuário cadastrado com Sucesso!");
                 this.changeTemplate('login');
                 this.object.email = this.newUser.email;
                 this.object.password = this.newUser.password;
@@ -229,7 +229,7 @@ export class LoginFormComponent extends FormBase {
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
                 } else {
-                    this.toastrService.showError(this.pageTitle, 'Erro ao cadastrar usuário, tente novamente mais tarde!');
+                    this.toastrService.showError(this.formTitle, 'Erro ao cadastrar usuário, tente novamente mais tarde!');
                 }
             });
         }

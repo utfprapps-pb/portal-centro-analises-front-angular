@@ -26,7 +26,6 @@ export class PeriodicTableComponent extends CompCtrlContainer implements Control
     @ViewChild('input') component: ElementRef<HTMLTableElement>;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
-    @Input() id: string = Guid.raw();
     @Input() name: string = Guid.raw();
     @Input() label: string = null;
     @Input() class: string = '';
@@ -64,17 +63,10 @@ export class PeriodicTableComponent extends CompCtrlContainer implements Control
         this.onTouched = fn;
     }
 
-    private internalDisabled: boolean = null;
     @Input() set disabled(value: any) {
-        let savePermanentDisabledState;
-        if (this.disabled == null) {
-            savePermanentDisabledState = true;
-        }
         this._disabled = this.convertUtilsService.getBoolean(value, false);
-        if (savePermanentDisabledState) {
-            this.internalDisabled = this._disabled;
-        }
     }
+
     get disabled() {
         if (this.internalDisabled != null) {
             return this.internalDisabled
@@ -176,6 +168,9 @@ export class PeriodicTableComponent extends CompCtrlContainer implements Control
 
     override setDisabledState(value: boolean): void {
         this.disabled = value;
+        if (value) {
+            this.tabelaPeriodica.forEach(linha => linha.forEach(element => element.disabled = true));
+        }
     }
 
     override setRequiredState(value: boolean): void {
@@ -239,11 +234,19 @@ export class PeriodicTableComponent extends CompCtrlContainer implements Control
             if (ObjectUtils.isEmpty(this.tabelaPeriodica[x])) {
                 this.tabelaPeriodica[x] = [];
             }
+
+            if (this.disabled) {
+                elemento.disabled = true;
+            }
             this.tabelaPeriodica[x][y] = elemento;
+
         });
     }
 
     public onSelectElement(element: ElementoQuimico): void {
+        if (!element.visible || element.disabled) {
+            return;
+        }
         if (ObjectUtils.isEmpty(this.innerObject)) {
             this._innerObject = [];
         }
@@ -269,9 +272,11 @@ export class PeriodicTableComponent extends CompCtrlContainer implements Control
         if (this.innerObject == null) {
             return 'Nenhum elemento selecionado.'
         } else {
-            return this.innerObject.sort((a, b) => a.number < b.number ? -1 : 1).map(it => it.number + ' - ' + it.name).join(', ');
+            return this.innerObject
+            .sort((a, b) => a.number < b.number ? -1 : 1)
+            .map(it => it.number + ' - ' + it.name)
+            .join(', ');
         }
     }
-
 
 }

@@ -17,10 +17,35 @@ export class PeriodicTableElementComponent {
     constructor() { }
 
     public onClick(): void {
-        this.onClickEmitter.emit(this.elemento);
+        if (!this.elemento.disabled && !this.elemento.blocked && this.elemento.visible) {
+            this.onClickEmitter.emit(this.elemento);
+        }
+    }
+
+    public getDisabledClass(): string {
+        const classes = [];
+        if (this.elemento.visible) {
+            classes.push(this.elemento.category);
+            classes.push('disabled')
+        }
+        return classes.join(' ');
     }
 
     public getClasses(): string {
-        return `${this.elemento.category} ${this.elemento.selected ? ('glow-' + this.elemento.category) : ''}`;
+        const classes = [];
+        if (this.elemento.visible) {
+            classes.push(this.elemento.category);
+            if (this.elemento.selected) {
+                classes.push('glow-' + this.elemento.category);
+            }
+            if (!this.elemento.disabled && !this.elemento.blocked) {
+                classes.push('hoverable');
+                classes.push('pointer');
+            }
+            if (this.elemento.blocked) {
+                classes.push('cursor-not-allowed')
+            }
+        }
+        return classes.join(' ');
     }
 }

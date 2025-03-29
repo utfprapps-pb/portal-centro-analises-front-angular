@@ -17,7 +17,6 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
         };
     }
 
-    @Input() id: string = Guid.raw();
     @Input() name: string = Guid.raw();
     @Input() label: string = null;
     @Input() placeholder: string = '';
@@ -59,20 +58,13 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
         this.onTouched = fn;
     }
 
-    private internalDisabled: boolean = null;
     @Input() set disabled(value: any) {
-        let savePermanentDisabledState;
-        if (this.disabled == null) {
-            savePermanentDisabledState = true;
-        }
-        this._disabled = this.convertUtilsService.getBoolean(value, true);
-        if (savePermanentDisabledState) {
-            this.internalDisabled = this._disabled;
-        }
+        this._disabled = this.convertUtilsService.getBoolean(value, false);
     }
+
     get disabled() {
         if (this.internalDisabled != null) {
-            return this.internalDisabled || this._disabled;
+            return this.internalDisabled
         }
         return this._disabled;
     }
@@ -169,4 +161,5 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
     public forceClear(): void {
         this.innerValue = null;
     }
+
 }

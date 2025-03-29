@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
 
 import { GenericCrudService } from '../../generics/generic-crud.service';
@@ -10,11 +10,9 @@ import { FormBaseComponent } from '../form-base/form-base.component';
     templateUrl: './form-list.component.html',
     styleUrl: './form-list.component.scss'
 })
-export class FormListComponent<T extends ZModel> extends FormBaseComponent implements OnInit {
+export class FormListComponent<T extends ZModel> extends FormBaseComponent {
 
     @ViewChild('formViewTable') public formViewTable: Table;
-
-    public title: string = null
 
     get service(): GenericCrudService<T> {
         return null;
@@ -24,10 +22,6 @@ export class FormListComponent<T extends ZModel> extends FormBaseComponent imple
         protected override readonly injector: Injector
     ) {
         super(injector);
-    }
-
-    public ngOnInit(): void {
-        this.title = this.pageTitle;
     }
 
     public showFooter(): boolean {

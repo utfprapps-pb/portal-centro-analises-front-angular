@@ -26,7 +26,31 @@ export class HttpClientService {
 
     public get(url: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.http.get(url, { observe: 'body' }).subscribe(
+            this.http.get(url, { observe: 'body', responseType: 'json' }).subscribe(
+                (entity) => {
+                    resolve(entity);
+                }, (error) => {
+                    reject(error);
+                }
+            );
+        });
+    }
+
+    public put(url: string, body: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.http.put(url, body, { observe: 'body' }).subscribe(
+                (entity) => {
+                    resolve(entity);
+                }, (error) => {
+                    reject(error);
+                }
+            );
+        });
+    }
+
+    public getReturnText(url: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.http.get(url, { observe: 'body', responseType: 'text' }).subscribe(
                 (entity) => {
                     resolve(entity);
                 }, (error) => {

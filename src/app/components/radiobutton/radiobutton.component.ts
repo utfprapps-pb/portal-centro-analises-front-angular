@@ -23,7 +23,6 @@ export class RadioButtonComponent extends CompCtrlContainer implements ControlVa
     @ViewChild('input') component: ElementRef<HTMLDivElement>;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
-    @Input() id: string = Guid.raw();
     @Input() name: string = Guid.raw();
     @Input() label: string = null;
     @Input() placeholder: string = '';
@@ -80,17 +79,10 @@ export class RadioButtonComponent extends CompCtrlContainer implements ControlVa
         this.onTouched = fn;
     }
 
-    private internalDisabled: boolean = null;
     @Input() set disabled(value: any) {
-        let savePermanentDisabledState;
-        if (this.disabled == null) {
-            savePermanentDisabledState = true;
-        }
         this._disabled = this.convertUtilsService.getBoolean(value, false);
-        if (savePermanentDisabledState) {
-            this.internalDisabled = this._disabled;
-        }
     }
+
     get disabled() {
         if (this.internalDisabled != null) {
             return this.internalDisabled

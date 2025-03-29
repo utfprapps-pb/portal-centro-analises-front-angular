@@ -1,4 +1,4 @@
-<form-crud #formView [pageTitle]="'Termos de Uso'">
+<form-crud #formView [title]="'Termos de Uso'">
 
     <div class="row mb-2">
         <div class="col-6">
@@ -22,7 +22,7 @@
     <div class="row mb-2">
         <div class="col-24">
             <combobox label="Formulário" compCtrl="solicitationType" [(ngModel)]="object.solicitationType"
-                enum="SolicitationFormType" required>
+                enum="SolicitationFormType">
             </combobox>
         </div>
     </div>

@@ -1,6 +1,6 @@
 export enum FTMIRRegistroEspectro {
     A = 'Absorbância (A)',
-    T = 'Transmitância (T%) ',
+    T = 'Transmitância (T%)',
 }
 
 export function getFTMIRRegistroEspectroColor(value: 'A' | 'T') {

@@ -1,4 +1,4 @@
-<form-crud #formView [pageTitle]="'Projeto'">
+<form-crud #formView [title]="'Projeto'">
 
     <div class="row">
         <div class="col-6">
@@ -56,7 +56,7 @@
                             <th [width]="20" class="bold">#</th>
                             <th [width]="20" *ngIf="!objectUpdating()"></th>
                             <th [width]="20" *ngIf="!objectUpdating()"></th>
-                            <th>Alunos</th>
+                            <th>Participantes</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,7 +64,7 @@
                             <td colspan="4">
                                 <button class="btn btn-success" (click)="onClickAddAluno()">
                                     <i class="fa fa-plus"></i>
-                                    Adicionar Aluno
+                                    Adicionar Participante
                                 </button>
                             </td>
                         </tr>

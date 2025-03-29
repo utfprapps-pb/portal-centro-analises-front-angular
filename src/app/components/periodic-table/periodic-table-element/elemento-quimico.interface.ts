@@ -20,4 +20,7 @@ export interface ElementoQuimico {
     period?: number;           // Período na tabela periódica (opcional)
     named_by?: string | null;  // Nomeado por (pode ser nulo)
     selected: boolean;
+    visible: boolean;
+    disabled: boolean;
+    blocked: boolean;
 }

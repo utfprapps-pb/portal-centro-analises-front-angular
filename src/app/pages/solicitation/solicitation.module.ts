@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 
 import { ComponentsModule } from '../../components/components.module';
+import { SolicitarModule } from '../solicitar/solicitar.module';
 import { SolicitationFormComponent } from './form/solicitation-form.component';
 import { SolicitationListComponent } from './list/solicitation-list.component';
 import { SolicitationRoutes } from './solicitation.routes';
@@ -20,7 +21,8 @@ import { SolicitationRoutes } from './solicitation.routes';
         ComponentsModule,
         SolicitationRoutes,
 
-        CardModule
+        CardModule,
+        SolicitarModule,
     ],
     providers: [
         provideHttpClient(withInterceptorsFromDi())

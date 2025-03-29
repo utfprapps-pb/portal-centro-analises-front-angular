@@ -1,8 +1,15 @@
 import { Attachment } from '../../../components/uploadfile/model/attachment.model';
+import { Boolean } from '../../../core/enums/boolean.enum';
+import { DRXStep } from '../../../core/enums/drx-step.enum';
+import { ZModel } from '../../../generics/zmodel';
 import { SolicitationAmostraFoto } from './solicitation-amostra-foto.model';
 
 
-export class SolicitationAmostra {
+export class SolicitationAmostra extends ZModel {
+
+    public static override createInstance(): SolicitationAmostra {
+        return new SolicitationAmostra();
+    }
 
     identification: string = null;
     description: string = null;
@@ -20,13 +27,13 @@ export class SolicitationAmostra {
 
     // DRX
     faixaVarredura: number = null;
-    step: string = '_002';
+    step: DRXStep | string = '_002';
     velocidadeVarredura: number = null;
     tempoPasso: number = null;
 
     // DSC - TGADTA
     expande: boolean = null
-    liberaGas: boolean = null
+    liberaGas: Boolean = null
     gasLiberado: string = null
     massa: number = null
     tecnica: string = null
@@ -39,6 +46,6 @@ export class SolicitationAmostra {
     tipoAmostra: string = null;
     objetivo: string = null;
     fotos: SolicitationAmostraFoto[] = [];
-    modeloMicroscopia: Attachment[] = [];
+    modeloMicroscopia: Attachment = null;
 
 }

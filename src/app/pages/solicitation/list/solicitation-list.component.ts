@@ -28,6 +28,10 @@ export class SolicitationListComponent extends FormList<Solicitation> {
         super(injector, service);
     }
 
+    public override showButtons(button: string): boolean {
+        return ['cancelar'].includes(button);
+    }
+
     public loadHistoricos(): void {
         this.blockForm();
         this.mapSolicitacaoHistorico = new Map();
@@ -58,8 +62,6 @@ export class SolicitationListComponent extends FormList<Solicitation> {
         if (!this.mappedColors.has(value)) {
             this.mappedColors.set(value, getEnumColor('SolicitationStatus', value))
         }
-return this.mappedColors.get(value);
-
-
+        return this.mappedColors.get(value);
     }
 }

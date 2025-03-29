@@ -40,8 +40,8 @@ export abstract class FormBase implements OnDestroy {
 
     public subscriptions: Subscription[] = [];
 
-    get pageTitle() {
-        return this.formView?.pageTitle;
+    get title() {
+        return this.formView?.title;
     }
 
     constructor(
@@ -74,8 +74,8 @@ export abstract class FormBase implements OnDestroy {
     public getFieldsCompCtrl(): CompCtrlDirective[] {
         let compControlList: CompCtrlDirective[] = [];
         if (this.formView != null) {
-            if (this.formView.contentFieldsCompCtrlForm != null) {
-                compControlList = this.formView.contentFieldsCompCtrlForm.toArray();
+            if (this.formView.compCtrlDirectiveService != null) {
+                compControlList = this.formView.compCtrlDirectiveService.getDirectives();
             }
         }
         return compControlList;
@@ -123,17 +123,17 @@ export abstract class FormBase implements OnDestroy {
 
     public blockForm(): void {
         if (this.formView) {
-            this.disableForm(true);
+            // this.disableForm(true);
             this.formView.blockForm();
         }
     }
 
     public releaseForm(force: boolean = false): void {
         if (this.formView) {
-            const released = this.formView.releaseForm(force);
-            if (released) {
-                this.disableForm(false);
-            }
+            this.formView.releaseForm(force);
+            // if (released) {
+                // this.disableForm(false);
+            // }
         }
     }
 
@@ -164,17 +164,17 @@ export abstract class FormBase implements OnDestroy {
         return this.validForm(alert).size == 0;
     }
 
-    public getPageTitle(): string {
-        if (!this.pageTitle) {
+    public getTitle(): string {
+        if (!this.title) {
             let title = document.title;
             if (title.includes('|')) {
                 title = title.substring(title.indexOf('|' + 1));
             }
             if (!!this.formView) {
-                this.formView.pageTitle = title;
+                this.formView.title = title;
             }
         }
-        return this.pageTitle;
+        return this.title;
     }
 
     public hasErrorMapped(error: any): boolean {
@@ -188,7 +188,7 @@ export abstract class FormBase implements OnDestroy {
             return;
         } else {
             if (ObjectUtils.isEmpty(title)) {
-                title = this.getPageTitle();
+                title = this.getTitle();
             }
 
             let message: string = '';
@@ -205,11 +205,9 @@ export abstract class FormBase implements OnDestroy {
                 this.toastrService.showError(title, message);
             } else if (ObjectUtils.isNotEmpty(errosCompCtrl)) {
                 for (const key in errosCompCtrl) {
-                    const index = this.getFieldsCompCtrl()
-                        .findIndex(it => it.compCtrl == key || it.compCtrl.toLocaleLowerCase().replaceAll(' ', '') == key);
-                    if (index != -1) {
-                        this.formView.contentFieldsCompCtrlForm.get(index).invalidate(errosCompCtrl[key]);
-                    }
+                    this.getFieldsCompCtrl()
+                        ?.find(it => it.compCtrl == key || it.compCtrl.toLocaleLowerCase().replaceAll(' ', '') == key)
+                        ?.invalidate(errosCompCtrl[key]);
                 }
             } else {
                 console.error('Erro não mapeado:', error);

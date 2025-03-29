@@ -1,18 +1,19 @@
-import { Directive, Input, OnInit, Optional, Output, Self } from '@angular/core';
+import { Directive, Input, OnDestroy, OnInit, Optional, Output, Self } from '@angular/core';
 import { NgModel } from '@angular/forms';
 
 import { ConvertUtilsService } from '../../../utils/convert-utils.service';
 import { ObjectUtils } from '../../../utils/object-utils';
 import { CompCtrlContainer } from './compctrl.container';
+import { CompCtrlDirectiveService } from './compctrl.service';
 
 @Directive({
     selector: '[compCtrl]'
 })
-export class CompCtrlDirective implements OnInit {
+export class CompCtrlDirective implements OnInit, OnDestroy {
 
     private _compCtrl: string;
     private _valid: boolean = false;
-    private _disabled: boolean = false;
+    private _disabled: boolean = null;
     private _required: boolean = false;
 
     get valid() {
@@ -22,8 +23,10 @@ export class CompCtrlDirective implements OnInit {
         this._valid = value;
     }
 
-    constructor(public model: NgModel,
-        public readonly convertUtilsService: ConvertUtilsService,
+    constructor(
+        private model: NgModel,
+        private readonly convertUtilsService: ConvertUtilsService,
+        private readonly registry: CompCtrlDirectiveService,
         @Optional() @Self() public compCtrlContainer: CompCtrlContainer) {
         if (compCtrlContainer) {
             this.compCtrlContainer = compCtrlContainer;
@@ -51,6 +54,11 @@ export class CompCtrlDirective implements OnInit {
     public ngOnInit(): void {
         this.setDisabledToCompCtrl();
         this.setRequiredToCompCtrl();
+        this.registry.register(this);
+    }
+
+    public ngOnDestroy(): void {
+        this.registry.unregister(this);
     }
 
     @Input('disabled')
@@ -66,6 +74,12 @@ export class CompCtrlDirective implements OnInit {
         } else {
             this.compCtrlContainer.removeClass('disabled');
         }
+    }
+
+    public setInternalDisabled(value: boolean) {
+        this.compCtrlContainer.internalDisabled = value;
+        this.compCtrlContainer.setDisabledState(this.compCtrlContainer.internalDisabled);
+        this.setDisabledToCompCtrl();
     }
 
     @Input('required')

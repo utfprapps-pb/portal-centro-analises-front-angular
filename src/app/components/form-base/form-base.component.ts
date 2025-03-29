@@ -1,17 +1,8 @@
-import {
-    AfterViewInit,
-    Component,
-    ContentChildren,
-    ElementRef,
-    Injector,
-    Input,
-    QueryList,
-    ViewChildren,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Injector, Input, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 
-import { CompCtrlDirective } from '../../core/directives/compctrl/compctrl.directive';
+import { CompCtrlDirectiveService } from '../../core/directives/compctrl/compctrl.service';
 import { ToasterService } from '../../core/toaster/toaster.service';
 import { Stack } from '../../utils/models/stack';
 import { DialogService } from './../../core/services/dialog.service';
@@ -25,10 +16,11 @@ import { ToastrService } from './../../core/services/toastr.service';
 export class FormBaseComponent implements AfterViewInit {
 
     @ViewChildren('formBase') formBase: QueryList<ElementRef>;
-    @ContentChildren(CompCtrlDirective, { descendants: true }) contentFieldsCompCtrlForm: QueryList<CompCtrlDirective>;
+    public compCtrlDirectiveService = this.injector.get(CompCtrlDirectiveService);
     @Input() enableBreadcrumb: boolean = true;
 
-    @Input() pageTitle: string;
+    @Input() title: string;
+    @Input() titleClass: string = 'h1';
     @Input() changeTitle: boolean = true;
 
     public facades: Stack<number> = new Stack();
@@ -50,7 +42,7 @@ export class FormBaseComponent implements AfterViewInit {
 
     public ngAfterViewInit(): void {
         if (this.changeTitle) {
-            document.title = `UTFPR | ${this.pageTitle || 'LCA'}`;
+            document.title = `UTFPR | ${this.title || 'LCA'}`;
         }
     }
 

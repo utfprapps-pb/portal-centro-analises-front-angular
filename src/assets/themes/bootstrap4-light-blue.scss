@@ -230,7 +230,7 @@
 
 .ql-picker.ql-color-picker.ql-expanded {
     & .ql-picker-options {
-        width        : 380px;
+        width: 380px;
     }
 }
 
@@ -257,10 +257,10 @@
 }
 
 .ql-editor {
-    font-family: var(--font-family);
+    font-family          : var(--font-family);
     font-feature-settings: var(--font-feature-settings, normal);
-    font-size: 1rem;
-    font-weight: normal;
+    font-size            : 1rem;
+    font-weight          : normal;
 
     display      : grid;
     min-height   : 25vh;
@@ -5295,6 +5295,7 @@
     .p-tabview .p-tabview-nav li .p-tabview-nav-link {
         border                 : solid;
         border-width           : 1px;
+        border-bottom-width    : 2px;
         border-color           : #ffffff #ffffff #dee2e6 #ffffff;
         background             : #ffffff;
         color                  : #6c757d;
@@ -5304,6 +5305,17 @@
         border-top-left-radius : 4px;
         transition             : box-shadow 0.15s;
         margin                 : 0 0 -1px 0;
+        display                : flex;
+    }
+
+    .p-tabview .p-tabview-ink-bar {
+        z-index         : 1;
+        display         : block;
+        position        : absolute;
+        bottom          : 0;
+        height          : 1px;
+        background-color: #3B82F6;
+        transition      : 250ms cubic-bezier(0.35, 0, 0.25, 1);
     }
 
     .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus-visible {
@@ -5337,11 +5349,11 @@
     }
 
     .p-tabview .p-tabview-nav-btn.p-link {
-        background   : #ffffff;
-        color        : #495057;
-        width        : 2.357rem;
-        box-shadow   : 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-        border-radius: 0;
+        color     : #495057;
+        width     : 2.357rem;
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+
+        transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, outline-color 0.2s;
     }
 
     .p-tabview .p-tabview-nav-btn.p-link:focus-visible {
@@ -7842,6 +7854,3 @@
         font-size            : 1rem;
     }
 }
-
-/* Vendor extensions to the designer enhanced bootstrap compatibility */
-/* Customizations to the designer theme should be defined here */

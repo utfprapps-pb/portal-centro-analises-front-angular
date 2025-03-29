@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 
 import { FormBaseComponent } from './../form-base/form-base.component';
 
@@ -7,18 +7,12 @@ import { FormBaseComponent } from './../form-base/form-base.component';
     templateUrl: './form-crud.component.html',
     styleUrl: './form-crud.component.scss'
 })
-export class FormCrudComponent extends FormBaseComponent implements OnInit {
-
-    public title: string = null;
+export class FormCrudComponent extends FormBaseComponent {
 
     constructor(
         protected override readonly injector: Injector
     ) {
         super(injector);
-    }
-
-    public ngOnInit(): void {
-        this.title = this.pageTitle;
     }
 
     public showHeader(): boolean {

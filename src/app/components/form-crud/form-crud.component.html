@@ -4,17 +4,17 @@
         <div class="p-2 py-3 mt-2">
             <div class="row" *ngIf="showHeader()">
                 <div class="col-24">
-                    <h1 class="m-0">{{title}}</h1>
+                    <b class="m-0" [ngClass]="titleClass">{{title}}</b>
                 </div>
+                <hr class="mt-2 border border-success mx-3">
             </div>
-            <hr class="mt-2 border border-success mx-3" *ngIf="showHeader()">
             <div class="ng-content">
                 <ng-content></ng-content>
             </div>
         </div>
     </form-base>
 </div>
-<div class="footer px-3 d-flex" *ngIf="showFooter()">
+<div class="footer px-3 d-flex no-print" *ngIf="showFooter()">
     <ng-content select="[bbuttons]"></ng-content>
     <button *ngIf="showButtons('salvar')" class="btn btn-sm btn-primary me-2" (click)="onClickSalvar()">
         <i class="fa fa-inbox-arrow-down me-1"></i>

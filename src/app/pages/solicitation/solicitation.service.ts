@@ -20,4 +20,12 @@ export class SolicitationService extends GenericCrudService<Solicitation> {
         return this.http.get(`${this.path}/buscar-historicos`)
     }
 
+    public buscarHistoricoById(id: number): Promise<SolicitationHistoric[]> {
+        return this.http.get(`${this.path}/buscar-historicos/${id}`)
+    }
+
+    public atualizarStatus(historic: SolicitationHistoric): Promise<Solicitation> {
+        return this.http.put(`${this.path}/atualizar-status`, historic);
+    }
+
 }

@@ -14,7 +14,7 @@ export class SolicitationHistoric extends ZModel {
     }
 
     solicitation: Solicitation = null;
-    status: SolicitationStatus = null;
+    status: SolicitationStatus | string = null;
     createdBy: User = null;
     createdAt: Date = null;
     observation: string = null;

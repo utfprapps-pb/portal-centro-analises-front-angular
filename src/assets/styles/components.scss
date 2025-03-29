@@ -129,8 +129,15 @@ p-checkbox {
 }
 
 p-dropdown.p-element {
-    height : 29.1px;
-    display: grid;
+    height    : 33.6px;
+    max-height: 33.6px;
+    // display: grid;
+    display   : block;
+
+    & div.p-dropdown.p-component {
+        height    : 33.6px;
+        max-height: 33.6px;
+    }
 }
 
 datatable {
@@ -138,6 +145,21 @@ datatable {
     span,
     input {
         font-size: var(--font-size-default);
+    }
+
+}
+
+.p-radiobutton-disabled {
+    cursor: default;
+}
+
+.footer {
+    p-tieredmenu {
+        position: absolute;
+        &>div.p-tieredmenu {
+            position : sticky;
+            transform: translateY(-100%);
+        }
     }
 
 }
