@@ -25,4 +25,8 @@ export class EmailConfigFormComponent extends FormCrud<EmailConfig> implements O
         return 1;
     }
 
+    public override showButtons(button: string): boolean {
+        return !['excluir'].includes(button);
+    }
+
 }

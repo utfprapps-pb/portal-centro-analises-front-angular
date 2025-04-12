@@ -1,6 +1,7 @@
 import { ColumnMinWidth, Enum, Hidden, Prop, Title } from '../../../../core/decorators/decorators';
 import { StatusAI } from '../../../../core/enums/statusai.enum';
 import { ZModel } from '../../../../generics/zmodel';
+import { SolicitationAmostraAnalise } from '../../../solicitation/model/solicitation-amostra-analise.model';
 
 export class Equipment extends ZModel {
 
@@ -53,5 +54,7 @@ export class Equipment extends ZModel {
     @Title('Externo - $/Amostra', 'center')
     @Prop('currency')
     valueSampleExternal: number = null;
+
+    analise: SolicitationAmostraAnalise = null;
 
 }

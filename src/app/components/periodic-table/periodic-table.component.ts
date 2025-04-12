@@ -92,7 +92,7 @@ export class PeriodicTableComponent extends CompCtrlContainer implements Control
             if (ObjectUtils.isEmpty(texto)) {
                 this._innerObject = null;
                 this.innerValue = null;
-                this.elementos.filter(it => it.selected).forEach(element => element.selected = false);
+                this.elementos.filter(it => it != null && it.selected).forEach(element => element.selected = false);
             } else {
                 this.innerValue = texto;
             }
@@ -169,7 +169,8 @@ export class PeriodicTableComponent extends CompCtrlContainer implements Control
     override setDisabledState(value: boolean): void {
         this.disabled = value;
         if (value) {
-            this.tabelaPeriodica.forEach(linha => linha.forEach(element => element.disabled = true));
+            this.tabelaPeriodica.filter(linha => linha != null)
+            .forEach(linha => linha.forEach(element => element != null && element.disabled == true));
         }
     }
 

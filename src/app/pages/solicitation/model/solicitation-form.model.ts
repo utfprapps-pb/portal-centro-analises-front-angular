@@ -8,6 +8,7 @@ import { ZModel } from '../../../generics/zmodel';
 import { AAForno } from './../../../core/enums/aa-forno.enum';
 import { RetiradaAmostra } from './../../../core/enums/retirada-amostras.enum';
 import { SolicitationAmostra } from './solicitation-amostra.model';
+import { Solicitation } from './solicitation.model';
 
 export class SolicitationForm extends ZModel {
 
@@ -15,9 +16,10 @@ export class SolicitationForm extends ZModel {
         return new SolicitationForm();
     }
 
+    solicitation: Solicitation = null;
     retirada: RetiradaAmostra = RetiradaAmostra.FALSE;
     citacao: boolean = false;
-    amostras: SolicitationAmostra[];
+    amostras: SolicitationAmostra[] = [];
 
     // AA
     methodologyDescription: string = null;

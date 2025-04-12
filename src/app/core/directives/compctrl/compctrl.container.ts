@@ -15,6 +15,7 @@ export abstract class CompCtrlContainer {
 
     @Input() id: string = Guid.raw();
     internalDisabled: boolean = null;
+    @Input() ignoreInternalDisabled: boolean = false;
 
     abstract getContainer(): any;
     abstract getLabel(): string;

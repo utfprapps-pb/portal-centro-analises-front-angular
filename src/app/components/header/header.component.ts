@@ -62,9 +62,7 @@ export class HeaderComponent implements OnDestroy {
     ) {
         const admin: boolean = this.authentication.getUserLogged().role == Roles.ROLE_ADMIN;
         const professor: boolean = this.authentication.getUserLogged().role == Roles.ROLE_PROFESSOR;
-        const student: boolean = this.authentication.getUserLogged().role == Roles.ROLE_STUDENT;
-        const external: boolean = this.authentication.getUserLogged().role == Roles.ROLE_EXTERNAL;
-        const partner: boolean = this.authentication.getUserLogged().role == Roles.ROLE_PARTNER;
+        const aluno: boolean = this.authentication.getUserLogged().role == Roles.ROLE_STUDENT;
 
         this.items = this.items = [
             {
@@ -72,83 +70,77 @@ export class HeaderComponent implements OnDestroy {
                 icon: 'far fa-file-lines',
                 url: '/#/solicitar',
                 target: '_self',
-                // visible: admin
             },
             {
                 label: 'Solicitações',
                 icon: 'far fa-table-tree',
                 url: '/#/solicitacoes',
                 target: '_self',
-                // visible: admin
             },
             {
                 label: 'Vínculos Existentes',
                 icon: 'fa fa-chalkboard-user',
                 url: '/#/vinculos',
                 target: '_self',
-                // visible: admin
+                visible: admin || professor || aluno
             },
 
             {
+                label: 'Projetos',
+                icon: 'fa fa-diagram-project',
+                visible: !admin,
+                url: '/#/projetos',
+                target: '_self'
+            },
+            {
                 label: 'Cadastros',
                 icon: 'fa fa-plus',
+                visible: admin,
                 items: [
                     {
                         label: 'Projetos',
                         icon: 'fa fa-diagram-project',
                         url: '/#/projetos',
                         target: '_self',
-                        // visible: admin
                     },
                     {
                         label: 'Domínios',
                         icon: 'far fa-globe',
                         url: '/#/dominios',
                         target: '_self',
-                        // visible: admin
                     },
                     {
                         label: 'Equipamentos',
                         icon: 'fa fa-dryer-heat',
                         url: '/#/equipamentos',
                         target: '_self',
-                        // visible: admin
                     },
                     {
                         label: 'Parceiros',
                         icon: 'fa fa-handshake-simple',
                         url: '/#/parceiros',
                         target: '_self',
-                        // visible: admin
                     },
                     {
                         label: 'Usuários',
                         icon: 'far fa-person',
                         url: '/#/usuarios',
                         target: '_self',
-                        // visible: admin
                     },
                     {
                         label: 'Termos de Uso',
                         icon: 'fa fa-diploma',
                         url: '/#/termos-de-uso',
                         target: '_self',
-                        // visible: admin
                     }
                 ]
             },
             {
-                label: 'Configurações',
-                icon: 'fa fa-cog',
-                items: [
-                    {
-                        label: 'Config. Email',
-                        icon: 'fa fa-envelope',
-                        url: '/#/configuracao-email',
-                        target: '_self',
-                        // visible: admin
-                    }
-                ]
+                label: 'Config. Email',
+                icon: 'fa fa-envelope',
+                url: '/#/configuracao-email',
+                target: '_self',
+                visible: admin
             }
         ];
 

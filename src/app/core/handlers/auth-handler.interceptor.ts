@@ -1,6 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+
 import { Constants } from '../constants/constants';
 import { StorageManager } from '../managers/storage-manager';
 import { AuthService } from '../services/auth.service';
@@ -20,7 +21,6 @@ export class AuthInterceptor implements HttpInterceptor {
         }
 
         const authtoken = this.authentication.getToken();
-        const user = this.authentication.getUserLogged();
         if (authtoken) {
             request = request.clone({
                 setHeaders: {

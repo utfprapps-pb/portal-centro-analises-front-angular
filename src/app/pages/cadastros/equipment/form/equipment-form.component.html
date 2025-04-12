@@ -4,6 +4,11 @@
         <div class="col-6">
             <input-number label="Código" compCtrl="id" [ngModel]="object.id" [disabled]="true"></input-number>
         </div>
+        <div class="col-12" *ngIf="object?.analise?.amostra?.form?.solicitation">
+            <input-text label="Solicitação" disabled
+                [ngModel]="'Solicitação: ' + object.analise.amostra.form.solicitation.id + ' | Amostra nº' + (object.analise.amostra.index + 1)">
+            </input-text>
+        </div>
         <div class="col-6 ms-auto">
             <combobox label="Status" compCtrl="status" [(ngModel)]="object.status" enum="StatusAI" required
                 defaultValue="ACTIVE">

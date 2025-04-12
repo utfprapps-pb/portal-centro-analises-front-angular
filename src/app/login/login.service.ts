@@ -39,4 +39,8 @@ export class LoginService extends GenericService {
         request.email = email;
         return this.http.post(`${this.path}/request-verification`, request);
     }
+
+    public findParceirosAcademicos(): Promise<string[]> {
+        return this.http.get(`${this.path}/academicos`);
+    }
 }

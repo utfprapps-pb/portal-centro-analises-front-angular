@@ -74,6 +74,10 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
 
     public disableButtonAvancar(): boolean {
         if (this.activeStep == 3) {
+            if ((this.object.form == null || ObjectUtils.isEmpty(this.object.form.amostras) ||
+                ObjectUtils.isEmpty(this.object.form.amostras[0].identification))) {
+                return true;
+            };
             return !this.validateForm(false);
         } else if (this.activeStep == 4) {
             return !( // Inversão pois é para desabilitar o botão

@@ -11,6 +11,7 @@
                     <br>
                     {{ data.createdBy?.name }}
                 </ng-template>
+
                 <ng-template pTemplate="marker" let-data style="align-self: center">
                     <span class="dot" [style]="{ 'background-color': getEnumColor(data.status) }">
                         <i [class]="'fa fa-marker'"></i>

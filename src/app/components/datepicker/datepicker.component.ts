@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { Calendar } from 'primeng/calendar';
 
 import { CompCtrlContainer } from '../../core/directives/compctrl/compctrl.container';
@@ -18,6 +18,7 @@ export class DatePicker extends InputBaseComponent {
 
     @ViewChild('input') component: Calendar;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
+    @Input() showTime: boolean = false;
 
     override getContainer(): any {
         return this.component;
@@ -37,7 +38,11 @@ export class DatePicker extends InputBaseComponent {
             if (!!value) {
                 value = new Date(value);
             }
-            this.innerValue = value;
+            this._innerValue = value;
         }
+    }
+
+    public setToday(): void {
+        this.innerValue = new Date();
     }
 }

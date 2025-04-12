@@ -41,11 +41,6 @@ export class User extends UserDTO {
     emailVerified: boolean = null;
 
     @Hidden()
-    @Title('Saldo')
-    @Prop('currency')
-    override balance: number = null;
-
-    @Hidden()
     @Title('RA')
     @Prop('numeric')
     override raSiape: string = null;

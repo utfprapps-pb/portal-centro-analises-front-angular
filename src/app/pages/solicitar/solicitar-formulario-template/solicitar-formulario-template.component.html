@@ -1,4 +1,6 @@
 @if (!!object) {
+<p-progressSpinner *ngIf="facades.size()" ariaLabel="loading" animationDuration="3"></p-progressSpinner>
+
 <ng-container #formPrincipal>
     <div class="row mb-2">
         <div class="col-24" [ngClass]="{'col-16': objectUpdating()}">
@@ -186,8 +188,6 @@
                 </input-text>
             </div>
         </div>
-
-
     </ng-container>
 
     <ng-container *ngIf="getSolicitationType() == 'COR'">
@@ -283,7 +283,7 @@
     </div>
 
     <ng-template #tableAmostrasSimples>
-        <div class="row mb-2">
+        <div class="row mb-2" *ngIf="object.form?.amostras">
             <div class="col-24 table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -352,7 +352,8 @@
                                 <div class="text-center">(3° - 70°)</div>
                             </th>
                             <th class="min-180">Step</th>
-                            <th *ngIf="object.form.modoAnalise == MODO_ANALISE_CN" class="min-180 text-center">
+                            <th *ngIf="object.form.modoAnalise == MODO_ANALISE_CN"
+                                class="min-180 text-center">
                                 Velocidade de Varredura<br>
                                 <div class="text-center">(°/min)</div>
                             </th>
@@ -579,6 +580,432 @@
         </div>
     </ng-template>
 
+    <ng-container *ngIf="object?.form?.amostras?.length > 0 && !!object.solicitationType">
+        <h3 class="m-0 text-center">Informações adicionais das Amostras</h3>
+        <p-accordion #accordion class="w-full" expandIcon="fa fa-plus" collapseIcon="fa fa-minus"
+            [multiple]="true" [activeIndex]="activeIndexAmostras">
+            <p-accordionTab *ngFor="let amostra of object.form.amostras; let index = index">
+
+                <ng-template pTemplate="header">
+                    Amostra nº {{index +1}}
+                    @if(!disableForm && object.form.amostras.length > 1) {
+                    <button class="btn btn-sm float-right" ngxTooltip="Replicar Dados" arrow
+                        (click)="onClickReplicarDadosAmostras(index)">
+                        <i class="far fa-copy">
+                        </i>
+                    </button>
+                    } @else if (disableForm) {
+                    <span>&nbsp;-&nbsp;Analises:&nbsp;{{amostra.analises?.length || 0}}</span>
+                    }
+                </ng-template>
+
+                @if(disableForm) {
+                <p-tabView>
+                    <p-tabPanel #tabAmostra header="Amostra">
+                        <ng-container *ngTemplateOutlet="formularioTabelas; context: {$implicit: amostra}">
+                        </ng-container>
+                    </p-tabPanel>
+
+                    <p-tabPanel #tabAnalise header="Analise">
+                        <ng-container
+                            *ngTemplateOutlet="tabelaAnalise; context: {$implicit: amostra, index: index}">
+                        </ng-container>
+                    </p-tabPanel>
+                </p-tabView>
+                } @else {
+                <ng-container *ngTemplateOutlet="formularioTabelas; context: {$implicit: amostra}">
+                </ng-container>
+                }
+            </p-accordionTab>
+        </p-accordion>
+    </ng-container>
+
+    <ng-template #tabelaAnalise let-amostra let-amostraIndex="index">
+        <div class="row" *ngIf="object.status == status_ANALYZING">
+            <div class="col-12">
+                <h3 *ngIf="amostra.concluida">
+                    Análise da amostra finalizada
+                </h3>
+                <button *ngIf="isAdmin && !amostra.concluida" class="btn btn-sm btn-purple"
+                    (click)="onClickAddAnalise(amostra)">
+                    <i class="fa fa-plus"></i>&nbsp;Adicionar Análise
+                </button>
+            </div>
+            <div class="col-12 text-right" *ngIf="isAdmin">
+                @if (!amostra.concluida) {
+                <button class="btn btn-sm btn-success me-2" *ngIf="amostra.analises.length > 0"
+                    [disabled]="!isAmostraAnalisesValidToSave(amostra)"
+                    (click)="onClickSalvarAnalise(amostra)">
+                    <i class="fa fa-download"></i>&nbsp;Salvar Análises
+                </button>
+                <button class="btn btn-sm btn-primary" [disabled]="possuiAnaliseDatafimNaoPreenchida(amostra)"
+                    (click)="onClickFinalizarAmostra(amostra)">
+                    <i class="fa fa-lock"></i>&nbsp;Finalizar Amostra
+                </button>
+                } @else {
+                <button class="btn btn-sm btn-primary" (click)="onClickFinalizarAmostra(amostra)">
+                    <i class="fa fa-unlock"></i>&nbsp;Retomar Amostra
+                </button>
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-24 table-responsive px-0" [ngStyle]="{
+                'min-height.px': 40.8 + (50.4 * amostra.analises.length) + 245,
+        }">
+                @if (amostra.analises.length == 0) {
+                <h3>Nenhuma análise foi realizada até o momento.</h3>
+                } @else {
+                <table class="table table-striped long-table">
+                    <thead>
+                        <tr>
+                            <th style="min-width: 46px">#</th>
+                            <th style="width: 10px;" *ngIf="!amostra.concluida"></th>
+                            <th style="min-width: 150px;">Inicio</th>
+                            <th style="min-width: 150px;">Fim</th>
+                            <th style="min-width: 300px;">Equipamento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let analise of amostra.analises; let index = index">
+                            <td class="align-middle bold">
+                                {{index +1}}
+                                <i class="fa fa-info-circle text-info" [ngxTooltip]="'Análise não foi salva'"
+                                    *ngIf="analise.id == null">
+                                </i>
+                            </td>
+                            <td *ngIf="!amostra.concluida">
+                                <button class="btn btn-sm btn-danger"
+                                    (click)="onClickRemoveAnalise(amostra, index)">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <datepicker [disabled]="amostra.concluida"
+                                    [compCtrl]="'Amostra ' + amostraIndex + 1 + ' - Data/Hora Inicial'"
+                                    required [(ngModel)]="analise.dataini" [showTime]="true"
+                                    [ignoreInternalDisabled]="true" (onChange)="onChangeDatas(analise)">
+                                </datepicker>
+                            </td>
+                            <td>
+                                <datepicker [disabled]="amostra.concluida"
+                                    [compCtrl]="'Amostra ' + amostraIndex + 1 + ' - Data/Hora Final'"
+                                    [(ngModel)]="analise.datafin" [showTime]="true"
+                                    [ignoreInternalDisabled]="true" (onChange)="onChangeDatas(analise)">
+                                </datepicker>
+                            </td>
+                            <td>
+                                <combobox [compCtrl]="'Amostra ' + amostraIndex + 1 + ' - Equipamento'"
+                                    required [filterBy]="'id,name,shortname'"
+                                    [options]="analise.id == null ? equipamentosDisponiveis : equipamentos"
+                                    [(ngModel)]="analise.equipment" [disabled]="analise.id != null">
+                                </combobox>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                }
+            </div>
+        </div>
+
+    </ng-template>
+
+    <ng-template #formularioTabelas let-amostra>
+        <div class="table-responsive">
+            <ng-container *ngIf="['AA', 'AW', 'CLAE', 'COR', 'FTMIR'].includes(getSolicitationType())">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Identificação</th>
+                            <th>Descrição</th>
+                            <th>Quantidade de leituras por amostra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input-text compCtrl="Identificação" required disabled
+                                    [ngModel]="amostra.identification">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Descrição" disabled [ngModel]="amostra.description">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-number compCtrl="Quantidade de leituras por amostra" required disabled
+                                    [ngModel]="amostra.leituras" [maxlength]="2">
+                                </input-number>
+                            </td>
+                        </tr>
+                        <ng-container
+                            *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
+                    </tbody>
+                </table>
+            </ng-container>
+
+            <ng-container *ngIf="['DRX'].includes(getSolicitationType())">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th class="min-250">Identificação</th>
+                            <th class="min-250">Descrição</th>
+                            <th class="min-250">Faixa de Varredura Final (3° - 70°)</th>
+                            <th class="min-180">Step</th>
+                            <th *ngIf="object.form.modoAnalise == MODO_ANALISE_CN" class="min-250">
+                                Velocidade de Varredura (°/min)
+                            </th>
+                            <th *ngIf="object.form.modoAnalise == MODO_ANALISE_ST" class="min-250">
+                                Tempo do passo(s)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input-text compCtrl="Identificação" required disabled
+                                    [ngModel]="amostra.identification">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Descrição" disabled [ngModel]="amostra.description">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-number compCtrl="Faixa de Varredura Final (3° - 70°)" required
+                                    [ngModel]="amostra.faixaVarredura" disabled [placeholder]="'3° - XXX'">
+                                </input-number>
+                            </td>
+                            <td>
+                                <radio-button compCtrl="Step" required enum="DRXStep" [ngModel]="amostra.step"
+                                    [vertical]="false" disabled>
+                                </radio-button>
+                            </td>
+                            <td *ngIf="object.form.modoAnalise == MODO_ANALISE_CN">
+                                <input-number compCtrl="Velocidade de varredura (°/min)" required
+                                    [ngModel]="amostra.velocidadeVarredura" disabled>
+                                </input-number>
+                            </td>
+                            <td *ngIf="object.form.modoAnalise == MODO_ANALISE_ST">
+                                <input-number compCtrl="Tempo do passo(s)" required
+                                    [ngModel]="amostra.tempoPasso" disabled>
+                                </input-number>
+                            </td>
+                        </tr>
+                        <ng-container
+                            *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
+                    </tbody>
+                </table>
+            </ng-container>
+
+            <ng-container *ngIf="['DSC', 'TGADTA'].includes(getSolicitationType())">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th class="min-250">Identificação</th>
+                            <th class="min-250">Descrição</th>
+                            <th class="min-180">Expande</th>
+                            <th class="min-180">Libera Gás</th>
+                            <th class="min-180 text-center">Massa (3 - 150mg)</th>
+                            <th class="min-180">Técnica DSC</th>
+                            <th class="min-180 text-center">Atmosfera</th>
+                            <th class="min-180 text-center">Fluxo de Gás (10 - 100 mL/min)
+                            </th>
+                            <th class="min-180 text-center">Taxa de aquecimento<br>
+                                <div class="text-center">(0,5 - 100 °C/min)</div>
+                            </th>
+                            <th class="min-180">Intervalo de temperatura (°C)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input-text compCtrl="Identificação" required disabled
+                                    [ngModel]="amostra.identification">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Descrição" disabled [ngModel]="amostra.description">
+                                </input-text>
+                            </td>
+                            <td>
+                                <radio-button compCtrl="Expande" [ngModel]="amostra.expande" enum="Boolean"
+                                    required disabled>
+                                </radio-button>
+                            </td>
+                            <td>
+                                <radio-button compCtrl="Libera Gás" [ngModel]="amostra.liberaGas"
+                                    enum="Boolean" required disabled>
+                                </radio-button>
+                                <input-text compCtrl="Gás Liberado" required disabled
+                                    [ngModel]="amostra.gasLiberado" [placeholder]="'Gás Liberado'"
+                                    *ngIf="amostra.liberaGas == BOOLEAN_TRUE">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-number compCtrl="Massa (3 - 150mg)" required disabled
+                                    [ngModel]="amostra.massa" [min]="3" [max]="150" [maxlength]="3"
+                                    [placeholder]="'(3 - 150mg)'">
+                                </input-number>
+                            </td>
+                            <td>
+                                <radio-button compCtrl="Técnica DSC" required disabled enum="DSCTecnica"
+                                    [ngModel]="amostra.tecnica">
+                                </radio-button>
+                            </td>
+                            <td>
+                                <radio-button compCtrl="Atmosfera" required disabled enum="DSCAtmosfera"
+                                    [ngModel]="amostra.atmosfera">
+                                </radio-button>
+                            </td>
+                            <td>
+                                <input-number compCtrl="Fluxo de Gás (10 - 100 mL/min)" required disabled
+                                    [ngModel]="amostra.fluxoGas" [min]="10" [max]="100" [maxlength]="3"
+                                    [placeholder]="'(10 - 100 mL/min)'">
+                                </input-number>
+                            </td>
+                            <td>
+                                <input-number compCtrl="Taxa de aquecimento (0,5 - 100 °C/min)" required
+                                    disabled [ngModel]="amostra.taxaAquecimento" [min]="0.5" [max]="100"
+                                    [maxlength]="6" [maxFractionDigits]="1"
+                                    [placeholder]="'(0,5 - 100 °C/min)'">
+                                </input-number>
+                            </td>
+                            <td>
+                                <input-number compCtrl="Intervalo de temperatura (°C)" required disabled
+                                    [ngModel]="amostra.intervaloTemperatura" [min]="30" [maxlength]="6"
+                                    [placeholder]="'30 - XXX'" [maxFractionDigits]="2">
+                                </input-number>
+                            </td>
+                        </tr>
+                        <ng-container
+                            *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
+                    </tbody>
+                </table>
+            </ng-container>
+
+            <ng-container *ngIf="['MEV'].includes(getSolicitationType())">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Identificação</th>
+                            <th>Descrição</th>
+                            <th>Tipo de Amostra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input-text compCtrl="Identificação" required disabled
+                                    [ngModel]="amostra.identification">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Descrição" disabled [ngModel]="amostra.description">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Tipo de Amostra" required disabled
+                                    [(ngModel)]="amostra.tipoAmostra">
+                                </input-text>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="99">
+                                <div class="row mb-2">
+                                    <div class="col-24">
+                                        <div class="row mb-2">
+                                            <div class="col-24">
+                                                <input-textarea label="Objetivo da Análise" compCtrl
+                                                    [(ngModel)]="amostra.objetivo" [maxlength]="255">
+                                                </input-textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-24 table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="index-column">Nº
+                                                            </th>
+                                                            <th *ngIf="!disableForm"
+                                                                class="button-column no-print">
+                                                            </th>
+                                                            <th *ngIf="!disableForm"
+                                                                class="button-column no-print">
+                                                            </th>
+                                                            <th class="">Aproximações
+                                                                desejadas (50x - 2000x)
+                                                            </th>
+                                                            <th class="">Quantidade de
+                                                                fotos por aproximação</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr
+                                                            *ngFor="let foto of amostra.fotos; let indexMev = index">
+                                                            <td>
+                                                                <b>{{indexMev +1}}</b>
+                                                            </td>
+                                                            <td *ngIf="!disableForm"
+                                                                class="button-column no-print">
+                                                                <button class="btn btn-sm btn-success"
+                                                                    (click)="onClickAddFotoMev(amostra)">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                            </td>
+                                                            <td *ngIf="!disableForm"
+                                                                class="button-column no-print">
+                                                                <button class="btn btn-sm btn-danger"
+                                                                    (click)="onClickRemoveFotoMev(amostra, indexMev)">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </td>
+                                                            <td>
+                                                                <input-number
+                                                                    compCtrl="Aproximações desejadas" required
+                                                                    [(ngModel)]="foto.aproximacoes" [min]="50"
+                                                                    [max]="2000" [maxlength]="4">
+                                                                </input-number>
+                                                            </td>
+                                                            <td>
+                                                                <input-number
+                                                                    compCtrl="Quantidade de fotos por aproximação"
+                                                                    required
+                                                                    [(ngModel)]="foto.qtdFotosAproximacao"
+                                                                    [min]="1">
+                                                                </input-number>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-24">
+                                                <uploadfile [label]="'Imagem modelo de microscopia'"
+                                                    [(ngModel)]="amostra.modeloMicroscopia" [multiple]="false"
+                                                    [bucket]="getBucketName()"
+                                                    [uploader]="amostra.modeloMicroscopia == null"
+                                                    [disabled]="objectUpdating()">
+                                                </uploadfile>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <ng-container
+                            *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
+                    </tbody>
+                </table>
+            </ng-container>
+        </div>
+    </ng-template>
+
     <ng-template #posFormularioRetirada let-amostra>
         <tr>
             <td colspan="99">
@@ -674,323 +1101,6 @@
             </td>
         </tr>
     </ng-template>
-</ng-container>
-
-<ng-container *ngIf="object?.form?.amostras?.length > 0 && !!object.solicitationType">
-    <h3 class="m-0 text-center">Informações adicionais das Amostras</h3>
-    <p-accordion #accordion class="w-full" expandIcon="fa fa-plus" collapseIcon="fa fa-minus"
-        [multiple]="true" [activeIndex]="activeIndexAmostras">
-        <p-accordionTab *ngFor="let amostra of object.form.amostras; let index = index">
-
-            <ng-template pTemplate="header">
-                Amostra nº {{index +1}}
-                @if(!disableForm && object.form.amostras.length > 1) {
-                <button class="btn btn-sm float-right" ngxTooltip="Replicar Dados" arrow
-                    (click)="onClickReplicarDadosAmostras(index)">
-                    <i class="far fa-copy">
-                    </i>
-                </button>
-                }
-            </ng-template>
-
-            <div class="table-responsive">
-                <ng-container *ngIf="['AA', 'AW', 'CLAE', 'COR', 'FTMIR'].includes(getSolicitationType())">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Identificação</th>
-                                <th>Descrição</th>
-                                <th>Quantidade de leituras por amostra</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <input-text compCtrl="Identificação" required disabled
-                                        [ngModel]="amostra.identification">
-                                    </input-text>
-                                </td>
-                                <td>
-                                    <input-text compCtrl="Descrição" disabled [ngModel]="amostra.description">
-                                    </input-text>
-                                </td>
-                                <td>
-                                    <input-number compCtrl="Quantidade de leituras por amostra" required
-                                        disabled [ngModel]="amostra.leituras" [maxlength]="2">
-                                    </input-number>
-                                </td>
-                            </tr>
-                            <ng-container
-                                *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
-                        </tbody>
-                    </table>
-                </ng-container>
-
-                <ng-container *ngIf="['DRX'].includes(getSolicitationType())">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th class="min-250">Identificação</th>
-                                <th class="min-250">Descrição</th>
-                                <th class="min-250">Faixa de Varredura Final (3° - 70°)</th>
-                                <th class="min-180">Step</th>
-                                <th *ngIf="object.form.modoAnalise == MODO_ANALISE_CN" class="min-250">
-                                    Velocidade de Varredura (°/min)
-                                </th>
-                                <th *ngIf="object.form.modoAnalise == MODO_ANALISE_ST" class="min-250">
-                                    Tempo do passo(s)
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <input-text compCtrl="Identificação" required disabled
-                                        [ngModel]="amostra.identification">
-                                    </input-text>
-                                </td>
-                                <td>
-                                    <input-text compCtrl="Descrição" disabled [ngModel]="amostra.description">
-                                    </input-text>
-                                </td>
-                                <td>
-                                    <input-number compCtrl="Faixa de Varredura Final (3° - 70°)" required
-                                        [ngModel]="amostra.faixaVarredura" disabled
-                                        [placeholder]="'3° - XXX'">
-                                    </input-number>
-                                </td>
-                                <td>
-                                    <radio-button compCtrl="Step" required enum="DRXStep"
-                                        [ngModel]="amostra.step" [vertical]="false" disabled>
-                                    </radio-button>
-                                </td>
-                                <td *ngIf="object.form.modoAnalise == MODO_ANALISE_CN">
-                                    <input-number compCtrl="Velocidade de varredura (°/min)" required
-                                        [ngModel]="amostra.velocidadeVarredura" disabled>
-                                    </input-number>
-                                </td>
-                                <td *ngIf="object.form.modoAnalise == MODO_ANALISE_ST">
-                                    <input-number compCtrl="Tempo do passo(s)" required
-                                        [ngModel]="amostra.tempoPasso" disabled>
-                                    </input-number>
-                                </td>
-                            </tr>
-                            <ng-container
-                                *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
-                        </tbody>
-                    </table>
-                </ng-container>
-
-                <ng-container *ngIf="['DSC', 'TGADTA'].includes(getSolicitationType())">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th class="min-250">Identificação</th>
-                                <th class="min-250">Descrição</th>
-                                <th class="min-180">Expande</th>
-                                <th class="min-180">Libera Gás</th>
-                                <th class="min-180 text-center">Massa (3 - 150mg)</th>
-                                <th class="min-180">Técnica DSC</th>
-                                <th class="min-180 text-center">Atmosfera</th>
-                                <th class="min-180 text-center">Fluxo de Gás (10 - 100 mL/min)
-                                </th>
-                                <th class="min-180 text-center">Taxa de aquecimento<br>
-                                    <div class="text-center">(0,5 - 100 °C/min)</div>
-                                </th>
-                                <th class="min-180">Intervalo de temperatura (°C)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <input-text compCtrl="Identificação" required disabled
-                                        [ngModel]="amostra.identification">
-                                    </input-text>
-                                </td>
-                                <td>
-                                    <input-text compCtrl="Descrição" disabled [ngModel]="amostra.description">
-                                    </input-text>
-                                </td>
-                                <td>
-                                    <radio-button compCtrl="Expande" [ngModel]="amostra.expande"
-                                        enum="Boolean" required disabled>
-                                    </radio-button>
-                                </td>
-                                <td>
-                                    <radio-button compCtrl="Libera Gás" [ngModel]="amostra.liberaGas"
-                                        enum="Boolean" required disabled>
-                                    </radio-button>
-                                    <input-text compCtrl="Gás Liberado" required disabled
-                                        [ngModel]="amostra.gasLiberado" [placeholder]="'Gás Liberado'"
-                                        *ngIf="amostra.liberaGas == BOOLEAN_TRUE">
-                                    </input-text>
-                                </td>
-                                <td>
-                                    <input-number compCtrl="Massa (3 - 150mg)" required disabled
-                                        [ngModel]="amostra.massa" [min]="3" [max]="150" [maxlength]="3"
-                                        [placeholder]="'(3 - 150mg)'">
-                                    </input-number>
-                                </td>
-                                <td>
-                                    <radio-button compCtrl="Técnica DSC" required disabled enum="DSCTecnica"
-                                        [ngModel]="amostra.tecnica">
-                                    </radio-button>
-                                </td>
-                                <td>
-                                    <radio-button compCtrl="Atmosfera" required disabled enum="DSCAtmosfera"
-                                        [ngModel]="amostra.atmosfera">
-                                    </radio-button>
-                                </td>
-                                <td>
-                                    <input-number compCtrl="Fluxo de Gás (10 - 100 mL/min)" required disabled
-                                        [ngModel]="amostra.fluxoGas" [min]="10" [max]="100" [maxlength]="3"
-                                        [placeholder]="'(10 - 100 mL/min)'">
-                                    </input-number>
-                                </td>
-                                <td>
-                                    <input-number compCtrl="Taxa de aquecimento (0,5 - 100 °C/min)" required
-                                        disabled [ngModel]="amostra.taxaAquecimento" [min]="0.5" [max]="100"
-                                        [maxlength]="6" [maxFractionDigits]="1"
-                                        [placeholder]="'(0,5 - 100 °C/min)'">
-                                    </input-number>
-                                </td>
-                                <td>
-                                    <input-number compCtrl="Intervalo de temperatura (°C)" required disabled
-                                        [ngModel]="amostra.intervaloTemperatura" [min]="30" [maxlength]="6"
-                                        [placeholder]="'30 - XXX'" [maxFractionDigits]="2">
-                                    </input-number>
-                                </td>
-                            </tr>
-                            <ng-container
-                                *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
-                        </tbody>
-                    </table>
-                </ng-container>
-
-                <ng-container *ngIf="['MEV'].includes(getSolicitationType())">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Identificação</th>
-                                <th>Descrição</th>
-                                <th>Tipo de Amostra</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <input-text compCtrl="Identificação" required disabled
-                                        [ngModel]="amostra.identification">
-                                    </input-text>
-                                </td>
-                                <td>
-                                    <input-text compCtrl="Descrição" disabled [ngModel]="amostra.description">
-                                    </input-text>
-                                </td>
-                                <td>
-                                    <input-text compCtrl="Tipo de Amostra" required disabled
-                                        [(ngModel)]="amostra.tipoAmostra">
-                                    </input-text>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="99">
-                                    <div class="row mb-2">
-                                        <div class="col-24">
-                                            <div class="row mb-2">
-                                                <div class="col-24">
-                                                    <input-textarea label="Objetivo da Análise" compCtrl
-                                                        [(ngModel)]="amostra.objetivo" [maxlength]="255">
-                                                    </input-textarea>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-2">
-                                                <div class="col-24 table-responsive">
-                                                    <table class="table table-striped">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="index-column">Nº
-                                                                </th>
-                                                                <th *ngIf="!disableForm"
-                                                                    class="button-column no-print">
-                                                                </th>
-                                                                <th *ngIf="!disableForm"
-                                                                    class="button-column no-print">
-                                                                </th>
-                                                                <th class="">Aproximações
-                                                                    desejadas (50x - 2000x)
-                                                                </th>
-                                                                <th class="">Quantidade de
-                                                                    fotos por aproximação</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr
-                                                                *ngFor="let foto of amostra.fotos; let indexMev = index">
-                                                                <td>
-                                                                    <b>{{indexMev +1}}</b>
-                                                                </td>
-                                                                <td *ngIf="!disableForm"
-                                                                    class="button-column no-print">
-                                                                    <button class="btn btn-sm btn-success"
-                                                                        (click)="onClickAddFotoMev(amostra)">
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </button>
-                                                                </td>
-                                                                <td *ngIf="!disableForm"
-                                                                    class="button-column no-print">
-                                                                    <button class="btn btn-sm btn-danger"
-                                                                        (click)="onClickRemoveFotoMev(amostra, indexMev)">
-                                                                        <i class="fa fa-minus"></i>
-                                                                    </button>
-                                                                </td>
-                                                                <td>
-                                                                    <input-number
-                                                                        compCtrl="Aproximações desejadas"
-                                                                        required
-                                                                        [(ngModel)]="foto.aproximacoes"
-                                                                        [min]="50" [max]="2000"
-                                                                        [maxlength]="4">
-                                                                    </input-number>
-                                                                </td>
-                                                                <td>
-                                                                    <input-number
-                                                                        compCtrl="Quantidade de fotos por aproximação"
-                                                                        required
-                                                                        [(ngModel)]="foto.qtdFotosAproximacao"
-                                                                        [min]="1">
-                                                                    </input-number>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-2">
-                                                <div class="col-24">
-                                                    <uploadfile [label]="'Imagem modelo de microscopia'"
-                                                        [(ngModel)]="amostra.modeloMicroscopia"
-                                                        [multiple]="false"
-                                                        [bucket]="getBucketName()"
-                                                        [uploader]="amostra.modeloMicroscopia == null"
-                                                        [disabled]="objectUpdating()">
-                                                    </uploadfile>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <ng-container
-                                *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
-                        </tbody>
-                    </table>
-                </ng-container>
-            </div>
-        </p-accordionTab>
-    </p-accordion>
 </ng-container>
 
 }

@@ -56,4 +56,8 @@ export class ProfileFormComponent extends FormCrud<UserDTO> {
         this.authentication.identity(true);
     }
 
+    public override showButtons(button: string): boolean {
+        return !['excluir'].includes(button);
+    }
+
 }

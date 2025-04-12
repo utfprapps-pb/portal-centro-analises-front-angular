@@ -1,4 +1,5 @@
 import { Component, Injector, ViewChild } from '@angular/core';
+import { ObjectUtils } from 'primeng/utils';
 
 import { FormCrud } from '../../../components/form-crud/form-crud';
 import { FormCrudComponent } from '../../../components/form-crud/form-crud.component';
@@ -38,40 +39,36 @@ export class ProjectFormComponent extends FormCrud<Project> {
     }
 
     public override async onAfterLoadObject(object: Project): Promise<void> {
-        if (this.objectUpdating()) {
-            this.responsaveis = [this.object.user];
-            this.alunos = this.object.students;
-        } else {
-            if (this.isExterno) {
-                await this.setSelfResponsavel();
-                this.object.students = [this.object.user];
-            } else if (this.isAdmin) {
-                await this.userService.findAll().then(async data => {
-                    this.responsaveis = data;
-                    this.alunos = data;
-                });
-            } else if (this.isProfessor) {
-                await this.setSelfResponsavel();
-                await this.studentTeacherService.findAll().then(async (data: StudentTeacher[]) => {
-                    this.alunos = data.filter(it => getEnumTranslation('StudentTeacherApproved', it.approved) == StudentTeacherApproved.ACEITO).map(it => it.student);
-                });
-            } else if (this.isPartner) {
-                const email = this.authentication.getUserLogged().email;
-                const domain = email.substring(email.indexOf('@'));
-                await this.userService.findAllByDomain(domain).then(async data => {
-                    this.responsaveis = data;
-                    this.alunos = data;
-                });
-            }
+        this.alunos = this.object.students;
+        await this.setSelfResponsavel();
+        if (this.isExterno) {
+            this.object.students = [this.object.user];
+        } else if (this.isAdmin) {
+            await this.userService.findAll().then(async data => {
+                this.responsaveis = data;
+                this.alunos = data;
+            });
+        } else if (this.isProfessor) {
+            await this.studentTeacherService.findAll().then(async (data: StudentTeacher[]) => {
+                this.alunos = data.filter(it => getEnumTranslation('StudentTeacherApproved', it.approved) == StudentTeacherApproved.ACEITO).map(it => it.student);
+            });
+        } else if (this.isPartner) {
+            const email = this.authentication.getUserLogged().email;
+            const domain = email.substring(email.indexOf('@'));
+            await this.userService.findAllByDomain(domain).then(async data => {
+                this.responsaveis = data;
+                this.alunos = data;
+            });
         }
     }
 
     private async setSelfResponsavel(): Promise<void> {
-        const logged = this.authentication.getUserLogged();
-        this.object.user.id = logged.id;
-        this.object.user.name = logged.displayName;
-        this.object.user.email = logged.email;
-
+        if (ObjectUtils.isEmpty(this.object.user) || ObjectUtils.isEmpty(this.object.user.id)) {
+            const logged = this.authentication.getUserLogged();
+            this.object.user.id = logged.id;
+            this.object.user.name = logged.displayName;
+            this.object.user.email = logged.email;
+        }
         this.responsaveis = [this.object.user];
     }
 
@@ -79,12 +76,12 @@ export class ProjectFormComponent extends FormCrud<Project> {
         if (button == 'cancelar') {
             return true;
         } else {
-            if (button == 'excluir') {
-                return (this.userID == this.object.user.id) || this.isAdmin;
-            } else {
-                return !this.objectUpdating();
-            }
+            return this.isResponsavel() || !this.objectUpdating();
         }
+    }
+
+    public isResponsavel(): boolean {
+        return (this.userID == this.object.user.id) || this.isAdmin;
     }
 
     public onClickAddAluno(): void {

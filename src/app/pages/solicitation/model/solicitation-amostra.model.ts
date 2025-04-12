@@ -2,7 +2,9 @@ import { Attachment } from '../../../components/uploadfile/model/attachment.mode
 import { Boolean } from '../../../core/enums/boolean.enum';
 import { DRXStep } from '../../../core/enums/drx-step.enum';
 import { ZModel } from '../../../generics/zmodel';
+import { SolicitationAmostraAnalise } from './solicitation-amostra-analise.model';
 import { SolicitationAmostraFoto } from './solicitation-amostra-foto.model';
+import { SolicitationForm } from './solicitation-form.model';
 
 
 export class SolicitationAmostra extends ZModel {
@@ -11,9 +13,15 @@ export class SolicitationAmostra extends ZModel {
         return new SolicitationAmostra();
     }
 
+    form: SolicitationForm = null;
+    concluida: boolean = false;
+    index: number = null;
+
     identification: string = null;
     description: string = null;
     leituras: number = null;
+
+    analises: SolicitationAmostraAnalise[] = [];
 
     composicao: string = null;
     toxic: string = null;

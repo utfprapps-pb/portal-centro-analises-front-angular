@@ -29,7 +29,7 @@ export abstract class FormList<T extends ZModel> extends FormBase implements Aft
         if (this.formView == undefined) {
             setTimeout(async () => {
                 await this.bindMethods();
-            }, 500);
+            }, 10);
             return;
         }
         this.formView.showFooter = () => this.showFooter();

@@ -191,7 +191,8 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         AccordionModule,
         TabViewModule,
         TieredMenuModule,
-        DialogModule
+        DialogModule,
+        ProgressSpinnerModule,
     ],
     imports: [
         CommonModule,
@@ -223,7 +224,7 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         TimelineModule,
         EditorModule,
         AccordionModule,
-        TabViewModule
+        TabViewModule,
     ],
     providers: [
         ToastrService,

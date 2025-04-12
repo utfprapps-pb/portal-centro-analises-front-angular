@@ -10,7 +10,6 @@ export class UserDTO extends UserLoginDTO {
     type: UserType = null;
     name: string = null;
     status: StatusAI = null;
-    balance: number = null;
     cpfCnpj: string = null;
     professor: UserDTO = null;
 }

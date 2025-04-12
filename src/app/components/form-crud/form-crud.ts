@@ -35,7 +35,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         if (this.formView == undefined) {
             setTimeout(async () => {
                 await this.bindMethods();
-            }, 500);
+            }, 10);
             return;
         }
         this.formView.objectUpdating = () => this.objectUpdating();
@@ -61,7 +61,6 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         const id = this.getObjectIdFromUrl();
         if (id != null) {
             await this.service.findOne(id).then(async (data: any) => {
-                console.log('data findone', data)
                 this.onLoadObject(data);
                 this.object = data;
                 await this.onAfterLoadObject(this.object);

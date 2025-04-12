@@ -28,7 +28,7 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
 
     @Output('onChange') onChangeEventEmitter: EventEmitter<number> = new EventEmitter();
 
-    private _innerValue: string = null;
+    protected _innerValue: string = null;
     private _disabled: boolean = null;
     private _required: boolean = false;
     public invalidCause: string[] = null;
@@ -63,7 +63,7 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
     }
 
     get disabled() {
-        if (this.internalDisabled != null) {
+        if (this.internalDisabled != null && !this.ignoreInternalDisabled) {
             return this.internalDisabled
         }
         return this._disabled;

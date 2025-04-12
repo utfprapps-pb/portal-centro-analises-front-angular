@@ -1,8 +1,6 @@
 <form-list #formView [title]="'Projetos'">
 
-    <datatable #formViewDatatable [name]="'project_list'" [service]="service"
-        [allowDeleteRow]="allowDeleteRow.bind(this)" [showDeleteButton]="!isAluno"
-        [showEditButton]="!isAluno">
+    <datatable #formViewDatatable [name]="'project_list'" [service]="service" [showDeleteButton]="false">
     </datatable>
 
 </form-list>

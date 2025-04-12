@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-24">
             <input-text label="Titulo" compCtrl="subject" [(ngModel)]="object.subject" required
-                [minlength]="6" [maxlength]="255" [disabled]="objectUpdating()">
+                [minlength]="6" [maxlength]="255" [disabled]="!isResponsavel()">
             </input-text>
         </div>
     </div>
@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col-24">
             <input-text label="Descrição" compCtrl="description" [(ngModel)]="object.description" required
-                [minlength]="6" [maxlength]="255" [disabled]="objectUpdating()">
+                [minlength]="6" [maxlength]="255" [disabled]="!isResponsavel()">
             </input-text>
         </div>
     </div>
@@ -34,33 +34,34 @@
     <div class="row mb-2" *ngIf="object.projectNature == NATURE_OTHER">
         <div class="ms-auto col-23">
             <input-text label="Outra Natureza" compCtrl [(ngModel)]="object.otherProjectNature" required
-                [minlength]="1" [maxlength]="255" [disabled]="objectUpdating()">
+                [minlength]="1" [maxlength]="255" [disabled]="!isResponsavel()">
             </input-text>
         </div>
     </div>
 
-    <ng-container *ngIf="isAdmin || isProfessor || isAluno || isPartner">
-        <div class="row">
-            <div class="col-24">
-                <combobox label="Responsável" compCtrl="user" [required]="true" [filterBy]="'id,name,email'"
-                    [options]="responsaveis" [(ngModel)]="object.user"
-                    [disabled]="objectUpdating() || isExterno || isProfessor">
-                </combobox>
-            </div>
+    <div class="row">
+        <div class="col-24">
+            <combobox label="Responsável" compCtrl="user" [required]="true" [filterBy]="'id,name,email'"
+                [options]="responsaveis" [(ngModel)]="object.user"
+                [disabled]="objectUpdating() || !isResponsavel()">
+            </combobox>
         </div>
-        <div class="row" *ngIf="isAdmin || isAluno || isProfessor">
+    </div>
+
+    <ng-container *ngIf="isAdmin || isProfessor || isAluno || isPartner">
+        <div class="row" *ngIf="isAdmin || isAluno || isProfessor && alunos.length > 0">
             <div class="col-24">
                 <table class="table table-stripped">
                     <thead>
                         <tr>
                             <th [width]="20" class="bold">#</th>
-                            <th [width]="20" *ngIf="!objectUpdating()"></th>
-                            <th [width]="20" *ngIf="!objectUpdating()"></th>
+                            <th [width]="20" *ngIf="isResponsavel()"></th>
+                            <th [width]="20" *ngIf="isResponsavel()"></th>
                             <th>Participantes</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngIf="!objectUpdating() && object.students.length == 0">
+                        <tr *ngIf="isResponsavel() && object.students.length == 0">
                             <td colspan="4">
                                 <button class="btn btn-success" (click)="onClickAddAluno()">
                                     <i class="fa fa-plus"></i>
@@ -72,22 +73,20 @@
                             <td>
                                 <b>{{index + 1}}</b>
                             </td>
-                            <td *ngIf="!objectUpdating()">
-                                <button class="btn btn-sm btn-success" (click)="onClickAddAluno()"
-                                    [disabled]="objectUpdating()">
+                            <td *ngIf="isResponsavel()">
+                                <button class="btn btn-sm btn-success" (click)="onClickAddAluno()">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </td>
-                            <td *ngIf="!objectUpdating()">
-                                <button class="btn btn-sm btn-danger" (click)="onClickRemoveAluno(index)"
-                                    [disabled]="objectUpdating()">
+                            <td *ngIf="isResponsavel()">
+                                <button class="btn btn-sm btn-danger" (click)="onClickRemoveAluno(index)">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </td>
                             <td>
                                 <combobox compCtrl="students" [required]="true" [columns]="'id,name'"
                                     [filterBy]="'id,name,raSiape,email'" [options]="alunos"
-                                    [(ngModel)]="object.students[index]" [disabled]="objectUpdating()">
+                                    [(ngModel)]="object.students[index]">
                                 </combobox>
                             </td>
                         </tr>
@@ -96,8 +95,5 @@
             </div>
         </div>
     </ng-container>
-
-
-
 
 </form-crud>

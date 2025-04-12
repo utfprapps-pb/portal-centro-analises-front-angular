@@ -20,7 +20,10 @@
                         "outputPath": "dist/portal-centro-analises-front-angular",
                         "index": "src/index.html",
                         "browser": "src/main.ts",
-                        "polyfills": ["zone.js"],
+                        "polyfills": [
+                            "zone.js",
+                            "/src/polyfills.ts"
+                        ],
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
                         "assets": ["src/favicon.ico", "src/assets"],
@@ -72,10 +75,7 @@
                             "optimization": false,
                             "extractLicenses": false,
                             "sourceMap": true,
-                            "fileReplacements": [{
-                                "replace": "src/environments/environment.ts",
-                                "with": "src/environments/environment.development.ts"
-                            }]
+                            "fileReplacements": []
                         }
                     },
                     "defaultConfiguration": "production"

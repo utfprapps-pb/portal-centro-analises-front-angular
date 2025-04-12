@@ -76,7 +76,10 @@ export class CompCtrlDirective implements OnInit, OnDestroy {
         }
     }
 
-    public setInternalDisabled(value: boolean) {
+    public setInternalDisabled(value: boolean): void {
+        if (this.compCtrlContainer.ignoreInternalDisabled) {
+            return;
+        }
         this.compCtrlContainer.internalDisabled = value;
         this.compCtrlContainer.setDisabledState(this.compCtrlContainer.internalDisabled);
         this.setDisabledToCompCtrl();

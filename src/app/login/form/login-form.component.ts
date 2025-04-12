@@ -5,7 +5,6 @@ import { FormBase } from '../../components/form-base/form-base';
 import { FormBaseComponent } from '../../components/form-base/form-base.component';
 import { Constants } from '../../core/constants/constants';
 import { StorageManager } from '../../core/managers/storage-manager';
-import { OpenService } from '../../core/services/open.service';
 import { RecoverPasswordDTO } from '../../dtos/recover-password.dto';
 import { ObjectUtils } from '../../utils/object-utils';
 import { LoginService } from '../login.service';
@@ -44,7 +43,6 @@ export class LoginFormComponent extends FormBase {
     constructor(
         protected override readonly injector: Injector,
         protected override readonly service: LoginService,
-        protected readonly openService: OpenService,
     ) {
         super(injector, service);
         this.changeTemplate('login');
@@ -84,7 +82,7 @@ export class LoginFormComponent extends FormBase {
             case 'register':
                 try {
                     if (!this.buscouEmailsAcademicos) {
-                        await this.openService.findParceirosAcademicos().then(async (data) => {
+                        await this.service.findParceirosAcademicos().then(async (data) => {
                             this.emailsAcademicos = data;
                             this.buscouEmailsAcademicos = true;
                         })

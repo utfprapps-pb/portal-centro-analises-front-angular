@@ -23,6 +23,7 @@
         "@angular/router": "^17.2.0",
         "@ngx-popovers/core": "^17.0.0",
         "@ngx-popovers/tooltip": "^17.0.0",
+        "global": "^4.4.0",
         "ngx-json-viewer": "^3.2.1",
         "primeicons": "^7.0.0",
         "primeng": "^17.11.0",
@@ -30,8 +31,10 @@
         "reflect-metadata": "^0.2.2",
         "rxjs": "~7.8.0",
         "sass": "^1.71.1",
+        "sockjs-client": "^1.6.1",
         "sweetalert2": "^11.6.13",
         "tslib": "^2.3.0",
+        "webstomp-client": "^1.2.6",
         "zone.js": "~0.14.3"
     },
     "devDependencies": {
@@ -40,6 +43,7 @@
         "@angular/compiler-cli": "^17.2.0",
         "@types/jasmine": "~5.1.0",
         "@types/jquery": "^3.5.30",
+        "@types/sockjs-client": "^1.5.4",
         "https-proxy-agent": "^7.0.4",
         "jasmine-core": "~5.1.0",
         "karma": "~6.4.0",
