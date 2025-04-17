@@ -26,7 +26,7 @@ export class WebsocketService {
         const token = encodeURIComponent(this.authService.getToken());
         const user = encodeURIComponent(btoa(StorageManager.getItem(Constants.USER)));
 
-        const socket = new WebSocket(`ws://${location.hostname}:8085/api/ws?token=${token}&credentials=${user}`);
+        const socket = new WebSocket(`wss://${location.hostname}:8085/api/ws?token=${token}&credentials=${user}`);
         this.stompClient = Stomp.over(socket);
 
         this.stompClient.connect({}, () => {
