@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as Stomp from 'webstomp-client';
 
-import { environment } from '../../../environments/environment';
 import { Solicitation } from '../../pages/solicitation/model/solicitation.model';
 import { Constants } from '../constants/constants';
 import { StorageManager } from '../managers/storage-manager';
@@ -27,7 +26,7 @@ export class WebsocketService {
         const token = encodeURIComponent(this.authService.getToken());
         const user = encodeURIComponent(btoa(StorageManager.getItem(Constants.USER)));
 
-        const socket = new WebSocket(`${environment.websocketWSS}://${location.hostname}/api/ws?token=${token}&credentials=${user}`);
+        const socket = new WebSocket(`ws://${location.hostname}/api/ws?token=${token}&credentials=${user}`);
         this.stompClient = Stomp.over(socket);
 
         this.stompClient.connect({}, () => {
