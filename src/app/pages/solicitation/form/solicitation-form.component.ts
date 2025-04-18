@@ -46,12 +46,12 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
         protected readonly ws: WebsocketService,
     ) {
         super(injector, service);
-        this.subscriptions.push(
-            this.ws.solicitacaoRecebida$.subscribe((solicitation: Solicitation) => {
-                console.log('SOCKET RECEBIDO: ', solicitation.id);
+        // this.subscriptions.push(
+            // this.ws.solicitacaoRecebida$.subscribe((solicitation: Solicitation) => {
+                // console.log('SOCKET RECEBIDO: ', solicitation.id);
                 // this.service.findOne(solicitation.id).then(data => this.updateObject(data));
-            })
-        );
+            // })
+        // );
         this.mockSocket();
     }
 

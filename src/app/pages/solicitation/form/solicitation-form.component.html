@@ -2,9 +2,10 @@
     <p-tabView (onChange)="onChangeTab($event)">
         <p-tabPanel #tabSolicitacao header="Solicitação">
             <solicitar-formulario-template [(ngModel)]="object"
-                [disabled]="object?.status != status_AWAITING_CORRECTION ||
-                [status_AWAITING_CORRECTION, status_AWAITING_PAYMENT, status_COMPLETED, status_REJECTED].includes(object?.status)" [openAll]="false">
+                [disabled]="object?.status != status_AWAITING_CORRECTION" [openAll]="false">
             </solicitar-formulario-template>
+            <!-- ||
+            [status_AWAITING_PAYMENT, status_COMPLETED, status_REJECTED].includes(object?.status) -->
         </p-tabPanel>
 
         <p-tabPanel header="Histórico">
