@@ -13,7 +13,6 @@ import { SolicitationHistoric } from '../model/solicitation-historic.model';
 import { Solicitation } from '../model/solicitation.model';
 import { SolicitationService } from '../solicitation.service';
 import { getSolicitationStatusEnum, SolicitationStatus } from './../../../core/enums/solicitation-status.enum';
-import { WebsocketService } from './../../../core/services/websocket.service';
 
 
 @Component({
@@ -43,14 +42,15 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
         protected override readonly injector: Injector,
         protected override readonly service: SolicitationService,
         protected readonly dialogService: DialogService,
-        protected readonly ws: WebsocketService,
+        // protected readonly ws: WebsocketService,
     ) {
         super(injector, service);
-        this.subscriptions.push(
-            this.ws.solicitacaoRecebida$.subscribe((solicitation: Solicitation) => {
-                this.service.findOne(solicitation.id).then(data => this.updateObject(solicitation));
-            })
-        );
+        // this.subscriptions.push(
+            // this.ws.solicitacaoRecebida$.subscribe((solicitation: Solicitation) => {
+                const id = this.getObjectIdFromUrl()
+                this.service.findOne(id).then(data => this.updateObject(data));
+            // })
+        // );
     }
 
     public override showHeader(): boolean {

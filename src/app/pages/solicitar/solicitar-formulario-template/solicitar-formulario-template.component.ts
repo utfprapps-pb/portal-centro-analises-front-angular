@@ -54,7 +54,6 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
         this._innerObject = value;
         if (ObjectUtils.isNotEmpty(value)) {
             this.responsavel = value.responsavel;
-console.log('setObject', this.uniqueProject)
             if (this.uniqueProject) {
                 this.onChangeProject(this.uniqueProject);
             }
