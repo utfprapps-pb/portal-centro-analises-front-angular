@@ -49,17 +49,9 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
         super(injector, service);
         this.subscriptions.push(
             this.ws.solicitacaoRecebida$.subscribe((solicitation: Solicitation) => {
-                console.log('SOCKET RECEBIDO: ', solicitation.id);
-                // this.service.findOne(solicitation.id).then(data => this.updateObject(data));
+                this.service.findOne(solicitation.id).then(data => this.updateObject(solicitation));
             })
         );
-        this.mockSocket();
-    }
-
-    private mockSocket(): void {
-        return;
-        const id = this.getObjectIdFromUrl();
-        this.service.findOne(id).then(data => this.updateObject(data));
     }
 
     public override showHeader(): boolean {
@@ -209,7 +201,6 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
         this.blockForm();
         return this.service.atualizarStatus(status).then((data) => {
             // this.updateObject(data);
-            this.mockSocket();
             if (!ignoreFeedbackMessage) {
                 this.toastrService.showSuccess(this.title, 'Status atualizado com sucesso!');
             }
@@ -285,7 +276,6 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
                 this.blockForm();
                 this.service.save(this.object).then((data) => {
                     // this.updateObject(data);
-                    this.mockSocket();
                     this.toastrService.showSuccess(this.title, 'Correção enviada com sucesso!');
                 }, error => {
                     if (this.hasErrorMapped(error)) {
