@@ -28,7 +28,8 @@ export class WebsocketService {
         const token = encodeURIComponent(this.authService.getToken());
         const user = encodeURIComponent(btoa(StorageManager.getItem(Constants.USER)));
 
-        const socketUrl = `${environment.websocketUrl}/ws?token=${token}&credentials=${user}`;
+        const socketUrl = `${environment.websocketUrl}?token=${token}&credentials=${user}`;
+        console.log(socketUrl);
         const socket = new SockJS(socketUrl);
 
         this.stompClient = new Client({
