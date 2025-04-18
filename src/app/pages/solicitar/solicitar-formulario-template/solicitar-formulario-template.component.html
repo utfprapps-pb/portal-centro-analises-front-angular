@@ -661,7 +661,7 @@
                     <thead>
                         <tr>
                             <th style="min-width: 46px">#</th>
-                            <th style="width: 10px;" *ngIf="!amostra.concluida"></th>
+                            <th style="width: 10px;" *ngIf="!amostra.concluida || !isAdmin"></th>
                             <th style="min-width: 150px;">Inicio</th>
                             <th style="min-width: 150px;">Fim</th>
                             <th style="min-width: 300px;">Equipamento</th>
@@ -675,21 +675,21 @@
                                     *ngIf="analise.id == null">
                                 </i>
                             </td>
-                            <td *ngIf="!amostra.concluida">
+                            <td *ngIf="!amostra.concluida || !isAdmin">
                                 <button class="btn btn-sm btn-danger"
                                     (click)="onClickRemoveAnalise(amostra, index)">
                                     <i class="fa fa-times"></i>
                                 </button>
                             </td>
                             <td>
-                                <datepicker [disabled]="amostra.concluida"
+                                <datepicker [disabled]="amostra.concluida|| !isAdmin"
                                     [compCtrl]="'Amostra ' + amostraIndex + 1 + ' - Data/Hora Inicial'"
                                     required [(ngModel)]="analise.dataini" [showTime]="true"
                                     [ignoreInternalDisabled]="true" (onChange)="onChangeDatas(analise)">
                                 </datepicker>
                             </td>
                             <td>
-                                <datepicker [disabled]="amostra.concluida"
+                                <datepicker [disabled]="amostra.concluida || !isAdmin"
                                     [compCtrl]="'Amostra ' + amostraIndex + 1 + ' - Data/Hora Final'"
                                     [(ngModel)]="analise.datafin" [showTime]="true"
                                     [ignoreInternalDisabled]="true" (onChange)="onChangeDatas(analise)">
@@ -699,7 +699,7 @@
                                 <combobox [compCtrl]="'Amostra ' + amostraIndex + 1 + ' - Equipamento'"
                                     required [filterBy]="'id,name,shortname'"
                                     [options]="analise.id == null ? equipamentosDisponiveis : equipamentos"
-                                    [(ngModel)]="analise.equipment" [disabled]="analise.id != null">
+                                    [(ngModel)]="analise.equipment" [disabled]="analise.id != null || !isAdmin">
                                 </combobox>
                             </td>
                         </tr>
