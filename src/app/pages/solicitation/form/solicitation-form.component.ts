@@ -57,6 +57,7 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
     }
 
     private mockSocket(): void {
+        return;
         const id = this.getObjectIdFromUrl();
         this.service.findOne(id).then(data => this.updateObject(data));
     }

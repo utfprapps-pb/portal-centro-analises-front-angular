@@ -1,6 +1,5 @@
 export const environment = {
     prod: true,
-    websocketWSS: 'wss',
-    websocketUrl: "ca-api-dev.app.pb.utfpr.edu.br/api/ws",
+    websocketUrl: "https://ca-api-dev.app.pb.utfpr.edu.br/api",
     apiUrl: 'https://ca-api-dev.app.pb.utfpr.edu.br/api'
 };

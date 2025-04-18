@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Client } from '@stomp/stompjs';
 import { Subject } from 'rxjs';
 import SockJS from 'sockjs-client';
-import * as Stomp from 'webstomp-client';
 
 import { environment } from '../../../environments/environment';
 import { Solicitation } from '../../pages/solicitation/model/solicitation.model';
@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
     providedIn: 'root'
 })
 export class WebsocketService {
-    private stompClient?: Stomp.Client;
+    private stompClient?: Client;
     private conectado = false;
 
     public solicitacaoRecebida$ = new Subject<Solicitation>();
@@ -28,36 +28,36 @@ export class WebsocketService {
         const token = encodeURIComponent(this.authService.getToken());
         const user = encodeURIComponent(btoa(StorageManager.getItem(Constants.USER)));
 
-        const socketUrl = `${environment.websocketWSS}://${environment.websocketUrl}?token=${token}&credentials=${user}`;
+        const socketUrl = `${environment.websocketUrl}/ws?token=${token}&credentials=${user}`;
         const socket = new SockJS(socketUrl);
 
-        this.stompClient = Stomp.over(socket);
+        this.stompClient = new Client({
+            webSocketFactory: () => socket,
+            connectHeaders: {
+                'accept-version': '1.2',
+                'heart-beat': '10000,10000',
+            },
+            reconnectDelay: 1000,
+            debug: (str) => console.log(str),
+        });
 
-        this.stompClient.connect({}, () => {
-            console.log('[WebSocket] Conectado');
-            this.conectado = true;
-
-            this.stompClient?.subscribe('/topic/solicitacoes', (mensagem) => {
+        this.stompClient.onConnect = () => {
+            console.log('Conectado com sucesso!');
+            this.stompClient.subscribe('/topic/solicitacoes', (mensagem) => {
                 if (mensagem.body) {
                     this.solicitacaoRecebida$.next(JSON.parse(mensagem.body));
                 }
             });
-        }, (erro) => {
-            console.error('[WebSocket] Erro:', erro);
-            this.reconectar();
-        });
-    }
+        };
 
-    private reconectar() {
-        console.log('[WebSocket] Tentando reconectar...');
-        setTimeout(() => this.conectar(), 1000);
+        this.stompClient.activate();
     }
 
     desconectar() {
         if (this.conectado && this.stompClient) {
-            this.stompClient.disconnect(() => {
-                console.log('[WebSocket] Desconectado');
-            });
+            this.stompClient.deactivate();
+            this.conectado = false;
+            console.log('[WebSocket] Desconectado');
         }
     }
 
