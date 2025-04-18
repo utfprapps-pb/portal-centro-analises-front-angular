@@ -26,6 +26,7 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
     @ViewChild('formView') public formView: FormCrudComponent;
     @ViewChild('tiredMenu') tiredMenu: TieredMenu;
 
+    public readonly status_AWAITING_RESPONSIBLE_CONFIRMATION = getSolicitationStatusEnum(SolicitationStatus.AWAITING_RESPONSIBLE_CONFIRMATION);
     public readonly status_AWAITING_CORRECTION = getSolicitationStatusEnum(SolicitationStatus.AWAITING_CORRECTION);
     public readonly status_AWAITING_PAYMENT = getSolicitationStatusEnum(SolicitationStatus.AWAITING_PAYMENT);
     public readonly status_REJECTED = getSolicitationStatusEnum(SolicitationStatus.REJECTED);
@@ -105,7 +106,8 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
         const statusTraducao = getEnumTranslation('SolicitationStatus', this.object.status);
         this.changeStatusItens = [];
 
-        if ((this.isResponsavel || this.isAdmin) && this.object.status == this.status_AWAITING_CORRECTION) {
+
+        if ((this.isResponsavel || this.isAdmin) && this.object.status == this.status_AWAITING_RESPONSIBLE_CONFIRMATION) {
             this.changeStatusItens.push(this.createButtonGeneric('Autorizar', 'fa fa-check', 'text-success', SolicitationStatus.AWAITING_LAB_CONFIRMATION));
             this.changeStatusItens.push(this.createButtonCorrecao());
             this.changeStatusItens.push(this.createButtonRecusar());
