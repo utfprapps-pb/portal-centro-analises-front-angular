@@ -72,6 +72,8 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
     private updateObject(newObject: Solicitation): void {
         this.object = newObject;
         this.onAfterLoadObject(this.object);
+        this.isResponsavel = this.object.responsavel.id == this.authentication.getUserLogged().id;
+        this.criarOpcoesMenu();
     }
 
     public override async onAfterLoadObject(object: Solicitation): Promise<void> {
@@ -97,13 +99,14 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
 
     private criarOpcoesMenu(): void {
         if (!this.isAdmin && !this.isResponsavel) {
+            console.log('zé ninguem')
             return;
         }
 
         const statusTraducao = getEnumTranslation('SolicitationStatus', this.object.status);
         this.changeStatusItens = [];
 
-        if ((this.isResponsavel || this.isAdmin) && this.object.status == SolicitationStatus.AWAITING_RESPONSIBLE_CONFIRMATION) {
+        if ((this.isResponsavel || this.isAdmin) && this.object.status == this.status_AWAITING_CORRECTION) {
             this.changeStatusItens.push(this.createButtonGeneric('Autorizar', 'fa fa-check', 'text-success', SolicitationStatus.AWAITING_LAB_CONFIRMATION));
             this.changeStatusItens.push(this.createButtonCorrecao());
             this.changeStatusItens.push(this.createButtonRecusar());
