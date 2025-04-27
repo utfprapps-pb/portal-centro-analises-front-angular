@@ -16,6 +16,7 @@ import { DRXModoAnalise, getDRXModoAnaliseColor, getDRXModoAnaliseTranslation } 
 import { DRXStep, getDRXStepColor, getDRXStepTranslation } from './drx-step.enum';
 import { DSCAtmosfera, getDSCAtmosferaColor, getDSCAtmosferaTranslation } from './dsc-atmosfera.enum';
 import { DSCTecnica, getDSCTecnicaColor, getDSCTecnicaTranslation } from './dsc-tecnica.enum';
+import { FinanceState, getFinanceStateColor, getFinanceStateTranslation } from './financestate.enum';
 import { FTMIREstado, getFTMIREstadoColor, getFTMIREstadoTranslation } from './ftmir-estado.enum';
 import {
     FTMIRRegistroEspectro,
@@ -53,6 +54,35 @@ import {
     StudentTeacherApproved,
 } from './studentteacher-approved.enum';
 import { getUserTypeColor, getUserTypeTranslation, UserType } from './user-type.enum';
+
+const enumsRegistrados: string[] = [
+    'Roles',
+    'StatusAI',
+    'UserType',
+    'Action',
+    'Boolean',
+    'StudentTeacherApproved',
+    'SolicitationStatus',
+    'SolicitationProjectNature',
+    'SolicitationFileType',
+    'SolicitationFormType',
+    'RetiradaAmostra',
+    'NaturezaAmostra',
+    'DescarteOrganico',
+    'DescarteInorganico',
+    'DescarteUsuario',
+    'AAForno',
+    'CLAEModoEluicao',
+    'CORTipoLeitura',
+    'DRXModoAnalise',
+    'DRXStep',
+    'DSCTecnica',
+    'DSCAtmosfera',
+    'FTMIRServico',
+    'FTMIREstado',
+    'FTMIRRegistroEspectro',
+    'FinanceState',
+]
 
 export function getEnum(enumName: string): any {
     switch (enumName) {
@@ -106,6 +136,8 @@ export function getEnum(enumName: string): any {
             return FTMIREstado;
         case 'FTMIRRegistroEspectro':
             return FTMIRRegistroEspectro;
+        case 'FinanceState':
+            return FinanceState;
         default:
             Swal.fire({ title: enumName, text: `getEnum: Enum não mapeado no enum-mapper.ts \t ${enumName}` });
             throw new Error(`getEnum: Enum não mapeado no enum-mapper.ts \t ${enumName}`);
@@ -164,6 +196,8 @@ export function getEnumColor(enumName: string, enumValue: any): string {
             return getFTMIREstadoColor(enumValue);
         case 'FTMIRRegistroEspectro':
             return getFTMIRRegistroEspectroColor(enumValue);
+        case 'FinanceState':
+            return getFinanceStateColor(enumValue);
         default:
             Swal.fire({ title: enumValue, text: `getEnumColor: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}` });
             throw new Error(`getEnumColor: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
@@ -222,8 +256,21 @@ export function getEnumTranslation(enumName: string, enumValue: any): string {
             return getFTMIREstadoTranslation(enumValue);
         case 'FTMIRRegistroEspectro':
             return getFTMIRRegistroEspectroTranslation(enumValue);
+        case 'FinanceState':
+            return getFinanceStateTranslation(enumValue);
         default:
             Swal.fire({ title: enumValue, text: `getEnumTranslation: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}` });
             throw new Error(`getEnumTranslation: Enum não mapeado no enum-mapper.ts \t ${enumName},\t ${enumValue}`);
     }
+}
+
+export function locateEnumByLabel(text: any): any {
+    for (const enumName of enumsRegistrados) {
+        try {
+            return getEnumTranslation(enumName, text);
+        } catch (error) {
+            // Ignore the error and continue to the next enum
+        }
+    }
+    return text;
 }

@@ -30,8 +30,8 @@
 
 body {
     background-color: var(--green-100);
-    overflow: hidden;
-    overflow-y: auto;
+    overflow        : hidden;
+    overflow-y      : auto;
 }
 
 .row {
@@ -41,6 +41,10 @@ body {
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+.cursor-not-allowed {
+    cursor: not-allowed;
 }
 
 .small-text {
@@ -130,17 +134,26 @@ form-crud form-base form {
     white-space  : nowrap !important;
     text-overflow: ellipsis;
     overflow     : hidden;
-    display      : block;
+    max-width: 0px;
+    // display      : block;
 }
 
 .dot {
     height: 24px;
-    width: 24px;
+    width : 24px;
 
     border-radius: 50%;
 
     color: #fff;
 
-    text-align: center;
+    text-align   : center;
     align-content: center;
+}
+
+.swal2-container.swal2-center.swal2-backdrop-show {
+    z-index: 2103;
+}
+
+div[ngxclickoutside].floating {
+    z-index: 2104;
 }

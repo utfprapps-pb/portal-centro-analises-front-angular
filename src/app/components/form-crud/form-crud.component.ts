@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, Input } from '@angular/core';
 
 import { FormBaseComponent } from './../form-base/form-base.component';
 
@@ -8,6 +8,8 @@ import { FormBaseComponent } from './../form-base/form-base.component';
     styleUrl: './form-crud.component.scss'
 })
 export class FormCrudComponent extends FormBaseComponent {
+
+    @Input() vertical_space: boolean = true;
 
     constructor(
         protected override readonly injector: Injector

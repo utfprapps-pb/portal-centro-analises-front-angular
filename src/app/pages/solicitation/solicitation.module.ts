@@ -7,11 +7,13 @@ import { CardModule } from 'primeng/card';
 import { ComponentsModule } from '../../components/components.module';
 import { SolicitarModule } from '../solicitar/solicitar.module';
 import { SolicitationFormComponent } from './form/solicitation-form.component';
+import { SolicitationPaymentComponent } from './form/solicitation-payment/solicitation-payment.component';
 import { SolicitationListComponent } from './list/solicitation-list.component';
 import { SolicitationRoutes } from './solicitation.routes';
 
 @NgModule({
     declarations: [
+        SolicitationPaymentComponent,
         SolicitationFormComponent,
         SolicitationListComponent,
     ],

@@ -55,6 +55,9 @@ import {
     BooleanFilterTemplateComponent,
 } from './datatable/datatable-filters/boolean-filter-template/boolean-filter-template.component';
 import {
+    CurrencyFilterTemplateComponent,
+} from './datatable/datatable-filters/currency-filter-template/currency-filter-template.component';
+import {
     DateFilterTemplateComponent,
 } from './datatable/datatable-filters/date-filter-template/date-filter-template.component';
 import {
@@ -83,6 +86,7 @@ import { InputQuillComponent } from './inputs/input-quill/input-quill.component'
 import { InputTextComponent } from './inputs/input-text/input-text.component';
 import { InputTextAreaComponent } from './inputs/input-textarea/input-textarea.component';
 import { InvalidInfoComponent } from './invalid-info/invalid-info.component';
+import { ModalComponent } from './modal/modal.component';
 import { PeriodicTableElementComponent } from './periodic-table/periodic-table-element/periodic-table-element.component';
 import { PeriodicTableComponent } from './periodic-table/periodic-table.component';
 import { RadioButtonComponent } from './radiobutton/radiobutton.component';
@@ -116,6 +120,7 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         DatePicker,
         UploadfileComponent,
         InputQuillComponent,
+        ModalComponent,
 
         EnumTemplateComponent,
 
@@ -132,6 +137,7 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         CurrencyColumnTemplateComponent,
 
         NumberFilterTemplateComponent,
+        CurrencyFilterTemplateComponent,
         TextFilterTemplateComponent,
         EnumFilterTemplateComponent,
         BooleanFilterTemplateComponent,
@@ -164,6 +170,7 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         DatePicker,
         UploadfileComponent,
         InputQuillComponent,
+        ModalComponent,
 
         EnumTemplateComponent,
 
@@ -180,6 +187,7 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         CurrencyColumnTemplateComponent,
 
         NumberFilterTemplateComponent,
+        CurrencyFilterTemplateComponent,
         TextFilterTemplateComponent,
         EnumFilterTemplateComponent,
         BooleanFilterTemplateComponent,
@@ -193,6 +201,8 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         TieredMenuModule,
         DialogModule,
         ProgressSpinnerModule,
+        TagModule,
+        CheckboxModule,
     ],
     imports: [
         CommonModule,

@@ -6,6 +6,7 @@ import pageSettings from '../../core/constants/page-settings';
 import { CompCtrlDirective } from '../../core/directives/compctrl/compctrl.directive';
 import { Roles } from '../../core/enums/roles.enum';
 import { AuthService } from '../../core/services/auth.service';
+import { DialogService } from '../../core/services/dialog.service';
 import { ToastrService } from '../../core/services/toastr.service';
 import { ToasterService } from '../../core/toaster/toaster.service';
 import { GenericService } from '../../generics/generic.service';
@@ -35,6 +36,7 @@ export abstract class FormBase implements OnDestroy {
     public route: ActivatedRoute;
     public authentication: AuthService;
     public convertUtilsService: ConvertUtilsService;
+    public dialogService: DialogService;
 
     private disabledElements: any[] = [];
 
@@ -55,6 +57,7 @@ export abstract class FormBase implements OnDestroy {
         this.route = injector.get(ActivatedRoute);
         this.authentication = injector.get(AuthService);
         this.convertUtilsService = injector.get(ConvertUtilsService);
+        this.dialogService = injector.get(DialogService);
 
         if (!!this.authentication.getUserLogged()) {
             this.isAdmin = Roles.ROLE_ADMIN == this.authentication.getUserLogged().role;
@@ -123,7 +126,6 @@ export abstract class FormBase implements OnDestroy {
 
     public blockForm(): void {
         if (this.formView) {
-            // this.disableForm(true);
             this.formView.blockForm();
         }
     }

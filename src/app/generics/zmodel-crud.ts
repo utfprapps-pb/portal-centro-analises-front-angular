@@ -7,4 +7,5 @@ export abstract class ZModelCrud extends ZModel {
     createdAt: Date = null;
     updatedBy: User = null;
     updatedAt: Date = null;
+
 }

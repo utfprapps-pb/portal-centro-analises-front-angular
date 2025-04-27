@@ -1,6 +1,7 @@
 <form-list #formView [title]="'Usuários'">
 
-    <datatable #formViewDatatable [name]="'user_list'" [service]="service" [showDeleteButton]="false">
+    <datatable #formViewDatatable [name]="'user_list'" [service]="service" [showDeleteButton]="false"
+        (onLoadData)="onLoadData($event)">
     </datatable>
 
 </form-list>

@@ -58,7 +58,7 @@ export class DatatableComponent implements AfterViewInit {
     @Input() showExpandButton: boolean = false;
     @ContentChild('expansion', { static: true }) expansion: TemplateRef<any>;
 
-    @Output() onLoadData: EventEmitter<void> = new EventEmitter;
+    @Output('onLoadData') onLoadData: EventEmitter<any[]> = new EventEmitter;
 
     private emptyObject: any;
     public datatableSelectedObjects: any[] = [];
@@ -340,7 +340,7 @@ export class DatatableComponent implements AfterViewInit {
                 }
             }
             this.datatableObjects = data.sort((a, b) => a.id > b.id ? -1 : 1);
-            this.onLoadData.emit();
+            this.onLoadData.emit(this.datatableObjects);
         });
     }
 

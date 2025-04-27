@@ -1,4 +1,9 @@
 <form-crud #formView>
+    <modal-component [(visible)]="isVisibleSendToPayment" [header]="'Cadastrar Cobrança'" [width]="'90vw'" [height]="'90vh'">
+        <solicitation-payment [solicitacao]="solicitationPaymentObject" (onChangeComplete)="onClickCloseModalPayment()">
+        </solicitation-payment>
+    </modal-component>
+
     <p-tabView (onChange)="onChangeTab($event)">
         <p-tabPanel #tabSolicitacao header="Solicitação">
             <solicitar-formulario-template [(ngModel)]="object"

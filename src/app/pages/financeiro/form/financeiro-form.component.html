@@ -1,0 +1,115 @@
+<form-crud #formView [title]="'Financeiro'">
+
+    <p-tabView>
+        <p-tabPanel header="Geral">
+            <div class="row mb-2">
+                <div class="col-6">
+                    <input-number label="Código" compCtrl="id" [ngModel]="object.id"
+                        [disabled]="true"></input-number>
+                </div>
+                <div class="col-6" *ngIf="object.solicitation?.id">
+                    <input-text label="Solicitação" disabled
+                        [ngModel]="'Solicitação: ' + object.solicitation.id">
+                    </input-text>
+                </div>
+                <div class="col-6 ms-auto">
+                    <datepicker label="Data de vencimento" compCtrl [(ngModel)]="object.dueDate">
+                    </datepicker>
+                </div>
+                <div class="col-6">
+                    <combobox label="Situação" [filterOptions]="filterOptions.bind(this)" compCtrl
+                        enum="FinanceState" required class="w-100 not-disabled" [(ngModel)]="object.state">
+                    </combobox>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <combobox label="Responsável" compCtrl required [filterBy]="'id,name,email,role'"
+                        [options]="usuariosSistema" [(ngModel)]="object.responsavel">
+                    </combobox>
+                </div>
+                <div class="col-12">
+                    <combobox label="Responsável pelo pagamento" compCtrl required
+                        [filterBy]="'id,name,email,role'" [options]="usuariosSistema"
+                        [(ngModel)]="object.pagador">
+                    </combobox>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <input-currency label="Valor" compCtrl [(ngModel)]="object.value"
+                        required></input-currency>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-24">
+                    <input-textarea label="Observação" compCtrl
+                        [(ngModel)]="object.observacao"></input-textarea>
+                </div>
+            </div>
+        </p-tabPanel>
+
+        <p-tabPanel header="Detalhes" *ngIf="object.details?.length > 0">
+            <div class="row">
+                <div class="col-24 table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="column-codigo">#</th>
+                                <th>Equipamento</th>
+                                <th class="column-number text-center">Quantidade</th>
+                                <th class="column-valor text-center">Valor Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let detail of object.details; let index = index"
+                                [ngClass]="{'text-danger bold': detail.value == 0}">
+                                <td>
+                                    <strong>{{index +1}}</strong>
+                                </td>
+                                <td class="text-ellipsis">
+                                    {{detail.equipment.id}}&nbsp;-&nbsp;{{detail.equipment.name}}
+                                </td>
+                                <td class="text-center">
+                                    @if (detail.calculateByHours) {
+                                    <i class="fa fa-timer"></i>&nbsp;{{detail.quantity | number: '1.0-2'}}
+                                    } @else {
+                                    <i class="fa fa-vial"></i>&nbsp;{{detail.quantity | number}}
+                                    }
+                                </td>
+                                <td>
+                                    {{detail.value | currency: 'BRL'}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-center">
+                                    <strong>Total</strong>
+                                </td>
+                                <td class="text-center">
+                                    <strong>{{object.value| currency: 'BRL'}}</strong>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Anexos">
+            <div class="row">
+                <div class="col-24">
+                    <uploadfile [(ngModel)]="object.attachments" compCtrl="Anexos" [multiple]="true"
+                        [bucket]="getBucketName()">
+                    </uploadfile>
+                </div>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+
+
+
+</form-crud>

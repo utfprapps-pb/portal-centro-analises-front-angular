@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import pageSettings from '../../core/constants/page-settings';
 import { Roles } from '../../core/enums/roles.enum';
 import { AuthService } from '../../core/services/auth.service';
+import { WebsocketService } from '../../core/services/websocket.service';
 import { ChangePasswordDTO } from '../../dtos/change-password.dto';
 import { UserLoginDTO } from '../../dtos/user-login-dto';
 import { InputPasswordComponent } from '../inputs/input-password/input-password.component';
@@ -57,8 +58,11 @@ export class HeaderComponent implements OnDestroy {
         }
     ]
 
+    public user_balance: number = 0;
+
     constructor(
         public readonly authentication: AuthService,
+        public readonly ws: WebsocketService
     ) {
         const admin: boolean = this.authentication.getUserLogged().role == Roles.ROLE_ADMIN;
         const professor: boolean = this.authentication.getUserLogged().role == Roles.ROLE_PROFESSOR;
@@ -136,6 +140,13 @@ export class HeaderComponent implements OnDestroy {
                 ]
             },
             {
+                label: 'Financeiro',
+                icon: 'fa fa-money-bill-transfer',
+                visible: true,
+                url: '/#/financeiro',
+                target: '_self'
+            },
+            {
                 label: 'Config. Email',
                 icon: 'fa fa-envelope',
                 url: '/#/configuracao-email',
@@ -146,7 +157,13 @@ export class HeaderComponent implements OnDestroy {
 
         this.subscriptions.push(authentication.authenticationState.subscribe((user: UserLoginDTO) => {
             this.user = user;
-        }))
+        }));
+
+        this.subscriptions.push(
+            this.ws.userBalance$.subscribe((balance: number) => {
+                this.user_balance = balance;
+            })
+        );
     }
 
     public ngOnDestroy(): void {

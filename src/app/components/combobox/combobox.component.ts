@@ -4,7 +4,7 @@ import { Dropdown } from 'primeng/dropdown';
 
 import { Debounce } from '../../core/decorators/decorators';
 import { CompCtrlContainer } from '../../core/directives/compctrl/compctrl.container';
-import { getEnum, getEnumTranslation } from '../../core/enums/enum-mapper';
+import { getEnum, getEnumTranslation, locateEnumByLabel } from '../../core/enums/enum-mapper';
 import { ZModel } from '../../generics/zmodel';
 import { ConvertUtilsService } from '../../utils/convert-utils.service';
 import { Guid } from '../../utils/models/guid';
@@ -21,7 +21,7 @@ import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
         CompCtrlContainer.PROVIDER(ComboboxComponent)
     ],
 })
-export class ComboboxComponent extends CompCtrlContainer implements ControlValueAccessor {
+export class ComboboxComponent extends CompCtrlContainer implements ControlValueAccessor{
 
     @ViewChild('input') component: Dropdown;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
@@ -33,6 +33,7 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
     @Input() defaultValue: string = null;
     @Input() filterBy: string = null;
     @Input() columns: string = null;
+    @Input() filterOptions: (options: any[]) => any[];
     // @Input() optionLabel: string = 'value';
 
     @Input('showClear') showClear: boolean = true;
@@ -50,11 +51,15 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
     public _enum: string = null;
     public _options: any[] = [];
 
+    constructor(protected readonly convertUtilsService: ConvertUtilsService) {
+        super();
+    }
+
     @Input('enum') set enum(name: string) {
         this._enum = name;
         const enu = getEnum(name);
         for (const key in enu) {
-            this._options.push({ key: key, value: getEnumTranslation(name, key) })
+            this._options.push({ key: key, value: getEnumTranslation(name, key) });
             this.mappedDisplayValues.set(key, getEnumTranslation(name, key));
         }
     }
@@ -72,8 +77,16 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
         this.onChangeDropdown(this.defaultValue);
     }
 
-    constructor(protected readonly convertUtilsService: ConvertUtilsService) {
-        super();
+
+    get opcoesFiltradas(): any[] {
+        let opcoes = this._options
+        if (this._enum && this.filterOptions) {
+            opcoes = this.filterOptions(this._options);
+            for (const option of opcoes) {
+                this.mappedDisplayValues.set(option.key, getEnumTranslation(this._enum, option.key));
+            }
+        }
+        return opcoes;
     }
 
     // Função chamada quando o valor interno muda
@@ -122,7 +135,11 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
             if (ObjectUtils.isEmpty(value[field])) {
                 return '';
             }
-            value = value[field];
+            if (typeof (value[field]) == 'string' && (value[field] == (value[field].toUpperCase()))) {
+                value = locateEnumByLabel(value[field]);
+            } else {
+                value = value[field];
+            }
         }
         return String(value);
     }
@@ -253,6 +270,9 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
     }
 
     override setDisabledState(value: boolean): void {
+        if (this.class.includes('not-disabled') && value) {
+            value = false;
+        }
         this.internalDisabled = value;
     }
 

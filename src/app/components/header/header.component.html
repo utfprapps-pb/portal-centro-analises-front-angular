@@ -6,6 +6,15 @@
             </a>
         </ng-template>
         <ng-template pTemplate="end">
+            <p-tag
+                [style]="{ background: 'linear-gradient(to right, var(--surface-900), var(--surface-700)' }">
+                <div class="flex align-items-center gap-2 px-1">
+                    <span class="text-base" ngxTooltip="Saldo atual" arrow
+                        [ngClass]="{'text-danger': user_balance < 0}">
+                        {{user_balance | currency: 'BRL'}}
+                    </span>
+                </div>
+            </p-tag>
             <span class="align-text-top">
                 Olá,
             </span>
@@ -19,18 +28,9 @@
         </ng-template>
     </p-menubar>
 
-    <p-dialog *ngIf="!!user && isVisibleModalChangePassword" [(visible)]="isVisibleModalChangePassword" [modal]="true" [style]="{
-            width: '50vw'
-        }" [draggable]="false" [resizable]="false" (onHide)="onClickCancloseModalChangePassword()">
-        <ChangePasswordComponent (onChangeComplete)="onClickCancloseModalChangePassword()">
-        </ChangePasswordComponent>
-
-        <ng-template pTemplate="header">
-            <div class="row">
-                <div class="col-24">
-                    <h1 class="m-0">Alterar Senha</h1>
-                </div>
-            </div>
-        </ng-template>
-    </p-dialog>
+    <modal-component *ngIf="isVisibleModalChangePassword" [(visible)]="isVisibleModalChangePassword"
+        [header]="'Alterar Senha'">
+        <change-password (onChangeComplete)="onClickCancloseModalChangePassword()">
+        </change-password>
+    </modal-component>
 </div>

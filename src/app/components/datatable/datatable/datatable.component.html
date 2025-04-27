@@ -72,6 +72,9 @@
                 <ng-container *ngIf="col.type == 'numeric'">
                     <number-filter-template [column]="col" [datatable]="this"></number-filter-template>
                 </ng-container>
+                <ng-container *ngIf="col.type == 'currency'">
+                    <currency-filter-template [column]="col" [datatable]="this"></currency-filter-template>
+                </ng-container>
                 <ng-container *ngIf="col.type == 'enum' || col.type == 'boolean'">
                     <enum-filter-template [column]="col" [datatable]="this"></enum-filter-template>
                 </ng-container>
