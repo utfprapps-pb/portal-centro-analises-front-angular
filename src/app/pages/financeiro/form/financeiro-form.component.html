@@ -4,8 +4,8 @@
         <p-tabPanel header="Geral">
             <div class="row mb-2">
                 <div class="col-6">
-                    <input-number label="Código" compCtrl="id" [ngModel]="object.id"
-                        [disabled]="true"></input-number>
+                    <input-number label="Código" compCtrl="id" [ngModel]="object.id" [disabled]="true">
+                    </input-number>
                 </div>
                 <div class="col-6" *ngIf="object.solicitation?.id">
                     <input-text label="Solicitação" disabled
@@ -18,18 +18,21 @@
                 </div>
                 <div class="col-6">
                     <combobox label="Situação" [filterOptions]="filterOptions.bind(this)" compCtrl
-                        enum="FinanceState" required class="w-100 not-disabled" [(ngModel)]="object.state">
+                        [disabled]="objectUpdating() && !object.solicitation?.id" enum="FinanceState" required
+                        class="w-100" [(ngModel)]="object.state"
+                        [ngClass]="{'not-disabled': object.solicitation}">
                     </combobox>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12">
-                    <combobox label="Responsável" compCtrl required [filterBy]="'id,name,email,role'"
-                        [options]="usuariosSistema" [(ngModel)]="object.responsavel">
+                    <combobox label="Responsável" compCtrl [required]="object.state != TIPO_PAGAMENTO"
+                        [filterBy]="'id,name,email,role'" [options]="usuariosSistema"
+                        [disabled]="objectUpdating()" [(ngModel)]="object.responsavel">
                     </combobox>
                 </div>
-                <div class="col-12">
+                <div class="col-12" *ngIf="object.state != TIPO_PAGAMENTO && object.solicitation?.id">
                     <combobox label="Responsável pelo pagamento" compCtrl required
                         [filterBy]="'id,name,email,role'" [options]="usuariosSistema"
                         [(ngModel)]="object.pagador">
@@ -39,15 +42,16 @@
 
             <div class="row">
                 <div class="col-12">
-                    <input-currency label="Valor" compCtrl [(ngModel)]="object.value"
-                        required></input-currency>
+                    <input-currency label="Valor" compCtrl [(ngModel)]="object.value" required
+                        [disabled]="objectUpdating()">
+                    </input-currency>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-24">
-                    <input-textarea label="Observação" compCtrl
-                        [(ngModel)]="object.observacao"></input-textarea>
+                    <input-textarea label="Observação" compCtrl [(ngModel)]="object.observacao">
+                    </input-textarea>
                 </div>
             </div>
         </p-tabPanel>

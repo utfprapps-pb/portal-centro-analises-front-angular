@@ -18,6 +18,7 @@ export class FinanceiroFormComponent extends FormCrud<Finance> {
 
     @ViewChild('formView') public formView: FormCrudComponent;
     public usuariosSistema: User[] = [];
+    public readonly TIPO_PAGAMENTO = 'PAID';
 
     constructor(
         protected override readonly injector: Injector,
@@ -40,6 +41,8 @@ export class FinanceiroFormComponent extends FormCrud<Finance> {
     public filterOptions(options: any[]): any[] {
         if (this.objectUpdating() && this.object.solicitation?.id != null) {
             options = options.filter((option) => [FinanceState.RECEIVED, FinanceState.PENDING].includes(option.value));
+        } else if (this.object.solicitation?.id == null) {
+            options = options.filter((option) => [FinanceState.RECEIVED, FinanceState.PAID].includes(option.value));
         }
         return options;
     }
@@ -59,6 +62,9 @@ export class FinanceiroFormComponent extends FormCrud<Finance> {
         }
         if (object.solicitation?.id == null) {
             object.solicitation = null;
+        }
+        if (object.state == 'PAID') {
+            object.pagador = null;
         }
     }
 
