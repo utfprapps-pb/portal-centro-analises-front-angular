@@ -28,13 +28,13 @@
             <div class="row">
                 <div class="col-12">
                     <combobox label="Responsável" compCtrl [required]="object.state != TIPO_PAGAMENTO"
-                        [filterBy]="'id,name,email,role'" [options]="usuariosSistema"
+                        [filterBy]="'id,name,email,role'" [options]="isAdmin ? usuariosSistema : [object.responsavel]"
                         [disabled]="objectUpdating()" [(ngModel)]="object.responsavel">
                     </combobox>
                 </div>
                 <div class="col-12" *ngIf="object.state != TIPO_PAGAMENTO && object.solicitation?.id">
                     <combobox label="Responsável pelo pagamento" compCtrl required
-                        [filterBy]="'id,name,email,role'" [options]="usuariosSistema"
+                        [filterBy]="'id,name,email,role'" [options]="isAdmin ? usuariosSistema : [object.pagador]"
                         [(ngModel)]="object.pagador">
                     </combobox>
                 </div>
@@ -107,7 +107,7 @@
             <div class="row">
                 <div class="col-24">
                     <uploadfile [(ngModel)]="object.attachments" compCtrl="Anexos" [multiple]="true"
-                        [bucket]="getBucketName()">
+                        [bucket]="getBucketName()" [uploader]="isAdmin">
                     </uploadfile>
                 </div>
             </div>

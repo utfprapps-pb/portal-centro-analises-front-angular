@@ -26,9 +26,19 @@ export class FinanceiroFormComponent extends FormCrud<Finance> {
         protected readonly userService: UserService,
     ) {
         super(injector, service);
-        this.userService.findAll().then(async data => {
-            this.usuariosSistema = data;
-        });
+        if (this.isAdmin) {
+            this.userService.findAll().then(async data => {
+                this.usuariosSistema = data;
+            });
+        }
+    }
+
+    public override showButtons(button: string): boolean {
+        if (this.isAdmin) {
+            return true;
+        } else {
+            return ['cancelar'].includes(button);
+        }
     }
 
     public override async onAfterLoadObject(object: Finance): Promise<void> {
@@ -36,6 +46,9 @@ export class FinanceiroFormComponent extends FormCrud<Finance> {
             this.disableForm(true);
         }
         super.onAfterLoadObject(object);
+        if (!this.isAdmin) {
+            this.disableForm();
+        }
     }
 
     public filterOptions(options: any[]): any[] {
