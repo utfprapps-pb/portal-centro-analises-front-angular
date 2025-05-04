@@ -27,14 +27,16 @@
     <div class="row mb-2">
         <div class="col-24">
             <combobox label="Natureza do Projeto" [(ngModel)]="object.projectNature"
-                enum="SolicitationProjectNature" compCtrl required (onChange)="onChangeProjectNature()">
+                [disabled]="objectUpdating()" enum="SolicitationProjectNature" compCtrl required
+                (onChange)="onChangeProjectNature()">
             </combobox>
         </div>
     </div>
 
     <div class="row mb-2" *ngIf="object.projectNature == OPCAO_OUTRO">
         <div class="ms-auto col-23">
-            <input-text label="Outra Natureza" compCtrl required [(ngModel)]="object.otherProjectNature">
+            <input-text label="Outra Natureza" compCtrl required [(ngModel)]="object.otherProjectNature"
+                [disabled]="objectUpdating()">
             </input-text>
         </div>
     </div>
@@ -163,7 +165,7 @@
 
         <div class="row mb-2">
             <div class="col-24">
-                <checkbox [(ngModel)]="object.form.utilizaPDA" [label]="'PDA'" />
+                <checkbox [(ngModel)]="object.form.utilizaPDA" [label]="'PDA'" [disabled]="disableForm" />
             </div>
         </div>
 
@@ -552,7 +554,8 @@
                             <th class="min-180">Expande</th>
                             <th class="min-180">Libera Gás</th>
                             <th class="min-180 text-center">Massa (3 - 150mg)</th>
-                            <th class="min-180" *ngIf="['DSC'].includes(getSolicitationType())">Técnica DSC</th>
+                            <th class="min-180" *ngIf="['DSC'].includes(getSolicitationType())">Técnica DSC
+                            </th>
                             <th class="min-180 text-center">Atmosfera</th>
                             <th class="min-180 text-center">Fluxo de Gás (10 - 100 mL/min)</th>
                             <th class="min-180 text-center">Taxa de aquecimento<br>
