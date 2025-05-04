@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import SockJS from 'sockjs-client';
 
 import { environment } from '../../../environments/environment';
+import { UserBalance } from '../../pages/cadastros/user/model/userbalance.model';
 import { UserService } from '../../pages/cadastros/user/user.service';
 import { Solicitation } from '../../pages/solicitation/model/solicitation.model';
 import { Constants } from '../constants/constants';
@@ -20,6 +21,7 @@ export class WebsocketService {
 
     public solicitacaoRecebida$ = new Subject<Solicitation>();
     public userBalance$ = new Subject<number>();
+    public globalUserBalance$ = new Subject<UserBalance>();
 
     constructor(
         private readonly authService: AuthService,
@@ -59,8 +61,17 @@ export class WebsocketService {
             this.stompClient.subscribe(`/topic/user/balance/${this.authService.getUserLogged().id}`, (mensagem) => {
                 if (mensagem.body) {
                     let body = JSON.parse(mensagem.body);
-                    body = this.dateHandlerInterceptor.deserialize(body);
+                    this.dateHandlerInterceptor.deserialize(body);
                     this.userBalance$.next(body);
+                }
+            });
+
+            this.stompClient.subscribe(`/topic/balance`, (mensagem) => {
+                if (mensagem.body) {
+                    let body = JSON.parse(mensagem.body);
+                    this.dateHandlerInterceptor.deserialize(body);
+                    this.globalUserBalance$.next(body);
+                    console.log(body);
                 }
             });
 

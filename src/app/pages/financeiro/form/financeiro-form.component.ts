@@ -42,12 +42,13 @@ export class FinanceiroFormComponent extends FormCrud<Finance> {
     }
 
     public override async onAfterLoadObject(object: Finance): Promise<void> {
-        if (this.objectUpdating() && this.object.solicitation?.id != undefined) {
+        if (this.objectUpdating() && object?.solicitation?.id != undefined) {
             this.disableForm(true);
         }
         super.onAfterLoadObject(object);
         if (!this.isAdmin) {
-            this.disableForm();
+            this.disableForm(true);
+            alert(2);
         }
     }
 

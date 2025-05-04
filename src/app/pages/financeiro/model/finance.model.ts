@@ -47,6 +47,8 @@ export class Finance extends ZModelCrud {
     @Prop(User.createInstance(), ['id', 'name'])
     pagador: User = null;
 
+    alterarSaldo: boolean = true;
+
     solicitation: Solicitation = null;
 
     details: FinanceDetails[] = [];

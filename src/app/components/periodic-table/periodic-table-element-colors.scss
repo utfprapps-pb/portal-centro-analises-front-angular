@@ -24,7 +24,7 @@ $color in $categories {
 
         &.disabled {
             background-color: lighten($color, 5);
-            opacity: 0.5;
+            opacity: 0.85;
         }
     }
 

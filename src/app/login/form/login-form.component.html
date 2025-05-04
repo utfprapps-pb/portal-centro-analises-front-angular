@@ -154,6 +154,12 @@
                         <div class="mt-auto">
                             <div class="row mt-4">
                                 <div class="col-24 p-0 text-center">
+                                    <ng-container *ngIf="template == 'register'">
+                                        <p class="small-text mb-2">
+                                            Após realizar o cadastro, será enviado um link<br>
+                                            para o seu e-mail para ativar o cadastro.
+                                        </p>
+                                    </ng-container>
                                     <button class="w-100 btn btn-lg btn-primary"
                                         (click)="onClickButton()">{{buttonText}}</button>
                                     <ng-container *ngIf="template == 'login'; else footerReturn">

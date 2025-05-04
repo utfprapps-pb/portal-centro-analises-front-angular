@@ -180,6 +180,7 @@ export class SolicitationPaymentComponent extends FormCrud<Solicitation> {
         financeiro.value = this.getTotalValores();
         financeiro.solicitation = this.object;
         financeiro.description = 'Formulário nº ' + this.object.id;
+        financeiro.alterarSaldo = true;
 
         const details: FinanceDetails[] = [];
         for (const value of this.equipmentPrices.values()) {

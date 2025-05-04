@@ -109,6 +109,8 @@ export class SolicitarFormComponent extends FormCrud<Solicitation> implements Af
             this.blockForm();
             this.object.form.citacao = false;
             this.termsOfUseService.findAll().then(termos => {
+                this.object.termsOfUses = [];
+                this.termosDeUso = [];
                 this.activeIndexTermsOfUse = [];
                 termos.sort((a, b) => a.id - b.id);
                 for (const data of termos) {

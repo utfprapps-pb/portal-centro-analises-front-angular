@@ -63,7 +63,7 @@ export class LoginFormComponent extends FormBase {
         this.blockForm();
         switch (template) {
             case 'login':
-                this.formTitle = 'Bem vindo!';
+                this.formTitle = 'Bem-vindo!';
                 this.subtitle = 'Digite seus dados para continuar';
                 this.buttonText = 'Entrar';
                 break;
@@ -217,7 +217,7 @@ export class LoginFormComponent extends FormBase {
         if (this.validateForm()) {
             this.blockForm();
             this.loginService.createNewUser(this.newUser).then((data: any) => {
-                this.toastrService.showSuccess(this.formTitle, "Usuário cadastrado com Sucesso!");
+                this.toastrService.showSuccess(this.formTitle, 'Usuário cadastrado com Sucesso!\nUm e-mail foi enviado para realizar a ativação da conta');
                 this.changeTemplate('login');
                 this.object.email = this.newUser.email;
                 this.object.password = this.newUser.password;

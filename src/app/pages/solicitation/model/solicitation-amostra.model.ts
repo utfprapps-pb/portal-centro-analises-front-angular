@@ -48,7 +48,7 @@ export class SolicitationAmostra extends ZModel {
     atmosfera: string = null
     fluxoGas: number = null
     taxaAquecimento: number = null
-    intervaloTemperatura: number = null
+    intervaloTemperatura: string = null
 
     // MEV
     tipoAmostra: string = null;

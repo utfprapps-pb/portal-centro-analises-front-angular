@@ -2,7 +2,7 @@ export enum SolicitationFormType {
     AA = '[AA] Espectroscopia de Absorção Atômica',
     AW = '[AW] Atividade de Água',
     CLAE = '[CLAE] Cromatografia Líquida de Alta Eficiência (HPLC)',
-    COR = '[COR] Análise Colorímetrica',
+    COR = '[COR] Análise Colorimétrica',
     DRX = '[DRX] Difratômetro de Raios X',
     DSC = '[DSC] Calorimetria Diferencial de Varredura',
     FTMIR = '[FT-MIR] Espectroscopia no Infravermelho Médio com Transformada de Fourier',

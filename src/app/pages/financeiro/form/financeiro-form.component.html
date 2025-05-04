@@ -18,25 +18,30 @@
                 </div>
                 <div class="col-6">
                     <combobox label="Situação" [filterOptions]="filterOptions.bind(this)" compCtrl
-                        [disabled]="objectUpdating() && !object.solicitation?.id" enum="FinanceState" required
-                        class="w-100" [(ngModel)]="object.state"
-                        [ngClass]="{'not-disabled': object.solicitation}">
+                        [disabled]="!isAdmin" enum="FinanceState" required [(ngModel)]="object.state"
+                        [class]="isAdmin ? 'w-100 not-disabled' : 'w-100'">
                     </combobox>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-10">
                     <combobox label="Responsável" compCtrl [required]="object.state != TIPO_PAGAMENTO"
-                        [filterBy]="'id,name,email,role'" [options]="isAdmin ? usuariosSistema : [object.responsavel]"
+                        [filterBy]="'id,name,email,role'"
+                        [options]="isAdmin ? usuariosSistema : [object.responsavel]"
                         [disabled]="objectUpdating()" [(ngModel)]="object.responsavel">
                     </combobox>
                 </div>
-                <div class="col-12" *ngIf="object.state != TIPO_PAGAMENTO && object.solicitation?.id">
+                <div class="col-10" *ngIf="object.state != TIPO_PAGAMENTO && !!object.solicitation?.id">
                     <combobox label="Responsável pelo pagamento" compCtrl required
-                        [filterBy]="'id,name,email,role'" [options]="isAdmin ? usuariosSistema : [object.pagador]"
-                        [(ngModel)]="object.pagador">
+                        [filterBy]="'id,name,email,role'"
+                        [options]="isAdmin ? usuariosSistema : [object.pagador]" [(ngModel)]="object.pagador"
+                        [class]="isAdmin && object.solicitation ? 'w-100 not-disabled' : 'w-100'">
                     </combobox>
+                </div>
+                <div class="align-self-end" [ngClass]="object.state != TIPO_PAGAMENTO && !!object.solicitation?.id ? 'col-4' : 'col-10'">
+                    <checkbox [(ngModel)]="object.alterarSaldo" compCtrl label="Alterar Saldo dos Usuários"
+                        [class]="isAdmin ? 'd-contents not-disabled' : 'd-contents'" />
                 </div>
             </div>
 

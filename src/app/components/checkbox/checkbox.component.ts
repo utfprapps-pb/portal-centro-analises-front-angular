@@ -62,6 +62,9 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
 
     get disabled() {
         if (this.internalDisabled != null) {
+            if (this.class.includes('not-disabled')) {
+                return false
+            }
             return this.internalDisabled
         }
         return this._disabled;
@@ -107,6 +110,7 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
             } else {
                 this.innerObject = value;
             }
+            this.innerValue = !!this.innerObject;
         }
     }
 
@@ -115,6 +119,9 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
         for (var i = 0; i < classes.length; i++) {
             if (classes[i] == value) {
                 return;
+            }
+            if (value == 'not-disabled' && this.disabled) {
+                this.disabled = false;
             }
         }
         classes.push(value);
@@ -133,6 +140,9 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
     }
 
     override setDisabledState(value: boolean): void {
+        if (this.class.includes('not-disabled') && value) {
+            value = false;
+        }
         this.disabled = value;
     }
 
