@@ -128,7 +128,7 @@
     <ng-container *ngIf="getSolicitationType() == 'CLAE'">
         <div class="row mb-2">
             <div class="col-24">
-                <input-text label="Coluna" compCtrl required [ngModel]="object.form.coluna">
+                <input-text label="Coluna" compCtrl required [(ngModel)]="object.form.coluna">
                 </input-text>
             </div>
         </div>
