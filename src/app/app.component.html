@@ -1,7 +1,22 @@
 <div>
-    <p-toast [life]="3000"></p-toast>
+    <p-toast #toast [life]="3000">
+        <ng-template pTemplate="message" let-m>
+            <div class="p-toast-message-content">
+                <div class="p-toast-message-text">
+                    <div class="p-toast-summary">{{ m.summary }}</div>
+                    <div class="p-toast-detail">
+                        <ng-container *ngFor="let linha of m.detail.split('\n'); let last=last">
+                            {{ linha }}<br *ngIf="!last">
+                        </ng-container>
+                    </div>
+                </div>
+                <!-- <button type="button" pRipple class="p-toast-icon-close p-link" (click)="toast.clear(m)"
+                    aria-label="Fechar">
+                    <i class="pi pi-times"></i>
+                </button> -->
+            </div>
+        </ng-template>
+    </p-toast>
     <HeaderComponent *ngIf="pageSettings.showHeader"></HeaderComponent>
-
-
     <router-outlet></router-outlet>
 </div>

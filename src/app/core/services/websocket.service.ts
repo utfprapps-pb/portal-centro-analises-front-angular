@@ -71,7 +71,6 @@ export class WebsocketService {
                     let body = JSON.parse(mensagem.body);
                     this.dateHandlerInterceptor.deserialize(body);
                     this.globalUserBalance$.next(body);
-                    console.log(body);
                 }
             });
 

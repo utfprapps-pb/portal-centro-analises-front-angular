@@ -4,7 +4,13 @@
         <div class="col-6">
             <input-number label="Código" compCtrl="id" [ngModel]="object.id" [disabled]="true"></input-number>
         </div>
-        <div class="col-6 ms-auto">
+        <div class="offset-6 col-6">
+            @if(isAdmin) {
+            <input-currency label="Limite Negativo" compCtrl [(ngModel)]="object.balance">
+            </input-currency>
+            }
+        </div>
+        <div class="col-6">
             <combobox label="Status" compCtrl="status" [(ngModel)]="object.status" enum="StatusAI" required>
             </combobox>
         </div>

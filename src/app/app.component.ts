@@ -142,8 +142,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 rotateRight: "Girar para a Direita",
                 rotateLeft: "Girar para a Esquerda"
             }
-        }
-        )
+        })
     }
 
     public ngOnInit(): void {
