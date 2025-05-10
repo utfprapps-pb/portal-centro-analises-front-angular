@@ -24,10 +24,6 @@
     }
 }
 
-* {
-    // font-size: $font-size-default;
-}
-
 body {
     background-color: var(--green-100);
     overflow        : hidden;
@@ -95,8 +91,10 @@ p {
     font-weight: bold;
 }
 
+
 form-list form-base form,
-form-crud form-base form {
+form-crud form-base form,
+form-report form-base form {
     background   : var(--surface-0);
     border-radius: 5px;
 }
@@ -108,10 +106,6 @@ form-crud form-base form {
 .d-contents {
     display: contents;
 }
-
-// .ng-content {
-//     overflow: auto;
-// }
 
 @for $i from 0 through 5 {
     invalid-info {
@@ -131,11 +125,11 @@ form-crud form-base form {
 }
 
 .text-ellipsis {
-    white-space  : nowrap !important;
-    text-overflow: ellipsis;
-    overflow     : hidden;
-    max-width: 0px;
-    // display      : block;
+    white-space     : nowrap !important;
+    text-overflow   : ellipsis;
+    overflow        : hidden;
+    // max-width       : 0px;
+    display      : block;
 }
 
 .dot {

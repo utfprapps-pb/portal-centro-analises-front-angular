@@ -1,0 +1,10 @@
+<div class="card report-card" [ngStyle]="{'--color': color}" (click)="onClick()">
+    <div class="card-content">
+        <i [class]="icon" class="icon"></i>
+        <div class="text-content">
+            <h3 class="title">{{ title }}</h3>
+            <p class="description">{{ description }}</p>
+        </div>
+    </div>
+    <div class="card-footer" [ngStyle]="{'background-color': color}"></div>
+</div>

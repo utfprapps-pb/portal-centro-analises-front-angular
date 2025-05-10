@@ -92,6 +92,7 @@ import { PeriodicTableComponent } from './periodic-table/periodic-table.componen
 import { RadioButtonComponent } from './radiobutton/radiobutton.component';
 import { EnumTemplateComponent } from './templates/enum-template/enum-template.component';
 import { UploadfileComponent } from './uploadfile/uploadfile.component';
+import { FormReportComponent } from './form-report/form-report.component';
 
 @NgModule({
     declarations: [
@@ -105,6 +106,7 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         ChangePasswordComponent,
         FormBaseComponent,
         FormCrudComponent,
+        FormReportComponent,
         FormListComponent,
         InvalidInfoComponent,
         InputTextComponent,
@@ -154,6 +156,7 @@ import { UploadfileComponent } from './uploadfile/uploadfile.component';
         ChangePasswordComponent,
         FormBaseComponent,
         FormCrudComponent,
+        FormReportComponent,
         FormListComponent,
         InvalidInfoComponent,
         InputTextComponent,

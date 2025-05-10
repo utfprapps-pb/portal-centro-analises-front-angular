@@ -109,6 +109,18 @@ export const routes: Routes = [
     },
 
     {
+        path: 'relatorios',
+        data: {
+            authorities: [
+                Roles.ROLE_ADMIN
+            ]
+        },
+        canActivate: [AuthGuard.canActivate],
+        canDeactivate: [AuthGuard.canDeactivate],
+        loadChildren: () => import('./pages/report/report.module').then(m => m.ReportModule),
+    },
+
+    {
         path: 'configuracao-email',
         data: {
             authorities: [

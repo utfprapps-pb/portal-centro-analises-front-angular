@@ -147,6 +147,13 @@ export class HeaderComponent implements OnDestroy {
                 target: '_self'
             },
             {
+                label: 'Relatórios',
+                icon: 'fa fa-file-spreadsheet',
+                visible: true,
+                url: '/#/relatorios',
+                target: '_self'
+            },
+            {
                 label: 'Config. Email',
                 icon: 'fa fa-envelope',
                 url: '/#/configuracao-email',
