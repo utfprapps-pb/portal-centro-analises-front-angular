@@ -37,9 +37,9 @@ export class ReportListComponent extends FormReport {
             description: 'Relatórios de solicitações',
             icon: ReportListComponent.SOLICITACOES_ICON,
             color: ReportListComponent.SOLICITACOES_COLOR,
-            visible: false,
+            visible: true,
             onClick: () => {
-                this.router.navigate(['/relatorios/solicitacoes']);
+                this.downloadReport(3, 'Relatório de Solicitações');
             }
         },
         {
@@ -50,16 +50,6 @@ export class ReportListComponent extends FormReport {
             visible: true,
             onClick: () => {
                 this.downloadReport(2, 'Relatório de Equipamentos');
-            }
-        },
-        {
-            title: 'Usuários',
-            // description: 'Gerenciar usuários',
-            icon: ReportListComponent.USUARIOS_ICON,
-            color: ReportListComponent.USUARIOS_COLOR,
-            visible: false,
-            onClick: () => {
-                this.router.navigate(['/relatorios/usuarios']);
             }
         },
         {

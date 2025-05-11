@@ -71,7 +71,4 @@ export class Solicitation extends ZModelCrud {
 
     observation: string = null;
 
-    totalPrice: number = null;
-    paid: boolean = false;
-
 }
