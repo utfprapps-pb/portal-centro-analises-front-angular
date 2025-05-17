@@ -4,7 +4,7 @@
     <div class="position-relative">
         <p-inputMask #input [mask]="_mask" [slotChar]="slotChar" [class]="class" [id]="id" [name]="name"
             autocomplete="off" [placeholder]="placeholder" [disabled]="disabled" [readonly]="disabled"
-            [maxlength]="maxlength" [style]="{'padding-right': '30px'}" [showClear]="showClear && !disabled"
+            [maxlength]="maxlength" [showClear]="showClear && !disabled"
             [unmask]="true" [(ngModel)]="innerValue" (onClear)="forceClear()" />
         <invalid-info #invalid class="mr-icon-1" [causes]="invalidCause"></invalid-info>
     </div>

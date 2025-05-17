@@ -34,7 +34,6 @@ export class ReportListComponent extends FormReport {
     public cards: ReportCardModel[] = [
         {
             title: 'Solicitações',
-            description: 'Relatórios de solicitações',
             icon: ReportListComponent.SOLICITACOES_ICON,
             color: ReportListComponent.SOLICITACOES_COLOR,
             visible: true,
@@ -44,7 +43,6 @@ export class ReportListComponent extends FormReport {
         },
         {
             title: 'Equipamentos',
-            // description: 'Gerenciar equipamentos',
             icon: ReportListComponent.EQUIPAMENTOS_ICON,
             color: ReportListComponent.EQUIPAMENTOS_COLOR,
             visible: true,

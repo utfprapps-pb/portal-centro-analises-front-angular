@@ -6,25 +6,27 @@
             </a>
         </ng-template>
         <ng-template pTemplate="end">
-            <p-tag
-                [style]="{ background: 'linear-gradient(to right, var(--surface-900), var(--surface-700)' }">
-                <div class="flex align-items-center gap-2 px-1">
-                    <span class="text-base" ngxTooltip="Saldo atual" arrow
-                        [ngClass]="{'text-danger': user_balance < 0}">
-                        {{user_balance | currency: 'BRL'}}
-                    </span>
-                </div>
-            </p-tag>
-            <span class="align-text-top">
-                Olá,
-            </span>
-            <button id="buttonUser" class="btn btn-sm btn-link bold px-1 py-0 text-dark"
-                (click)="tiredMenu.toggle($event)">
-                {{user.displayName}}
-                <i class="fa fa-chevron-down"></i>
-            </button>
+            <div class="text-right">
+                <p-tag
+                    [style]="{ background: 'linear-gradient(to right, var(--surface-900), var(--surface-700)' }">
+                    <div class="flex align-items-center gap-2 px-1">
+                        <span class="text-base" ngxTooltip="Saldo atual" arrow
+                            [ngClass]="{'text-danger': user_balance < 0}">
+                            {{user_balance | currency: 'BRL'}}
+                        </span>
+                    </div>
+                </p-tag>
+                <span class="align-text-top">
+                    Olá,
+                </span>
+                <button id="buttonUser" class="btn btn-sm btn-link bold px-1 py-0 text-dark"
+                    (click)="tiredMenu.toggle($event)">
+                    {{user.displayName}}
+                    <i class="fa fa-chevron-down"></i>
+                </button>
 
-            <p-tieredMenu #tiredMenu [model]="profileItens" [popup]="true"></p-tieredMenu>
+                <p-tieredMenu #tiredMenu [model]="profileItens" [popup]="true"></p-tieredMenu>
+            </div>
         </ng-template>
     </p-menubar>
 

@@ -149,7 +149,7 @@ export class HeaderComponent implements OnDestroy {
             {
                 label: 'Relatórios',
                 icon: 'fa fa-file-spreadsheet',
-                visible: true,
+                visible: admin,
                 url: '/#/relatorios',
                 target: '_self'
             },
