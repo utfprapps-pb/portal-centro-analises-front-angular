@@ -52,7 +52,6 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
         this.subscriptions.push(
             this.ws.solicitacaoRecebida$.subscribe((solicitation: Solicitation) => {
                 const numb = Number(this.getObjectIdFromUrl());
-                console.log(numb, solicitation, solicitation.id);
                 this.service.findOne(numb).then(data => this.updateObject(solicitation));
             })
         );
