@@ -5,7 +5,7 @@
         <input #input pInputText [class]="class" [id]="id" [name]="name" autocomplete="off"
             [placeholder]="placeholder" [disabled]="disabled" [readOnly]="disabled" [(ngModel)]="innerValue"
             [maxlength]="maxlength" style="padding-right: 30px;" />
-        <i class="pi pi-times cursor-pointer mr-icon-0" *ngIf="!!innerValue && showClear && !disabled"
+        <i class="pi pi-times cursor-pointer mr-icon-0" *ngIf="!!innerValue && showClear && !disabled && !input.disabled"
             (click)="forceClear()">
         </i>
         <invalid-info #invalid class="mr-icon-1" [causes]="invalidCause"></invalid-info>

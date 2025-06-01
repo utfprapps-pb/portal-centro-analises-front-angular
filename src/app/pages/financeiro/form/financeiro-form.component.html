@@ -25,6 +25,14 @@
             </div>
 
             <div class="row">
+                <div class="col-24">
+                    <input-text label="Descricao" [maxlength]="255" [(ngModel)]="object.description"
+                    [disabled]="!isAdmin">
+                    </input-text>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-10">
                     <combobox label="Responsável" compCtrl [required]="object.state != TIPO_PAGAMENTO"
                         [filterBy]="'id,name,email,role'"
@@ -36,10 +44,12 @@
                     <combobox label="Responsável pelo pagamento" compCtrl required
                         [filterBy]="'id,name,email,role'"
                         [options]="isAdmin ? usuariosSistema : [object.pagador]" [(ngModel)]="object.pagador"
-                        [class]="isAdmin && object.solicitation ? 'w-100 not-disabled' : 'w-100'">
+                        [disabled]="!isAdmin"
+                        [ngClass]="isAdmin && object.solicitation ? 'w-100 not-disabled' : 'w-100'">
                     </combobox>
                 </div>
-                <div class="align-self-end" [ngClass]="object.state != TIPO_PAGAMENTO && !!object.solicitation?.id ? 'col-4' : 'col-10'">
+                <div class="align-self-end"
+                    [ngClass]="object.state != TIPO_PAGAMENTO && !!object.solicitation?.id ? 'col-4' : 'col-10'">
                     <checkbox [(ngModel)]="object.alterarSaldo" compCtrl label="Alterar Saldo dos Usuários"
                         [class]="isAdmin ? 'd-contents not-disabled' : 'd-contents'" />
                 </div>
@@ -112,7 +122,7 @@
             <div class="row">
                 <div class="col-24">
                     <uploadfile [(ngModel)]="object.attachments" compCtrl="Anexos" [multiple]="true"
-                        [bucket]="getBucketName()" [uploader]="isAdmin">
+                        [bucket]="getBucketName()" [uploader]="isAdmin" class="not-disabled" [disabled]="!isAdmin">
                     </uploadfile>
                 </div>
             </div>

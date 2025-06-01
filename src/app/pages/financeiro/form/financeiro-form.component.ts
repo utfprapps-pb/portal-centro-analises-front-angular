@@ -48,7 +48,6 @@ export class FinanceiroFormComponent extends FormCrud<Finance> {
         super.onAfterLoadObject(object);
         if (!this.isAdmin) {
             this.disableForm(true);
-            alert(2);
         }
     }
 

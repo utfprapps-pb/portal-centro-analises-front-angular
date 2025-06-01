@@ -31,7 +31,7 @@ export class WebsocketService {
         this.conectar();
     }
 
-    private conectar() {
+    public conectar(): void {
         const token = encodeURIComponent(this.authService.getToken());
         const user = encodeURIComponent(btoa(StorageManager.getItem(Constants.USER)));
 
@@ -84,6 +84,12 @@ export class WebsocketService {
         if (this.conectado && this.stompClient) {
             this.stompClient.deactivate();
             this.conectado = false;
+
+            this.solicitacaoRecebida$.next(null);
+            this.userBalance$.next(null);
+            this.globalUserBalance$.next(null);
+
+            this.stompClient = null;
             console.log('[WebSocket] Desconectado');
         }
     }

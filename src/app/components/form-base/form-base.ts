@@ -120,6 +120,11 @@ export abstract class FormBase implements OnDestroy {
         }
         const fieldsCompCtrlList = this.getFieldsCompCtrl();
         for (const field of fieldsCompCtrlList) {
+            if ((field.compCtrlContainer as any)?.class != undefined) {
+                if ((field.compCtrlContainer as any).class.includes('not-disabled')) {
+                    continue;
+                }
+            }
             field.compCtrlContainer.setDisabledState(value);
         }
     }

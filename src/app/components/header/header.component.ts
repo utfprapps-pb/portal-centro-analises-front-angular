@@ -166,6 +166,8 @@ export class HeaderComponent implements OnDestroy {
             this.user = user;
         }));
 
+        this.ws.conectar();
+
         this.subscriptions.push(
             this.ws.userBalance$.subscribe((balance: number) => {
                 this.user_balance = balance;
@@ -177,6 +179,7 @@ export class HeaderComponent implements OnDestroy {
         for (const sub of this.subscriptions) {
             sub.unsubscribe();
         }
+        this.ws.desconectar();
     }
 
     private onClickChangePassword(): void {
