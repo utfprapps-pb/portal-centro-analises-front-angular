@@ -129,11 +129,6 @@
                                         </input-mask>
                                     </ng-template>
                                 </div>
-                                <div class="my-auto" *ngIf="requerRA()">
-                                    <input-number label="RA" compCtrl required [(ngModel)]="newUser.raSiape"
-                                        [minlength]="6" [maxlength]="10">
-                                    </input-number>
-                                </div>
                                 <div class="my-auto">
                                     <input-email label="E-mail" compCtrl required [(ngModel)]="newUser.email"
                                         [minlength]="4" [maxlength]="255">
@@ -147,6 +142,11 @@
                                             Externo: qualquer e-mail permitido.
                                         </p>
                                     </div>
+                                </div>
+                                <div class="my-auto" *ngIf="requerRA()">
+                                    <input-number label="RA" compCtrl required [(ngModel)]="newUser.raSiape"
+                                        [minlength]="6" [maxlength]="10">
+                                    </input-number>
                                 </div>
                                 <div class="my-auto">
                                     <input-password label="Nova Senha" compCtrl required [minlength]="6"
