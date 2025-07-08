@@ -1,11 +1,9 @@
-version: "3.9"
-
 ########################### SERVICES
 services:
   ########################### DAINF LABS CLIENT
-  portal-ca-lab:
-    image: portal-ca-lab
-    container_name: portal-ca-lab
+  lab-ca:
+    image: lab-ca
+    container_name: lab-ca
     build:
       context: ./
       dockerfile: Dockerfile
@@ -16,10 +14,10 @@ services:
     labels:
       # Traefik Config
       - "traefik.enable=true"
-      - "traefik.http.routers.portal-ca-lab.tls=true"
-      - "traefik.http.routers.portal-ca-lab.rule=Host(`ca-dev.app.pb.utfpr.edu.br`)"
-      - "traefik.http.routers.portal-ca-lab.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.portal-ca-lab.entrypoints=websecure"
+      - "traefik.http.routers.lab-ca.tls=true"
+      - "traefik.http.routers.lab-ca.rule=Host(`lab-ca.app.pb.utfpr.edu.br`)"
+      - "traefik.http.routers.lab-ca.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.lab-ca.entrypoints=websecure"
 
     restart: unless-stopped
     networks:
