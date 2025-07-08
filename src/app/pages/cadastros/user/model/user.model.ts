@@ -67,4 +67,8 @@ export class User extends UserDTO {
     @Prop('date')
     updatedAt: Date = null;
 
+    @Title('Saldo')
+    @Prop('currency')
+    balance: number = null;
+
 }

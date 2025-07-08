@@ -102,6 +102,25 @@ export const routes: Routes = [
     },
 
     {
+        path: 'financeiro',
+        canActivate: [AuthGuard.canActivate],
+        canDeactivate: [AuthGuard.canDeactivate],
+        loadChildren: () => import('./pages/financeiro/financeiro.module').then(m => m.FinanceiroModule),
+    },
+
+    {
+        path: 'relatorios',
+        data: {
+            authorities: [
+                Roles.ROLE_ADMIN
+            ]
+        },
+        canActivate: [AuthGuard.canActivate],
+        canDeactivate: [AuthGuard.canDeactivate],
+        loadChildren: () => import('./pages/report/report.module').then(m => m.ReportModule),
+    },
+
+    {
         path: 'configuracao-email',
         data: {
             authorities: [

@@ -3,6 +3,7 @@ import { ObjectUtils } from 'primeng/utils';
 
 import { Constants } from '../../core/constants/constants';
 import { StorageManager } from '../../core/managers/storage-manager';
+import { Dialog, DialogType } from '../../core/services/dialog.service';
 import { GenericCrudService } from '../../generics/generic-crud.service';
 import { ZModel } from '../../generics/zmodel';
 import { FormBase } from '../form-base/form-base';
@@ -14,6 +15,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
     public abstract override formView: FormCrudComponent;
 
     public object: T;
+    private buscouObjeto: boolean = false;
 
     constructor(
         protected override readonly injector: Injector,
@@ -84,7 +86,7 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
     }
 
     public async onAfterLoadObject(object: T): Promise<void> {
-
+        this.buscouObjeto = true;
     }
 
     public async onAfterFormComplete(object: T): Promise<void> {
@@ -176,14 +178,6 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
         if (this.validateForm()) {
             this.blockForm();
             await this.onBeforeSave(object);
-            // for (const prop in this.object) {
-            //     const value: any = (this.object as any)[prop];
-            //     if (value && value instanceof ZModel) {
-            //         if (value.id == null) {
-            //             (this.object as any)[prop] = null;
-            //         }
-            //     }
-            // }
             this.service.save(object).then(async (data) => {
                 await this.onAfterSave(object, data);
                 this.toastrService.showSuccess(this.title, 'Registro salvo com sucesso!');
@@ -211,22 +205,30 @@ export abstract class FormCrud<T extends ZModel> extends FormBase implements OnI
 
     protected async onExcluir(object: any): Promise<void> {
         if (!!object.id) {
-            this.blockForm();
-            this.service.delete(object.id).then(async () => {
-                this.toastrService.showSuccess(this.title, 'Registro excluido com sucesso!');
-                if (this.exitOnSave()) {
-                    this.onCancel();
+            const dialog: Dialog = new Dialog();
+            dialog.type = DialogType.QUESTION;
+            dialog.title = "Você tem certeza que deseja excluir este registro?"
+            dialog.html = `<b class="text-danger">A operação não pode ser desfeita!</b>`
+
+            await this.dialogService.open(dialog).then(async (canDelete) => {
+                if (canDelete) {
+                    this.blockForm();
+                    await this.service.delete(object.id).then(async () => {
+                        this.toastrService.showSuccess(this.title, 'Registro excluido com sucesso!');
+                        if (this.exitOnSave()) {
+                            this.onCancel();
+                        }
+                    }, error => {
+                        if (this.hasErrorMapped(error)) {
+                            this.errorHandler(error);
+                        } else {
+                            this.toastrService.showError(this.title, 'Erro ao excluir Registro!');
+                        }
+                    }).finally(() => {
+                        this.releaseForm();
+                    });
                 }
-            }, error => {
-                if (this.hasErrorMapped(error)) {
-                    this.errorHandler(error);
-                } else {
-                    this.toastrService.showError(this.title, 'Erro ao excluir Registro!');
-                }
-            }).finally(() => {
-                this.releaseForm();
             });
         }
     }
-
 }

@@ -3,6 +3,7 @@ import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChil
 import { ControlValueAccessor } from '@angular/forms';
 import { PrimeNGConfig } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
+import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 
 import { Debounce } from '../../core/decorators/decorators';
@@ -34,6 +35,7 @@ export class UploadfileComponent extends CompCtrlContainer implements ControlVal
     @ViewChild('fileupload') fileupload: FileUpload;
     @ViewChild('input') component: ElementRef<FileUpload>;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
+    @ViewChild('tableUploading') tableUploading: Table;
 
     @Output('onChange') onChangeEventEmitter: EventEmitter<Attachment | Attachment[]> = new EventEmitter();
 

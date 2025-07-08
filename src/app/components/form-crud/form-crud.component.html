@@ -1,12 +1,12 @@
 <p-progressSpinner *ngIf="facades.size()" ariaLabel="loading" animationDuration="3"></p-progressSpinner>
 <div class="container-fluid pt-1" [ngStyle]="{'padding-bottom': showFooter() ? '3.75rem' : '0.25rem'}">
     <form-base #formBase>
-        <div class="p-2 py-3 mt-2">
+        <div [ngClass]="{'p-2 py-3 mt-2': vertical_space}">
             <div class="row" *ngIf="showHeader()">
                 <div class="col-24">
                     <b class="m-0" [ngClass]="titleClass">{{title}}</b>
+                    <hr class="mt-2 border border-success mx-0">
                 </div>
-                <hr class="mt-2 border border-success mx-3">
             </div>
             <div class="ng-content">
                 <ng-content></ng-content>

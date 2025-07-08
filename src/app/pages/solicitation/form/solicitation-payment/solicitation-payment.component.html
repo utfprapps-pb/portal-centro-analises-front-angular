@@ -1,0 +1,100 @@
+<form-crud #formView [changeTitle]="false" [vertical_space]="false" *ngIf="object">
+
+    <div class="row" *ngIf="object.createdBy.id != object.responsavel.id">
+        <div class="col-24">
+            <combobox label="Solicitante" compCtrl disabled [filterBy]="'id,name,email,role'"
+                [options]="[object.createdBy]" [ngModel]="object.createdBy">
+            </combobox>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-24">
+            <combobox label="Responsável" compCtrl disabled [filterBy]="'id,name,email,role'"
+                [options]="[object.responsavel]" [ngModel]="object.responsavel">
+            </combobox>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-24">
+            <combobox label="Responsável pelo pagamento" compCtrl required [filterBy]="'id,name,email,role'"
+                [options]="possiveisPagadores" [(ngModel)]="responsavel_pagamento">
+            </combobox>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-24 table-responsive">
+            <h5 class="bold">Valores</h5>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th class="column-btn-cobranca">Cobrança
+                            <i class="text-primary cursor-pointer fa fa-swap" (click)="changeAllPagamentos()"
+                                [ngxTooltip]="'Alternar modo de cobrança'" arrow>
+                            </i>
+                        </th>
+                        <th class="column-codigo">Código</th>
+                        <th>Nome</th>
+                        <th class="column-number text-center">Valor</th>
+                        <th class="column-number text-center">Quantidade</th>
+                        <th class="column-valor text-center">Valor Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let map of equipmentPrices | keyvalue"
+                        [ngClass]="{'text-danger bold': map.value.total == 0}">
+                        <td class="text-center">
+                            <button (click)="map.value.calculateByHours = !map.value.calculateByHours"
+                                class="btn btn-sm" [ngClass]="{
+                                'btn-primary': map.value.calculateByHours,
+                                'btn-info': !map.value.calculateByHours
+                            }">
+                                {{map.value.calculateByHours ? 'Horas' : 'Amostras'}}
+                            </button>
+                        </td>
+                        <td>
+                            {{map.value.id}}
+                        </td>
+                        <td>
+                            <div class="text-ellipsis">
+                                {{map.value.name}}
+                            </div>
+                        </td>
+                        <td>
+                            @if (map.value.calculateByHours) {
+                            {{map.value.hourPrice | currency: 'BRL'}}
+                            } @else {
+                            {{map.value.samplePrice | currency: 'BRL'}}
+                            }
+                        </td>
+                        <td class="text-center">
+                            @if (map.value.calculateByHours) {
+                            <i class="fa fa-timer"></i>&nbsp;{{map.value.hoursTotal | number: '1.0-2'}}
+                            } @else {
+                            <i class="fa fa-vial"></i>&nbsp;{{map.value.sampleTotal | number}}
+                            }
+                        </td>
+                        <td>
+                            {{map.value.total | currency: 'BRL'}}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <strong>Total</strong>
+                        </td>
+                        <td colspan="3" class="text-center">
+                            <strong>{{getTotalValores() | currency: 'BRL'}}</strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+</form-crud>

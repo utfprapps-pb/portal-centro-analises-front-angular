@@ -7,7 +7,7 @@ import Swal, { SweetAlertOptions } from 'sweetalert2';
 import { FormCrud } from '../../../components/form-crud/form-crud';
 import { FormCrudComponent } from '../../../components/form-crud/form-crud.component';
 import { getEnumColor, getEnumTranslation } from '../../../core/enums/enum-mapper';
-import { Dialog, DialogService, DialogType } from '../../../core/services/dialog.service';
+import { Dialog, DialogType } from '../../../core/services/dialog.service';
 import { WebsocketService } from '../../../core/services/websocket.service';
 import { ObjectUtils } from '../../../utils/object-utils';
 import { SolicitationHistoric } from '../model/solicitation-historic.model';
@@ -40,16 +40,19 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
 
     public changeStatusItens: MenuItem[] = [];
 
+    public isVisibleSendToPayment: boolean = false;
+    public solicitationPaymentObject: Solicitation = null;
+
     constructor(
         protected override readonly injector: Injector,
         protected override readonly service: SolicitationService,
-        protected readonly dialogService: DialogService,
         protected readonly ws: WebsocketService,
     ) {
         super(injector, service);
         this.subscriptions.push(
             this.ws.solicitacaoRecebida$.subscribe((solicitation: Solicitation) => {
-                this.service.findOne(solicitation.id).then(data => this.updateObject(solicitation));
+                const numb = Number(this.getObjectIdFromUrl());
+                this.service.findOne(numb).then(data => this.updateObject(solicitation));
             })
         );
     }
@@ -128,7 +131,15 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
                     this.changeStatusItens.push(this.createButtonRecusar());
                     break;
                 case SolicitationStatus.ANALYZING:
-                    this.changeStatusItens.push(this.createButtonGeneric('Concluir', 'fa fa-dollar-sign', 'text-success', SolicitationStatus.AWAITING_PAYMENT));
+                    this.changeStatusItens.push(
+                        {
+                            label: 'Concluir',
+                            icon: 'fa fa-dollar-sign',
+                            iconClass: 'text-success',
+                            command: () => {
+                                this.onClickOpenModalPayment();
+                            }
+                        });
                     this.changeStatusItens.push(this.createSeparator());
                     this.changeStatusItens.push(this.createButtonGeneric('Solicitar nova Amostra', 'fa fa-vial-virus', 'text-warning', SolicitationStatus.AWAITING_SAMPLE, [SolicitationStatus.TECHNICAL_BREAK]));
                     this.changeStatusItens.push(this.createButtonGeneric('Pausa Técnica', 'fa fa-pause', 'text-warning', SolicitationStatus.TECHNICAL_BREAK));
@@ -150,6 +161,15 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
                     break;
             }
         }
+    }
+
+    private onClickOpenModalPayment(): void {
+        this.solicitationPaymentObject = this.convertUtilsService.cloneObject(this.object);
+        this.isVisibleSendToPayment = true;
+    }
+
+    public onClickCloseModalPayment(): void {
+        this.isVisibleSendToPayment = false;
     }
 
     private dialogAction(newStatus: SolicitationStatus, statusExtras?: SolicitationStatus[]): void {
@@ -259,6 +279,7 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
             },
         };
     }
+
     private createSeparator(): MenuItem {
         return {
             separator: true

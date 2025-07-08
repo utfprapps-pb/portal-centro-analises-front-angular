@@ -26,16 +26,17 @@
 
     <div class="row mb-2">
         <div class="col-24">
-            <combobox label="Natureza do Projeto" [ngModel]="object.projectNature"
-                enum="SolicitationProjectNature" compCtrl disabled required>
+            <combobox label="Natureza do Projeto" [(ngModel)]="object.projectNature"
+                [disabled]="objectUpdating()" enum="SolicitationProjectNature" compCtrl required
+                (onChange)="onChangeProjectNature()">
             </combobox>
         </div>
     </div>
 
     <div class="row mb-2" *ngIf="object.projectNature == OPCAO_OUTRO">
         <div class="ms-auto col-23">
-            <input-text label="Outra Natureza" compCtrl disabled required
-                [ngModel]="object.otherProjectNature">
+            <input-text label="Outra Natureza" compCtrl required [(ngModel)]="object.otherProjectNature"
+                [disabled]="objectUpdating()">
             </input-text>
         </div>
     </div>
@@ -51,7 +52,11 @@
 
     <hr>
 
-    <ng-container *ngIf="['AA', 'AW', 'CLAE', 'COR', 'FTMIR'].includes(getSolicitationType())">
+    <ng-container *ngIf="['AA'].includes(getSolicitationType())">
+        <ng-container *ngTemplateOutlet="tableAA"></ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="['AW', 'CLAE', 'COR', 'FTMIR'].includes(getSolicitationType())">
         <ng-container *ngTemplateOutlet="tableAmostrasSimples"></ng-container>
     </ng-container>
 
@@ -67,9 +72,9 @@
 
         <div class="row mb-2">
             <div class="col-24">
-                <input-textarea label="Limites" compCtrl required
+                <input-textarea label="Valores esperados de concentração das amostras" compCtrl required
                     [(ngModel)]="object.form.limitesConcentracao" [maxlength]="255"
-                    [placeholder]="'Limites mínimo e máximo de concentração das amostras.'">
+                    [placeholder]="'Valores esperados de concentração das amostras.'">
                 </input-textarea>
             </div>
         </div>
@@ -77,7 +82,7 @@
         <div class="row mb-2">
             <div class="col-24">
                 <radio-button label="Forno" compCtrl required [(ngModel)]="object.form.forno" enum="AAForno"
-                    [vertical]="false" [ignore]="'FG'">
+                    [vertical]="false" [ignore]="'FG,GH'">
                 </radio-button>
             </div>
         </div>
@@ -92,14 +97,29 @@
 
         <div class="row mb-2">
             <div class="col-24">
-                <input-textarea label="Concentrações" compCtrl [(ngModel)]="object.form.curvaConcentracao"
+                <label class="form-label bold">Curva de concentrações padrões.</label>
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li>Sódio - 0.1, 0.5, 1, 2.5, 5 ppm</li>
+                    <li>Crômio - 1, 2.5, 5, 10, 15 e 20 ppm</li>
+                    <li>Maganês - 0.1, 0.5, 1, 2.5, 5, 10, 15 e 20 ppm</li>
+                </ul>
+                <!-- <input-textarea label="Concentrações" compCtrl [(ngModel)]="object.form.curvaConcentracao"
                     [maxlength]="255"
                     [placeholder]="'Concentrações da curva de calibração.\nPadrão: 20; 15; 10; 5; 2,5; 1; 0,5 e 0,1 ppm (mg/L).'">
                 </input-textarea>
                 <b>Caso a faixa de concentração da amostra não estiver dentro desta faixa, o usuário
                     será responsável por trazer a curva em concentrações adequadas para cada elemento
                     analisado.
-                </b>
+                </b> -->
+            </div>
+            <div class="col-12">
+                <ul>
+                    <li>Ferro - 1, 2.5, 5, 10, 15 e 20 ppm</li>
+                    <li>Cobre - 0.5, 1, 2.5, 5, 10 e 15 ppm</li>
+                    <li>Zinco - 0.1, 0.5, 1, 2.5, 5 e 10 ppm</li>
+                </ul>
             </div>
         </div>
 
@@ -108,7 +128,7 @@
     <ng-container *ngIf="getSolicitationType() == 'CLAE'">
         <div class="row mb-2">
             <div class="col-24">
-                <input-text label="Coluna" compCtrl required [ngModel]="object.form.coluna">
+                <input-text label="Coluna" compCtrl required [(ngModel)]="object.form.coluna">
                 </input-text>
             </div>
         </div>
@@ -145,7 +165,7 @@
 
         <div class="row mb-2">
             <div class="col-24">
-                <checkbox [(ngModel)]="object.form.utilizaPDA" [label]="'PDA'" />
+                <checkbox [(ngModel)]="object.form.utilizaPDA" [label]="'PDA'" [disabled]="disableForm" />
             </div>
         </div>
 
@@ -182,10 +202,62 @@
             </div>
         </div>
         <div class="row mb-2" *ngIf="object.form.modoEluicao == MODO_ELUICAO_GRA">
-            <div class="col-24">
-                <input-text label="Descrever as condições" compCtrl required
-                    [ngModel]="object.form.condicoesGradiente">
-                </input-text>
+            <div class="col-24 table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="index-column">Nº</th>
+                            <th *ngIf="!disableForm" class="button-column no-print"></th>
+                            <th *ngIf="!disableForm" class="button-column no-print"></th>
+                            <th>Tempo (min)</th>
+                            <th>Fluxo (ml/min)</th>
+                            <th>Solvente A (%)</th>
+                            <th>Solvente B (%)</th>
+                            <th class="button-column no-print">Total (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let gradiente of object.form.gradientes; let index = index">
+                            <td>
+                                <b>{{index +1}}</b>
+                            </td>
+                            <td *ngIf="!disableForm" class="button-column no-print">
+                                <button class="btn btn-sm btn-success" (click)="onClickAddGradiente()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </td>
+                            <td *ngIf="!disableForm" class="button-column no-print">
+                                <button class="btn btn-sm btn-danger" (click)="onClickRemoveGradiente(index)">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <input-number compCtrl="Tempo (min)" required [(ngModel)]="gradiente.tempo">
+                                </input-number>
+                            </td>
+                            <td>
+                                <input-number compCtrl="Fluxo (ml/min)" required
+                                    [(ngModel)]="gradiente.fluxo">
+                                </input-number>
+                            </td>
+                            <td>
+                                <input-number compCtrl="Solvente A (%)" required
+                                    [(ngModel)]="gradiente.solventeA" [max]="100" [min]="0"
+                                    (onChange)="onChangeSolvente('A', gradiente)">
+                                </input-number>
+                            </td>
+                            <td>
+                                <input-number compCtrl="Solvente B (%)" required
+                                    [(ngModel)]="gradiente.solventeB" [max]="100" [min]="0"
+                                    (onChange)="onChangeSolvente('B', gradiente)">
+                                </input-number>
+                            </td>
+                            <td>
+                                <b>{{(gradiente.solventeA || 0) + (gradiente.solventeB || 0)}}</b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </ng-container>
@@ -222,7 +294,7 @@
     </ng-container>
 
     <ng-container *ngIf="['DSC', 'TGADTA'].includes(getSolicitationType())">
-        <ng-container *ngTemplateOutlet="tableDSC"></ng-container>
+        <ng-container *ngTemplateOutlet="tableDSC_TGA"></ng-container>
     </ng-container>
 
     <ng-container *ngIf="getSolicitationType() == 'FTMIR'">
@@ -236,9 +308,9 @@
 
         <div class="row mb-2">
             <div class="col-12">
-                <input-number label="Faixa de varredura (400 a 4000 cm⁻¹)" compCtrl required
-                    [(ngModel)]="object.form.faixaVarredura" [maxlength]="4" [min]="400" [max]="4000">
-                </input-number>
+                <input-text label="Faixa de varredura (400 a 4000 cm⁻¹)" compCtrl required
+                    [(ngModel)]="object.form.faixaVarredura" [maxlength]="255">
+                </input-text>
             </div>
             <div class="col-12">
                 <input-number label="Resolucao (cm⁻¹)" compCtrl required [(ngModel)]="object.form.resolucao"
@@ -248,10 +320,14 @@
         </div>
 
         <div class="row mb-2">
-            <div class="col-24">
+            <div class="col-12">
                 <radio-button label="Registros dos Espectos" [(ngModel)]="object.form.registrosEspectos"
                     compCtrl required enum="FTMIRRegistroEspectro" [vertical]="false">
                 </radio-button>
+            </div>
+            <div class="col-12">
+                <input-number label="Scans" compCtrl required [(ngModel)]="object.form.scans" [maxlength]="4">
+                </input-number>
             </div>
         </div>
 
@@ -294,8 +370,8 @@
                         </tr>
                         <tr>
                             <th class="index-column">Nº</th>
-                            <th *ngIf="!disableForm" class="button-column no-print no-print"></th>
-                            <th *ngIf="!disableForm" class="button-column no-print no-print"></th>
+                            <th *ngIf="!disableForm" class="button-column no-print"></th>
+                            <th *ngIf="!disableForm" class="button-column no-print"></th>
                             <th class="">Identificação</th>
                             <th class="">Descrição</th>
                             <th class="">Quantidade de leituras por amostra</th>
@@ -306,12 +382,12 @@
                             <td>
                                 <b>{{index +1}}</b>
                             </td>
-                            <td *ngIf="!disableForm" class="button-column no-print no-print">
+                            <td *ngIf="!disableForm" class="button-column no-print">
                                 <button class="btn btn-sm btn-success" (click)="onClickAddAmostra()">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </td>
-                            <td *ngIf="!disableForm" class="button-column no-print no-print">
+                            <td *ngIf="!disableForm" class="button-column no-print">
                                 <button class="btn btn-sm btn-danger" (click)="onClickRemoveAmostra(index)">
                                     <i class="fa fa-minus"></i>
                                 </button>
@@ -329,6 +405,55 @@
                                 <input-number compCtrl="Quantidade de leituras por amostra" required
                                     [(ngModel)]="amostra.leituras" [maxlength]="2">
                                 </input-number>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #tableAA>
+        <div class="row mb-2" *ngIf="object.form?.amostras">
+            <div class="col-24 table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan="6">
+                                <h3 class="m-0 text-center">Amostras</h3>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="index-column">Nº</th>
+                            <th *ngIf="!disableForm" class="button-column no-print"></th>
+                            <th *ngIf="!disableForm" class="button-column no-print"></th>
+                            <th class="">Identificação</th>
+                            <th class="">Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let amostra of object.form.amostras; let index = index">
+                            <td>
+                                <b>{{index +1}}</b>
+                            </td>
+                            <td *ngIf="!disableForm" class="button-column no-print">
+                                <button class="btn btn-sm btn-success" (click)="onClickAddAmostra()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </td>
+                            <td *ngIf="!disableForm" class="button-column no-print">
+                                <button class="btn btn-sm btn-danger" (click)="onClickRemoveAmostra(index)">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Identificação" required
+                                    [(ngModel)]="amostra.identification">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Descrição" [(ngModel)]="amostra.description">
+                                </input-text>
                             </td>
                         </tr>
                     </tbody>
@@ -388,10 +513,10 @@
                                 </input-text>
                             </td>
                             <td>
-                                <input-number compCtrl="Faixa de Varredura Final (3° - 70°)" required
-                                    [(ngModel)]="amostra.faixaVarredura" [min]="3" [max]="70" [maxlength]="2"
+                                <input-text compCtrl="Faixa de Varredura Final (3° - 70°)" required
+                                    [(ngModel)]="amostra.faixaVarredura" [maxlength]="255"
                                     [placeholder]="'3° - XXX'">
-                                </input-number>
+                                </input-text>
                             </td>
                             <td>
                                 <radio-button compCtrl="Step" required enum="DRXStep"
@@ -415,7 +540,7 @@
         </div>
     </ng-template>
 
-    <ng-template #tableDSC>
+    <ng-template #tableDSC_TGA>
         <div class="row mb-2">
             <div class="col-24 table-responsive">
                 <table class="table table-striped">
@@ -429,7 +554,8 @@
                             <th class="min-180">Expande</th>
                             <th class="min-180">Libera Gás</th>
                             <th class="min-180 text-center">Massa (3 - 150mg)</th>
-                            <th class="min-180">Técnica DSC</th>
+                            <th class="min-180" *ngIf="['DSC'].includes(getSolicitationType())">Técnica DSC
+                            </th>
                             <th class="min-180 text-center">Atmosfera</th>
                             <th class="min-180 text-center">Fluxo de Gás (10 - 100 mL/min)</th>
                             <th class="min-180 text-center">Taxa de aquecimento<br>
@@ -482,7 +608,7 @@
                                     [placeholder]="'(3 - 150mg)'">
                                 </input-number>
                             </td>
-                            <td>
+                            <td *ngIf="['DSC'].includes(getSolicitationType())">
                                 <radio-button compCtrl="Técnica DSC" required enum="DSCTecnica"
                                     [(ngModel)]="amostra.tecnica">
                                 </radio-button>
@@ -506,10 +632,10 @@
                                 </input-number>
                             </td>
                             <td>
-                                <input-number compCtrl="Intervalo de temperatura (°C)" required
-                                    [(ngModel)]="amostra.intervaloTemperatura" [min]="30" [maxlength]="6"
-                                    [placeholder]="'30 - XXX'" [maxFractionDigits]="2">
-                                </input-number>
+                                <input-text compCtrl="Intervalo de temperatura (°C)" required
+                                    [(ngModel)]="amostra.intervaloTemperatura" [maxlength]="255"
+                                    [placeholder]="'30 - XXX'">
+                                </input-text>
                             </td>
                         </tr>
                     </tbody>
@@ -699,7 +825,8 @@
                                 <combobox [compCtrl]="'Amostra ' + amostraIndex + 1 + ' - Equipamento'"
                                     required [filterBy]="'id,name,shortname'"
                                     [options]="analise.id == null ? equipamentosDisponiveis : equipamentos"
-                                    [(ngModel)]="analise.equipment" [disabled]="analise.id != null || !isAdmin">
+                                    [(ngModel)]="analise.equipment"
+                                    [disabled]="analise.id != null || !isAdmin">
                                 </combobox>
                             </td>
                         </tr>
@@ -713,7 +840,33 @@
 
     <ng-template #formularioTabelas let-amostra>
         <div class="table-responsive">
-            <ng-container *ngIf="['AA', 'AW', 'CLAE', 'COR', 'FTMIR'].includes(getSolicitationType())">
+            <ng-container *ngIf="['AA'].includes(getSolicitationType())">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Identificação</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input-text compCtrl="Identificação" required disabled
+                                    [ngModel]="amostra.identification">
+                                </input-text>
+                            </td>
+                            <td>
+                                <input-text compCtrl="Descrição" disabled [ngModel]="amostra.description">
+                                </input-text>
+                            </td>
+                        </tr>
+                        <ng-container
+                            *ngTemplateOutlet="posFormularioRetirada; context: {$implicit: amostra}"></ng-container>
+                    </tbody>
+                </table>
+            </ng-container>
+
+            <ng-container *ngIf="['AW', 'CLAE', 'COR', 'FTMIR'].includes(getSolicitationType())">
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -773,9 +926,9 @@
                                 </input-text>
                             </td>
                             <td>
-                                <input-number compCtrl="Faixa de Varredura Final (3° - 70°)" required
+                                <input-text compCtrl="Faixa de Varredura Final (3° - 70°)" required
                                     [ngModel]="amostra.faixaVarredura" disabled [placeholder]="'3° - XXX'">
-                                </input-number>
+                                </input-text>
                             </td>
                             <td>
                                 <radio-button compCtrl="Step" required enum="DRXStep" [ngModel]="amostra.step"

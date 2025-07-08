@@ -5,22 +5,26 @@
     @if(uploader) {
     <p-fileUpload #fileupload #input [multiple]="multiple" [maxFileSize]="size" auto="true"
         chooseLabel="Selecionar Arquivos" (onSelect)="onBeforeUpload($event)" customUpload="true"
-        showUploadButton="true" class="no-print">
+        showUploadButton="true" class="no-print" [disabled]="disabled">
 
         <ng-template pTemplate="header"></ng-template>
+        <ng-template pTemplate="file"> </ng-template>
 
-        <ng-template pTemplate="content" let-files let-removeFileCallback="removeFileCallback">
+        <ng-template pTemplate="content" let-files let-removeFileCallback="removeFileCallback"
+            let-chooseCallback="chooseCallback">
             @if(uploading && uploading.length == 0) {
-            <div class="d-flex align-items-center justify-content-center flex-column">
+            <div class="d-flex align-items-center justify-content-center flex-column"
+                (click)="chooseCallback()"
+                [ngClass]="disabled ? 'cursor-not-allowed' : 'cursor-pointer'">
                 <i class="pi pi-cloud-upload big-icon"></i>
                 <p class="mt-4 mb-0">Arraste e solte os arquivos aqui para fazer upload.</p>
             </div>
             } @else {
-            <p-table [value]="uploading">
+            <p-table [value]="uploading" #tableUploading [dataKey]="'fileHash'">
                 <ng-template pTemplate="body" let-file>
-                    <tr>
+                    <tr >
                         <td class="text-center" style="width: 44px;">
-                            @if (file.url) {
+                            @if (file.url && 'fa fa-file-image' == getFileIcon(file)) {
                             <img [src]="file.url" width="100" class="shadow-4" />
                             } @else {
                             <i class="big-icon" [ngClass]="getFileIcon(file)"></i>
@@ -54,7 +58,7 @@
         <ng-template pTemplate="body" let-file let-index="rowIndex">
             <tr [pReorderableRow]="index">
                 <td class="text-center" style="width: 44px;" pReorderableRowHandle>
-                    @if (file.url) {
+                    @if (file.url && 'fa fa-file-image' == getFileIcon(file)) {
                     <img [src]="file.url" width="100" class="shadow-4" />
                     } @else {
                     <i class="big-icon" [ngClass]="getFileIcon(file)"></i>

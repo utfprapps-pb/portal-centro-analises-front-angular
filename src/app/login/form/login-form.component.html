@@ -14,7 +14,7 @@
                         <ng-container *ngIf="template == 'login'">
                             <div>
                                 <div class="my-auto">
-                                    <input-email label="Email" compCtrl required [(ngModel)]="object.email"
+                                    <input-email label="E-mail" compCtrl required [(ngModel)]="object.email"
                                         [minlength]="4" [maxlength]="255"></input-email>
                                     <div class="row">
                                         <div class="col-24 p-0">
@@ -50,7 +50,7 @@
                         <ng-container *ngIf="template == 'password'">
                             <div>
                                 <div class="my-auto">
-                                    <input-email label="Email" compCtrl required
+                                    <input-email label="E-mail" compCtrl required
                                         [(ngModel)]="passwordRecover.email" [minlength]="4"
                                         [maxlength]="255"></input-email>
                                     <div class="row">
@@ -70,7 +70,7 @@
                                         <div class="col-12 p-0">
                                             <p class="small-text pt-1 link cursor-pointer"
                                                 (click)="requestEmailCode()">
-                                                Solicitar código por email
+                                                Solicitar código por e-mail
                                             </p>
                                         </div>
                                     </div>
@@ -90,7 +90,7 @@
                         <ng-container *ngIf="template == 'confirm'">
                             <div>
                                 <div class="my-auto">
-                                    <input-email label="Email" compCtrl required [(ngModel)]="object.email"
+                                    <input-email label="E-mail" compCtrl required [(ngModel)]="object.email"
                                         [minlength]="4" [maxlength]="255"></input-email>
                                     <div class="row">
                                         <div class="col-24 p-0">
@@ -129,15 +129,24 @@
                                         </input-mask>
                                     </ng-template>
                                 </div>
+                                <div class="my-auto">
+                                    <input-email label="E-mail" compCtrl required [(ngModel)]="newUser.email"
+                                        [minlength]="4" [maxlength]="255">
+                                    </input-email>
+                                </div>
+                                <div class="row">
+                                    <div class="col-24 p-0">
+                                        <p class="small-text pt-1">
+                                            Instituição: professores.utfpr.edu.br / utfpr.edu.br /
+                                            alunos.utfpr.edu.br<br>
+                                            Externo: qualquer e-mail permitido.
+                                        </p>
+                                    </div>
+                                </div>
                                 <div class="my-auto" *ngIf="requerRA()">
                                     <input-number label="RA" compCtrl required [(ngModel)]="newUser.raSiape"
                                         [minlength]="6" [maxlength]="10">
                                     </input-number>
-                                </div>
-                                <div class="my-auto">
-                                    <input-email label="Email" compCtrl required [(ngModel)]="newUser.email"
-                                        [minlength]="4" [maxlength]="255">
-                                    </input-email>
                                 </div>
                                 <div class="my-auto">
                                     <input-password label="Nova Senha" compCtrl required [minlength]="6"
@@ -154,6 +163,12 @@
                         <div class="mt-auto">
                             <div class="row mt-4">
                                 <div class="col-24 p-0 text-center">
+                                    <ng-container *ngIf="template == 'register'">
+                                        <p class="small-text mb-2">
+                                            Após realizar o cadastro, será enviado um link<br>
+                                            para o seu e-mail para ativar o cadastro.
+                                        </p>
+                                    </ng-container>
                                     <button class="w-100 btn btn-lg btn-primary"
                                         (click)="onClickButton()">{{buttonText}}</button>
                                     <ng-container *ngIf="template == 'login'; else footerReturn">

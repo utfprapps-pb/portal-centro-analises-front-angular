@@ -36,6 +36,18 @@ export class HttpClientService {
         });
     }
 
+    public getReturnBlob(url: string, blobType: string): Promise<Blob> {
+        return new Promise((resolve, reject) => {
+            this.http.get(url, { observe: 'body', responseType: 'blob' }).subscribe(
+                (entity) => {
+                    resolve(entity);
+                }, (error) => {
+                    reject(error);
+                }
+            );
+        });
+    }
+
     public put(url: string, body: any): Promise<any> {
         return new Promise((resolve, reject) => {
             this.http.put(url, body, { observe: 'body' }).subscribe(

@@ -8,6 +8,7 @@ import { ZModel } from '../../../generics/zmodel';
 import { AAForno } from './../../../core/enums/aa-forno.enum';
 import { RetiradaAmostra } from './../../../core/enums/retirada-amostras.enum';
 import { SolicitationAmostra } from './solicitation-amostra.model';
+import { SolicitationFormGradiente } from './solicitation-form-gradiente.model';
 import { Solicitation } from './solicitation.model';
 
 export class SolicitationForm extends ZModel {
@@ -39,7 +40,7 @@ export class SolicitationForm extends ZModel {
     compOndaCanal2: number = null;
     modoEluicao: CLAEModoEluicao = null;
     composicaoFaseMovel: string = null;
-    condicoesGradiente: string = null;
+    gradientes: SolicitationFormGradiente[] = [];
 
     // COR
     locationMed: string = null;
@@ -50,7 +51,8 @@ export class SolicitationForm extends ZModel {
 
     // FTMIR
     servico: FTMIRServico = null;
-    faixaVarredura: number = null;
+    faixaVarredura: string = null;
+    scans: number = null;
     resolucao: number = null;
     registrosEspectos: FTMIRRegistroEspectro = null;
     caracteristica: FTMIREstado = null;

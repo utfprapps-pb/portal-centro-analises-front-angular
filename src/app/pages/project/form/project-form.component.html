@@ -74,19 +74,21 @@
                                 <b>{{index + 1}}</b>
                             </td>
                             <td *ngIf="isResponsavel()">
-                                <button class="btn btn-sm btn-success" (click)="onClickAddAluno()">
+                                <button class="btn btn-sm btn-success" (click)="onClickAddAluno()"
+                                    [disabled]="!isResponsavel()">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </td>
                             <td *ngIf="isResponsavel()">
-                                <button class="btn btn-sm btn-danger" (click)="onClickRemoveAluno(index)">
+                                <button class="btn btn-sm btn-danger" (click)="onClickRemoveAluno(index)"
+                                    [disabled]="!isResponsavel()">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </td>
                             <td>
                                 <combobox compCtrl="students" [required]="true" [columns]="'id,name'"
                                     [filterBy]="'id,name,raSiape,email'" [options]="alunos"
-                                    [(ngModel)]="object.students[index]">
+                                    [(ngModel)]="object.students[index].user" [disabled]="!isResponsavel()">
                                 </combobox>
                             </td>
                         </tr>

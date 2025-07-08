@@ -2,6 +2,7 @@ import { Enum, Hidden, Prop, Title } from '../../../core/decorators/decorators';
 import { SolicitationProjectNature } from '../../../core/enums/solicitation-project-nature.enum';
 import { ZModel } from '../../../generics/zmodel';
 import { User } from '../../cadastros/user/model/user.model';
+import { ProjectStudent } from './projectstudent.model';
 
 export class Project extends ZModel {
 
@@ -24,7 +25,7 @@ export class Project extends ZModel {
     user: User = null;
 
     @Hidden()
-    students: User[] = []
+    students: ProjectStudent[] = []
 
     @Title('Natureza')
     @Prop('enum')

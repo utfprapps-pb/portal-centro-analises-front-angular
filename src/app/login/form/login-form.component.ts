@@ -63,7 +63,7 @@ export class LoginFormComponent extends FormBase {
         this.blockForm();
         switch (template) {
             case 'login':
-                this.formTitle = 'Bem vindo!';
+                this.formTitle = 'Bem-vindo!';
                 this.subtitle = 'Digite seus dados para continuar';
                 this.buttonText = 'Entrar';
                 break;
@@ -75,8 +75,8 @@ export class LoginFormComponent extends FormBase {
                 this.passwordRecover.email = this.object.email;
                 break;
             case 'confirm':
-                this.formTitle = 'Reenviar email de validação';
-                this.subtitle = 'Valide seu email para poder acessar o sistema.';
+                this.formTitle = 'Reenviar e-mail de validação';
+                this.subtitle = 'Valide seu e-mail para poder acessar o sistema.';
                 this.buttonText = 'Solicitar validação';
                 break;
             case 'register':
@@ -89,7 +89,7 @@ export class LoginFormComponent extends FormBase {
                     }
                 } finally {
                     this.formTitle = 'Criar nova Conta';
-                    this.subtitle = 'Seja bem vindo, registre-se para acessar o sistema!';
+                    this.subtitle = 'Seja bem-vindo, registre-se para acessar o sistema!';
                     this.buttonText = 'Cadastrar';
                     this.newUser = new RegisterUser();
                     this.newUser.email = this.object.email;
@@ -196,7 +196,7 @@ export class LoginFormComponent extends FormBase {
         if (this.validateForm()) {
             this.blockForm();
             this.loginService.requestValidation(this.object.email).then(data => {
-                this.toastrService.showSuccess(this.formTitle, 'Validação de email enviada com Sucesso!');
+                this.toastrService.showSuccess(this.formTitle, 'Validação de e-mail enviada com Sucesso!');
                 this.changeTemplate('login');
                 this.releaseForm()
             }, error => {
@@ -217,7 +217,7 @@ export class LoginFormComponent extends FormBase {
         if (this.validateForm()) {
             this.blockForm();
             this.loginService.createNewUser(this.newUser).then((data: any) => {
-                this.toastrService.showSuccess(this.formTitle, "Usuário cadastrado com Sucesso!");
+                this.toastrService.showSuccess(this.formTitle, 'Usuário cadastrado com Sucesso!\nUm e-mail foi enviado para realizar a ativação da conta');
                 this.changeTemplate('login');
                 this.object.email = this.newUser.email;
                 this.object.password = this.newUser.password;

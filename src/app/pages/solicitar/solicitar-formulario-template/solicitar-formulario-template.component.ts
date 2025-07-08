@@ -23,6 +23,7 @@ import { ProjectService } from '../../project/project.service';
 import { SolicitationAmostraAnalise } from '../../solicitation/model/solicitation-amostra-analise.model';
 import { SolicitationAmostraFoto } from '../../solicitation/model/solicitation-amostra-foto.model';
 import { SolicitationAmostra } from '../../solicitation/model/solicitation-amostra.model';
+import { SolicitationFormGradiente } from '../../solicitation/model/solicitation-form-gradiente.model';
 import { Solicitation } from '../../solicitation/model/solicitation.model';
 import { SolicitationService } from '../../solicitation/solicitation.service';
 
@@ -202,7 +203,11 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
             }
         }
         this.object.form.amostras = [];
+        this.object.form.gradientes = [];
         this.onClickAddAmostra();
+        if (this.getSolicitationType() == 'CLAE') {
+            this.onClickAddGradiente();
+        }
     }
 
     public onChangeNaturezaAmostra(): void {
@@ -262,6 +267,20 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
         this.updateAmostraNumber();
         if (ObjectUtils.isEmpty(this.object.form.amostras)) {
             this.onClickAddAmostra();
+        }
+    }
+
+    public onClickAddGradiente(): void {
+        if (this.disableForm) return;
+        const gradiente: SolicitationFormGradiente = new SolicitationFormGradiente();
+        this.object.form.gradientes.push(gradiente);
+    }
+
+    public onClickRemoveGradiente(index: number): void {
+        if (this.disableForm) return;
+        this.object.form.gradientes.splice(index, 1);
+        if (ObjectUtils.isEmpty(this.object.form.gradientes)) {
+            this.onClickAddGradiente();
         }
     }
 
@@ -495,6 +514,20 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
                 }).finally(() => this.releaseForm());
             }
         });
+    }
+
+    public onChangeProjectNature(): void {
+        if (this.object.projectNature != this.OPCAO_OUTRO) {
+            this.object.otherProjectNature = null;
+        }
+    }
+
+    public onChangeSolvente(solvente: 'A' | 'B', gradiente: SolicitationFormGradiente): void {
+        if (solvente == 'A') {
+            gradiente.solventeB = 100 - (gradiente.solventeA || 0);
+        } else {
+            gradiente.solventeA = 100 - (gradiente.solventeB || 0);
+        }
     }
 
 }

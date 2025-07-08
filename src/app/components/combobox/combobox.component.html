@@ -2,7 +2,7 @@
     <label [for]="id" *ngIf="!!label" class="form-label bold">{{label}}</label>
 
     <div class="position-relative" [ngxTooltip]="displayValue" [tooltipDisabled]="!displayValue" arrow>
-        <p-dropdown #input [id]="id" [name]="name" [options]="_options" [ngModel]="innerObject"
+        <p-dropdown #input [id]="id" [name]="name" [options]="opcoesFiltradas" [ngModel]="innerObject"
             [focusOnHover]="true" [disabled]="disabled" [readonly]="disabled" [optionLabel]="!!_enum ? 'key' : 'id'"
             [showClear]="showClear && !disabled && !!innerObject" [class]="class" (onClear)="forceClear()"
             (onChange)="onChangeDropdown($event.value)" [filterBy]="filterBy" [filter]="!!filterBy"

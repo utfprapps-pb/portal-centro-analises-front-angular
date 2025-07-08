@@ -24,14 +24,10 @@
     }
 }
 
-* {
-    // font-size: $font-size-default;
-}
-
 body {
     background-color: var(--green-100);
-    overflow: hidden;
-    overflow-y: auto;
+    overflow        : hidden;
+    overflow-y      : auto;
 }
 
 .row {
@@ -41,6 +37,10 @@ body {
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+.cursor-not-allowed {
+    cursor: not-allowed;
 }
 
 .small-text {
@@ -91,8 +91,10 @@ p {
     font-weight: bold;
 }
 
+
 form-list form-base form,
-form-crud form-base form {
+form-crud form-base form,
+form-report form-base form {
     background   : var(--surface-0);
     border-radius: 5px;
 }
@@ -104,10 +106,6 @@ form-crud form-base form {
 .d-contents {
     display: contents;
 }
-
-// .ng-content {
-//     overflow: auto;
-// }
 
 @for $i from 0 through 5 {
     invalid-info {
@@ -127,20 +125,29 @@ form-crud form-base form {
 }
 
 .text-ellipsis {
-    white-space  : nowrap !important;
-    text-overflow: ellipsis;
-    overflow     : hidden;
+    white-space     : nowrap !important;
+    text-overflow   : ellipsis;
+    overflow        : hidden;
+    // max-width       : 0px;
     display      : block;
 }
 
 .dot {
     height: 24px;
-    width: 24px;
+    width : 24px;
 
     border-radius: 50%;
 
     color: #fff;
 
-    text-align: center;
+    text-align   : center;
     align-content: center;
+}
+
+.swal2-container.swal2-center.swal2-backdrop-show {
+    z-index: 2103;
+}
+
+div[ngxclickoutside].floating {
+    z-index: 2104;
 }

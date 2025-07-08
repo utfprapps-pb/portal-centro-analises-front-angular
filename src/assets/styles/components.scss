@@ -73,17 +73,35 @@ p-dropdown {
     }
 }
 
-p-inputnumber.form-control {
-    padding: 0;
+p-inputnumber {
+    &.form-control {
+        padding: 0;
 
-    & span {
-        width: 100%;
+        & span {
+            width: 100%;
+        }
+
+        & .p-inputnumber-clear-icon {
+            width: fit-content !important;
+        }
     }
 
-    & .p-inputnumber-clear-icon {
-        width: fit-content !important;
+    &.required {
+        & .p-component.p-element.p-inputnumber-input {
+            border-left  : 3px solid var(--bs-form-invalid-color) !important;
+            border-bottom: 1px solid var(--bs-form-invalid-color) !important;
+        }
+    }
+
+    &.valid {
+        & .p-component.p-element.p-inputnumber-input {
+            border-left-color  : var(--bs-form-valid-color) !important;
+            border-bottom-color: var(--bs-form-valid-color) !important;
+        }
     }
 }
+
+
 
 p-editor {
     &.required {
@@ -141,6 +159,7 @@ p-dropdown.p-element {
 }
 
 datatable {
+
     span,
     input {
         font-size: var(--font-size-default);
@@ -154,6 +173,7 @@ datatable {
 .footer {
     p-tieredmenu {
         position: absolute;
+
         &>div.p-tieredmenu {
             position : sticky;
             transform: translateY(-100%);

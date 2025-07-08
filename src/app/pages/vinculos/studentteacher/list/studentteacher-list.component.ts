@@ -3,7 +3,6 @@ import { Component, Injector, ViewChild } from '@angular/core';
 import { DatatableComponent } from '../../../../components/datatable/datatable/datatable.component';
 import { FormList } from '../../../../components/form-list/form-list';
 import { FormListComponent } from '../../../../components/form-list/form-list.component';
-import { DialogService } from '../../../../core/services/dialog.service';
 import { StudentTeacher } from '../model/studentteacher.model';
 import { StudentTeacherService } from '../studentteacher.service';
 import { Dialog } from './../../../../core/services/dialog.service';
@@ -24,7 +23,6 @@ export class StudentTeacherListComponent extends FormList<StudentTeacher> {
     constructor(
         protected override readonly injector: Injector,
         protected override readonly service: StudentTeacherService,
-        protected readonly dialogService: DialogService,
     ) {
         super(injector, service);
     }

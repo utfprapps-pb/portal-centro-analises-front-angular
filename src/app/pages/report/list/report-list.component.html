@@ -1,0 +1,14 @@
+<form-report #formView [title]="'Relatórios'">
+
+    <div class="row">
+        @for (card of cards; track card.title) {
+        @if(card.visible) {
+        <div class="col-12 col-md-8 col-lg-4 mb-3">
+            <report-card [object]="card">
+            </report-card>
+        </div>
+        }
+        }
+    </div>
+
+</form-report>

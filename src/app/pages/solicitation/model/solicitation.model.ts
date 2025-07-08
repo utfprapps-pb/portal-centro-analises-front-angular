@@ -66,14 +66,9 @@ export class Solicitation extends ZModelCrud {
 
     scheduleDate: Date = null;
 
-    price: number = null;
-    amountHours: number = null;
     amountSamples: number = 1;
-    totalPrice: number = null;
+    termsOfUses: SolicitationTermsOfUse[] = []
 
     observation: string = null;
-    paid: boolean = false;
-
-    termsOfUses: SolicitationTermsOfUse[] = []
 
 }

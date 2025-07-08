@@ -7,7 +7,7 @@ import { FormCrud } from '../../form-crud/form-crud';
 import { FormCrudComponent } from '../../form-crud/form-crud.component';
 
 @Component({
-    selector: 'ChangePasswordComponent',
+    selector: 'change-password',
     templateUrl: './change-password.component.html',
     styleUrl: './change-password.component.scss'
 })
@@ -50,16 +50,14 @@ export class ChangePasswordComponent extends FormCrud<UserDTO> {
             this.service.changePassword(object).then(async (data) => {
                 await this.onAfterSave(object, data);
                 this.toastrService.showSuccess(this.title, 'Registro salvo com sucesso!');
-                this.releaseForm();
                 this.onChangeComplete.emit(true);
             }, error => {
-                this.releaseForm();
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
                 } else {
                     this.toastrService.showError(this.title, 'Erro ao salvar Registro!');
                 }
-            });
+            }).finally(() => this.releaseForm());
         }
     }
 

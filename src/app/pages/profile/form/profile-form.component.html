@@ -13,7 +13,7 @@
     </div>
     <div class="row" [ngClass]="{'mb-2': isAluno}">
         <div [ngClass]="isAluno ? 'col-12' : 'col-16'">
-            <input-email label="Email" compCtrl [disabled]="true" required [ngModel]="object.email" [minlength]="4"
+            <input-email label="E-mail" compCtrl [disabled]="true" required [ngModel]="object.email" [minlength]="4"
                 [maxlength]="255">
             </input-email>
         </div>
