@@ -156,10 +156,12 @@ export class LoginFormComponent extends FormBase {
                 this.router.navigate(['/inicio'], { replaceUrl: true });
             }, error => {
                 this.releaseForm();
+                const backendMessage = error.error?.message;
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
                 } else {
-                    this.toastrService.showError(this.formTitle, 'Erro ao realizar login, tente novamente mais tarde!');
+                    const mensagemExibicao = backendMessage || 'Erro ao realizar login, tente novamente mais tarde!';
+                    this.toastrService.showError(this.formTitle, mensagemExibicao);
                 }
             });
         }
@@ -204,7 +206,13 @@ export class LoginFormComponent extends FormBase {
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
                 } else {
-                    this.toastrService.showError(this.formTitle, 'Erro ao solicitar validação de email, tente novamente mais tarde!');
+                    //Fallback para erros não mapeados 
+                    const backendMessage = error.error?.message;
+                    const mensagemExibicao = typeof backendMessage === 'string' 
+                        ? backendMessage 
+                        : 'Erro ao solicitar validação de email, tente novamente mais tarde!';
+                    
+                    this.toastrService.showError(this.formTitle, mensagemExibicao);
                 }
             });
         }
