@@ -1,14 +1,22 @@
 pipeline {
     agent any
-    stages {   
-        stage('Docker Compose UP') {
+    stages {
+        stage('Deploy Production') {
+            when {
+                branch 'main'
+            }
             steps {
-                echo "Branch: ${env.BRANCH_NAME}"
-                if (env.BRANCH_NAME == 'main') {
-                    sh 'docker compose up -d --build'
-                } else if (env.BRANCH_NAME == 'dev') {
-                    sh 'docker compose -f docker-compose-dev.yml up -d --build'
-                }
+                echo "Production Deploy (branch: ${env.BRANCH_NAME})"
+                sh 'docker compose up -d --build'
+            }
+        }
+        stage('Deploy Staging') {
+            when {
+                branch 'dev'
+            }
+            steps {
+                echo "Staging Deploy (branch: ${env.BRANCH_NAME})"
+                sh 'docker compose -f docker-compose-dev.yml up -d --build'
             }
         }
     }
