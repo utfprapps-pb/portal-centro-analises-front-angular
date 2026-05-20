@@ -2,8 +2,7 @@ pipeline {
     agent any
     stages {   
         stage('Docker Compose UP') {
-            steps {
-                sh 'docker compose up -d --build'
+            steps {                
                 // Build da imagem Docker usando a tag da branch correspondente
                 script {
                     if (env.BRANCH_NAME == 'main') {
