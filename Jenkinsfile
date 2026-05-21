@@ -1,6 +1,7 @@
 pipeline {
     agent any
     stages {
+        echo "Deploy Pipeline Started (branch: ${env.BRANCH_NAME})"
         stage('Deploy Production') {
             when {
                 branch 'main'
