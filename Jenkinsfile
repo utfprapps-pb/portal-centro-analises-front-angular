@@ -1,13 +1,18 @@
 pipeline {
     agent any
-    stages {        
-        stage('Deploy Production') {
-            echo "Deploy Pipeline Started (branch: ${env.BRANCH_NAME})"
+    stages {
+         stage('Deploy Web Client') {                        
+            steps {
+                echo "Deploy Web Client - Branch: ${env.BRANCH_NAME}"                
+            }
+        }
+        stage('Deploy Production') {            
             when {
                 branch 'main'
             }
             steps {
-                echo "Production Deploy (branch: ${env.BRANCH_NAME})"
+                echo "Branch: ${env.BRANCH_NAME}"
+                echo "Deploy: Production"
                 sh 'docker compose up -d --build'
             }
         }
@@ -16,7 +21,8 @@ pipeline {
                 branch 'dev'
             }
             steps {
-                echo "Staging Deploy (branch: ${env.BRANCH_NAME})"
+                echo "Branch: ${env.BRANCH_NAME}"
+                echo "Deploy: Staging"
                 sh 'docker compose -f docker-compose-dev.yml up -d --build'
             }
         }
