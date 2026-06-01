@@ -17,7 +17,7 @@ import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
         CompCtrlContainer.PROVIDER(CheckBoxComponent)
     ],
 })
-export class CheckBoxComponent extends CompCtrlContainer implements ControlValueAccessor {
+export class CheckBoxComponent extends CompCtrlContainer<any> implements ControlValueAccessor {
 
     @ViewChild('input') component: Checkbox;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
@@ -29,10 +29,10 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
     @Input() vertical: boolean = true;
 
     @Output('onChange') onChangeEventEmitter: EventEmitter<number> = new EventEmitter();
-
+    
     private _innerObject: any;
     private _innerValue: string = null;
-    private _disabled: boolean = null;
+    private _disabled: boolean = false;
     private _required: boolean = false;
     public invalidCause: string[] = null;
 
@@ -46,6 +46,8 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
     // Função chamada quando o componente é tocado (tocado no DOM)
     private onTouched: () => void = () => { };
 
+    private onValidatorChange: () => void = () => { };
+
     // Registra a função a ser chamada quando o valor interno muda
     registerOnChange(fn: (value: any) => void): void {
         this.onChange = fn;
@@ -54,6 +56,10 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
     // Registra a função a ser chamada quando o componente é tocado
     registerOnTouched(fn: () => void): void {
         this.onTouched = fn;
+    }
+
+    registerOnValidatorChange(fn: () => void): void {
+        this.onValidatorChange = fn;
     }
 
     @Input() set disabled(value: any) {
@@ -73,6 +79,7 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
     @Input() set required(value: any) {
         this._required = this.convertUtilsService.getBoolean(value, false);
     }
+    
     get required() {
         return this._required;
     }
@@ -95,10 +102,17 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
 
     // Define o valor do modelo e chama a função de callback
     set innerValue(value: any) {
-        if (value !== this.innerValue) {
+        if (value !== this._innerValue) {
             this._innerValue = value;
+            
             this.onChange(value);
             this.onChangeEventEmitter.emit(value);
+            
+            if (this.onValidatorChange) {
+                this.onValidatorChange();
+            }
+
+            this.markForCheck();
         }
     }
 
@@ -158,12 +172,10 @@ export class CheckBoxComponent extends CompCtrlContainer implements ControlValue
         return this.label;
     }
 
-    override validate(): string[] {
+    override getValidationMessage(): string[] {
         const causes: string[] = [];
-        if (this.required) {
-            if (!!this.innerValue == false) {
-                causes.push('Não assinalado');
-            }
+        if (this.required && !this.innerValue) {
+            causes.push('Não assinalado');
         }
         return causes;
     }

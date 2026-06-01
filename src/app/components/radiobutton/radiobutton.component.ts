@@ -18,36 +18,37 @@ import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
         CompCtrlContainer.PROVIDER(RadioButtonComponent)
     ],
 })
-export class RadioButtonComponent extends CompCtrlContainer implements ControlValueAccessor {
+export class RadioButtonComponent extends InputBaseComponent {
 
     @ViewChild('input') component: ElementRef<HTMLDivElement>;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
-    @Input() name: string = Guid.raw();
-    @Input() label: string = null;
-    @Input() placeholder: string = '';
-    @Input() class: string = 'field-checkbox d-flex';
+    @Input() override class: string = 'field-checkbox d-flex';
     @Input() vertical: boolean = true;
     @Input() ignore: string = null;
     @Input() disables: string = null;
 
-    @Input('showClear') showClear: boolean = true;
-
-    @Output('onChange') onChangeEventEmitter: EventEmitter<number> = new EventEmitter();
-
     private _innerObject: any;
-    private _innerValue: string = null;
-    private _disabled: boolean = null;
-    private _required: boolean = false;
-    public invalidCause: string[] = null;
+    public _options: any[] = []
+
+    @Input('options') set options(value: any[]) {
+        if (ObjectUtils.isNotEmpty(value)) {
+            this._options = value.map(it => ({
+                guid: Guid.raw(),
+                key: it.value,
+                value: it.label
+            }));
+        }
+    }
 
     @Input('enum') set enum(name: string) {
+        this._options = [];
         const enu = getEnum(name);
         for (const key in enu) {
             this._options.push({ guid: Guid.raw(), key: key, value: getEnumTranslation(name, key) })
         }
     };
-    public _options: any[] = []
+
     get options(): any[] {
         if (ObjectUtils.isEmpty(this.ignore)) {
             return this._options;
@@ -59,42 +60,8 @@ export class RadioButtonComponent extends CompCtrlContainer implements ControlVa
         return this.disabled || (ObjectUtils.isNotEmpty(this.disables) && this.disables.split(',').includes(option.key));
     }
 
-    constructor(protected readonly convertUtilsService: ConvertUtilsService) {
-        super();
-    }
-
-    // Função chamada quando o valor interno muda
-    private onChange: (value: any) => void = () => { };
-
-    // Função chamada quando o componente é tocado (tocado no DOM)
-    private onTouched: () => void = () => { };
-
-    // Registra a função a ser chamada quando o valor interno muda
-    registerOnChange(fn: (value: any) => void): void {
-        this.onChange = fn;
-    }
-
-    // Registra a função a ser chamada quando o componente é tocado
-    registerOnTouched(fn: () => void): void {
-        this.onTouched = fn;
-    }
-
-    @Input() set disabled(value: any) {
-        this._disabled = this.convertUtilsService.getBoolean(value, false);
-    }
-
-    get disabled() {
-        if (this.internalDisabled != null) {
-            return this.internalDisabled
-        }
-        return this._disabled;
-    }
-
-    @Input() set required(value: any) {
-        this._required = this.convertUtilsService.getBoolean(value, false);
-    }
-    get required() {
-        return this._required;
+    constructor(protected override readonly convertUtilsService: ConvertUtilsService) {
+        super(convertUtilsService);
     }
 
     get innerObject(): any {
@@ -108,22 +75,8 @@ export class RadioButtonComponent extends CompCtrlContainer implements ControlVa
         }
     }
 
-    // Obtém o valor do modelo
-    get innerValue(): any {
-        return this._innerValue;
-    }
-
-    // Define o valor do modelo e chama a função de callback
-    set innerValue(value: any) {
-        if (value !== this.innerValue) {
-            this._innerValue = value;
-            this.onChange(value);
-            this.onChangeEventEmitter.emit(value);
-        }
-    }
-
     // Escreve o valor do modelo para o componente
-    writeValue(value: any): void {
+    override writeValue(value: any): void {
         if (value !== this.innerObject) {
             if (typeof (value) == 'string') {
                 let val = this._options.find(it => it.key == value);
@@ -135,28 +88,6 @@ export class RadioButtonComponent extends CompCtrlContainer implements ControlVa
                 this.innerObject = value;
             }
         }
-    }
-
-    public addClass(value: string) {
-        const classes: string[] = this.class.split(' ');
-        for (var i = 0; i < classes.length; i++) {
-            if (classes[i] == value) {
-                return;
-            }
-        }
-        classes.push(value);
-        this.class = classes.join(' ');
-    }
-
-    public removeClass(value: string) {
-        const classes: string[] = this.class.split(' ');
-        for (var i = 0; i < classes.length; i++) {
-            if (classes[i] == value) {
-                classes.splice(i, 1);
-                break;
-            }
-        }
-        this.class = classes.join(' ');
     }
 
     override setDisabledState(value: boolean): void {
@@ -175,17 +106,8 @@ export class RadioButtonComponent extends CompCtrlContainer implements ControlVa
         return this.label;
     }
 
-    override validate(): string[] {
-        const causes: string[] = [];
-        return causes;
-    }
-
-    override setInvalidCause(value: string[]): void {
-        this.invalidCause = value;
-    }
-
-    public forceClear(): void {
-        this.innerObject = null;
+    override forceClear(): void {
+        this._innerObject = null;
         this.innerValue = null;
     }
 
@@ -198,7 +120,8 @@ export class RadioButtonComponent extends CompCtrlContainer implements ControlVa
             this.invalidInfoComponent.show();
         }
         setTimeout(() => {
-            this.component.nativeElement.querySelector('input').focus();
+            const input = this.component.nativeElement.querySelector('input')
+            if (input) input.focus();
         });
     }
 }

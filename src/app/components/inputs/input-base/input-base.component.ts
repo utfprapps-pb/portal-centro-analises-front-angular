@@ -1,5 +1,5 @@
 import { Directive, EventEmitter, forwardRef, Input, Output } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
 
 import { CompCtrlContainer } from '../../../core/directives/compctrl/compctrl.container';
 import { Guid } from '../../../utils/models/guid';
@@ -7,14 +7,21 @@ import { ObjectUtils } from '../../../utils/object-utils';
 import { ConvertUtilsService } from './../../../utils/convert-utils.service';
 
 @Directive()
-export abstract class InputBaseComponent extends CompCtrlContainer implements ControlValueAccessor {
+export abstract class InputBaseComponent<T = any> extends CompCtrlContainer implements ControlValueAccessor, Validator {
 
     public static CONTROL(input: any): any {
-        return {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => input),
-            multi: true
-        };
+        return [
+            {
+                provide: NG_VALUE_ACCESSOR,
+                useExisting: forwardRef(() => input),
+                multi: true
+            },
+            {
+                provide: NG_VALIDATORS,
+                useExisting: forwardRef(() => input),
+                multi: true
+            }
+        ];
     }
 
     @Input() name: string = Guid.raw();
@@ -26,9 +33,10 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
 
     @Input('showClear') showClear: boolean = true;
 
-    @Output('onChange') onChangeEventEmitter: EventEmitter<number> = new EventEmitter();
+    @Output('onChange') onChangeEventEmitter: EventEmitter<T> = new EventEmitter<T>();
 
-    protected _innerValue: string = null;
+    protected _innerValue: T = null;
+
     private _disabled: boolean = null;
     private _required: boolean = false;
     public invalidCause: string[] = null;
@@ -43,10 +51,13 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
     }
 
     // Função chamada quando o valor interno muda
-    private onChange: (value: any) => void = () => { };
+    private onChange: (value: T) => void = () => { };
 
     // Função chamada quando o componente é tocado (tocado no DOM)
-    private onTouched: () => void = () => { };
+    protected onTouched: () => void = () => { };
+
+    // Função chamada quando o validador é chamado
+    private onValidatorChange: () => void = () => { };
 
     // Registra a função a ser chamada quando o valor interno muda
     registerOnChange(fn: (value: any) => void): void {
@@ -56,6 +67,10 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
     // Registra a função a ser chamada quando o componente é tocado
     registerOnTouched(fn: () => void): void {
         this.onTouched = fn;
+    }
+
+    registerOnValidatorChange(fn : () => void): void {
+        this.onValidatorChange = fn
     }
 
     @Input() set disabled(value: any) {
@@ -72,28 +87,56 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
     @Input() set required(value: any) {
         this._required = this.convertUtilsService.getBoolean(value, true);
     }
+    
     get required() {
         return this._required;
     }
 
     // Obtém o valor do modelo
-    get innerValue(): any {
+    get innerValue(): T {
         return this._innerValue;
     }
 
     // Define o valor do modelo e chama a função de callback
-    set innerValue(v: any) {
-        if (v !== this.innerValue) {
+    set innerValue(v: T) {
+        console.log("Setter called with:", v);
+
+        if (!ObjectUtils.equals(v, this._innerValue)) {
             this._innerValue = v;
             this.onChange(v);
             this.onChangeEventEmitter.emit(v);
+
+            if(this.onValidatorChange) {
+                this.onValidatorChange();
+            }
+            this.markForCheck();
         }
     }
 
+    private runValidationLogic(): string[] {
+        const causes: string[] = [];
+
+        if (this._required && ObjectUtils.isEmpty(this._innerValue)) {
+            causes.push(`Campo obrigatório`);
+            return causes;
+        }
+
+
+        if (ObjectUtils.isNotEmpty(this.minlength) && this.minlength >= 0 && this._innerValue != null) {
+            const length = (this._innerValue as any).length;
+            if (length !== undefined && length < this.minlength) {
+                causes.push(`Mínimo de caracteres exigidos: ${this.minlength}`);
+            }
+        }
+
+        return causes;
+    }
+
     // Escreve o valor do modelo para o componente
-    writeValue(value: any): void {
-        if (!!this.getContainer()) {
-            this.innerValue = value;
+    writeValue(value: T): void {
+        if (!ObjectUtils.equals(value, this._innerValue)) {
+            this._innerValue = value;
+            this.markForCheck();
         }
     }
 
@@ -135,31 +178,17 @@ export abstract class InputBaseComponent extends CompCtrlContainer implements Co
         return this.label;
     }
 
-    override validate(): string[] {
-        const causes: string[] = [];
-        if (!this.isValidMinLength()) {
-            causes.push(`Minímo de caracteres exigidos: ${this.minlength}`);
-        }
-        return causes;
+    override getValidationMessage(): string[] {
+        return this.runValidationLogic();
     }
 
     override setInvalidCause(value: string[]): void {
         this.invalidCause = value;
     }
 
-    private isValidMinLength(): boolean {
-        if (ObjectUtils.isNotEmpty(this.minlength) && this.minlength >= 0) {
-            if (this._innerValue != null) {
-                return this._innerValue.toString().length >= this.minlength;
-            } else if (this._required) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public forceClear(): void {
         this.innerValue = null;
+        this.onTouched();
     }
 
 }
