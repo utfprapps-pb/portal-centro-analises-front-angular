@@ -1178,14 +1178,15 @@
                                             <li class="mb-2">
                                                 <radio-button label="É tóxica?" compCtrl
                                                     [(ngModel)]="amostra.toxic" enum="Boolean" required
-                                                    [vertical]="false">
+                                                    [vertical]="false"
+                                                    (onChange)="onChangeToxic(amostra)">
                                                 </radio-button>
                                             </li>
                                         </ol>
                                     </div>
                                 </div>
                             </li>
-                            <li *ngIf="object.form.retirada == BOOLEAN_FALSE">
+                            <li>
                                 <div class="row mb-2">
                                     <div class="col-24">
                                         <radio-button label="Natureza da Amostra" compCtrl required
@@ -1235,6 +1236,7 @@
                                                         <radio-button [(ngModel)]="amostra.descarteUsuario"
                                                             enum="DescarteUsuario"
                                                             compCtrl="Descartes - Usuário" required
+                                                            [disables]="amostra.toxic === 'TRUE' ? 'LX' : null"
                                                             (onChange)="onChangeDescarteUsuario()">
                                                         </radio-button>
                                                         <input-textarea label="Outro" compCtrl required

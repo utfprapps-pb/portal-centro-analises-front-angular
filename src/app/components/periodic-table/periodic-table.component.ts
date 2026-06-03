@@ -186,7 +186,7 @@ export class PeriodicTableComponent extends CompCtrlContainer implements Control
         return this.label;
     }
 
-    override validate(): string[] {
+    override getValidationMessage(): string[] {
         const causes: string[] = [];
         return causes;
     }

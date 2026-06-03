@@ -44,8 +44,8 @@ export class InputPasswordComponent extends InputBaseComponent {
         });
     }
 
-    override validate(): string[] {
-        const causes = super.validate();
+    override getValidationMessage(): string[] {
+        const causes = super.getValidationMessage();
         if (ObjectUtils.isNotEmpty(this.equals)) {
             if (this.innerValue != this.equals) {
                 causes.push('Valor divergente do esperado!');

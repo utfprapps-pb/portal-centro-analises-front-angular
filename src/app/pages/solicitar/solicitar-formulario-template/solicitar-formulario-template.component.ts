@@ -226,6 +226,7 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
 
     public onChangeDescarteOrganico(): void {
         if (!this.habilitarChanges) return;
+        
         for (const amostra of this.object.form.amostras) {
             if (amostra.descarteOrganico != this.OPCAO_OUTRO) {
                 amostra.descarteOrganicoOutro = null;
@@ -235,6 +236,7 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
 
     public onChangeDescarteInorganico(): void {
         if (!this.habilitarChanges) return;
+        
         for (const amostra of this.object.form.amostras) {
             if (amostra.descarteInorganico != this.OPCAO_OUTRO) {
                 amostra.descarteInorganicoOutro = null;
@@ -242,10 +244,32 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
         }
     }
 
+    // Tira seleção de lixo comum quando o item é tóxico
+    public onChangeToxic(amostra: SolicitationAmostra): void {
+        if (!this.habilitarChanges) return;
+
+        console.log({
+            value: amostra.toxic,
+            type: typeof amostra.toxic,
+        });
+
+        if (amostra.toxic === 'TRUE' && amostra.descarteUsuario === 'LX') {
+            amostra.descarteUsuario = null;
+            amostra.descarteUsuarioOutro = null;
+            this.toastrService.showWarn('Atenção', 'Amostras tóxicas não podem ser descartadas em lixo comum.');
+        }
+    }
+
     public onChangeDescarteUsuario(): void {
         if (!this.habilitarChanges) return;
+
         for (const amostra of this.object.form.amostras) {
-            if (amostra.descarteOrganico != this.OPCAO_OUTRO) {
+            if (amostra.toxic === 'TRUE' && amostra.descarteUsuario === 'LX') {
+                amostra.descarteUsuario = null;
+                this.toastrService.showWarn('Atenção', 'Amostras tóxicas não podem ser descartadas em lixo comum.');
+            }
+
+            if (amostra.descarteUsuario != this.OPCAO_OUTRO) {
                 amostra.descarteUsuarioOutro = null;
             }
         }

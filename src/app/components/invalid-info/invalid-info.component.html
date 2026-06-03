@@ -1,7 +1,7 @@
-<i #info class="text-danger fa fa-circle-exclamation" *ngIf="!!causes" (mouseenter)="pop.show($event)"
+<i #info class="text-danger fa fa-circle-exclamation" *ngIf="causes && causes.length > 0" (mouseenter)="pop.show($event)"
     (mouseleave)="pop.hide()"></i>
 
-<p-overlayPanel #pop *ngIf="!!causes">
+<p-overlayPanel #pop *ngIf="causes && causes.length > 0">
     <table>
         <tbody>
             <tr *ngFor="let cause of causes">

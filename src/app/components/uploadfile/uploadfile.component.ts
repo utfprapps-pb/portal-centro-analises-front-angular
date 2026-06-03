@@ -334,7 +334,7 @@ export class UploadfileComponent extends CompCtrlContainer implements ControlVal
         return null;
     }
 
-    override validate(): string[] {
+    override getValidationMessage(): string[] {
         const causes: string[] = [];
         return causes;
     }

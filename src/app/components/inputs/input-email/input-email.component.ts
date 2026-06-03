@@ -34,8 +34,8 @@ export class InputEmailComponent extends InputBaseComponent {
         });
     }
 
-    override validate(): string[] {
-        const causes = super.validate();
+    override getValidationMessage(): string[] {
+        const causes = super.getValidationMessage();
 
         if (ObjectUtils.isNotEmpty(this.innerValue) && !this.emailRegex.test(this.innerValue)) {
             causes.push('Formato de email inválido');
@@ -43,5 +43,4 @@ export class InputEmailComponent extends InputBaseComponent {
 
         return causes;
     }
-
 }

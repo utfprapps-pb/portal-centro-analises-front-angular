@@ -14,13 +14,13 @@ export class InvalidInfoComponent {
     @Input() causes: string[];
 
     public show() {
-        if (!!this.info) {
+        if (this.info && this.causes && this.causes.length > 0) {
             this.pop.show(null, this.info.nativeElement);
         }
     }
 
     public focus() {
-        if (!!this.info) {
+        if (this.info) {
             this.info.nativeElement.focus();
         }
     }
