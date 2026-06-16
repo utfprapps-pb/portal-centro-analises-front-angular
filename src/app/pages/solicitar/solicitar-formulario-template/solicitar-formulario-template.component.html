@@ -87,13 +87,31 @@
             </div>
         </div>
 
-        <div class="row mb-2">
+        <!-- <div class="row mb-2">
             <div class="col-24">
                 <periodic-table label="Elementos para analisar" compCtrl required
                     [(ngModel)]="object.form.elementos">
                 </periodic-table>
             </div>
+        </div> -->
+
+        <div class="row mb-2">
+            <div class="col-24">
+                <label class="form-label bold">Elementos para analisar</label>
+                <div class="d-flex flex-wrap gap-3">
+                    <checkbox 
+                        *ngFor="let el of elementosDisponiveis" 
+                        [name]="el.symbol"
+                        [label]="el.name + ' (' + el.symbol + ')'"
+                        [disabled]="disableForm"
+                        [vertical]="false"
+                        [ngModel]="isElementSelected(el.symbol)"
+                        (ngModelChange)="toggleElement(el.symbol)">
+                    </checkbox>
+                </div>
+            </div>
         </div>
+
 
         <div class="row mb-2">
             <div class="col-24">

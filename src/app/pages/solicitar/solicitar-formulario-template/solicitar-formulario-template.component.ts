@@ -26,6 +26,7 @@ import { SolicitationAmostra } from '../../solicitation/model/solicitation-amost
 import { SolicitationFormGradiente } from '../../solicitation/model/solicitation-form-gradiente.model';
 import { Solicitation } from '../../solicitation/model/solicitation.model';
 import { SolicitationService } from '../../solicitation/solicitation.service';
+import { ElementoQuimico } from '../../../components/periodic-table/periodic-table-element/elemento-quimico.interface';
 
 @Component({
     selector: 'solicitar-formulario-template',
@@ -554,4 +555,33 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
         }
     }
 
+    public elementosDisponiveis: ElementoQuimico[] = [
+        { name: 'Sódio', symbol: 'Na', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico,
+        { name: 'Crômio', symbol: 'Cr', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico,
+        { name: 'Manganês', symbol: 'Mn', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico,
+        { name: 'Ferro', symbol: 'Fe', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico,
+        { name: 'Cobre', symbol: 'Cu', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico,
+        { name: 'Zinco', symbol: 'Zn', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico
+    ];
+
+    isElementSelected(symbol: string): boolean {
+        if (!this.object.form.elementos) return false;
+        return this.object.form.elementos.split(',').includes(symbol);
+    }
+
+    toggleElement(symbol: string): void {
+        let current = this.object.form.elementos ? this.object.form.elementos.split(',') : [];
+
+        current = current.filter(s => s.trim() !== '');
+        
+        const index = current.indexOf(symbol);
+
+        if (index > -1) {
+            current.splice(index, 1);
+        } else {
+            current.push(symbol);
+        }
+
+        this.object.form.elementos = current.join(',');
+    }
 }
