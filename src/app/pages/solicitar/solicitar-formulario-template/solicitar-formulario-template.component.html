@@ -97,22 +97,22 @@
 
         <div class="row mb-2">
             <div class="col-24">
-                <label class="form-label bold">Elementos para analisar</label>
-                <div class="d-flex flex-wrap gap-3">
-                    <checkbox 
-                        *ngFor="let el of elementosDisponiveis" 
-                        [name]="el.symbol"
-                        [label]="el.name + ' (' + el.symbol + ')'"
-                        [disabled]="disableForm"
-                        [vertical]="false"
-                        [ngModel]="isElementSelected(el.symbol)"
-                        (ngModelChange)="toggleElement(el.symbol)">
-                    </checkbox>
-                </div>
+                <checkbox-group
+                    compCtrl="elementos"
+                    label="Elementos para analisar"
+                    [options]="elementosDisponiveis"
+                    labelKey="name"
+                    valueKey="symbol"
+                    [showSymbolInLabel]="true"
+                    [disabled]="disableForm"
+                    [vertical]="false"
+                    [required]="true"
+                    [ngModel]="selectedElements"
+                    (ngModelChange)="onElementosChange($event)">
+                </checkbox-group>
             </div>
         </div>
-
-
+        
         <div class="row mb-2">
             <div class="col-24">
                 <label class="form-label bold">Curva de concentrações padrões.</label>

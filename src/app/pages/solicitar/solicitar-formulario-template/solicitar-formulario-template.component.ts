@@ -55,6 +55,13 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
     set object(value: Solicitation) {
         this._innerObject = value;
         if (ObjectUtils.isNotEmpty(value)) {
+
+            if (value.form?.elementos) {
+                this.selectedElements = value.form.elementos.split(',').map(s => s.trim()).filter(s => s !== '');
+            } else {
+                this.selectedElements = [];
+            }
+
             this.responsavel = value.responsavel;
             if (this.uniqueProject) {
                 this.onChangeProject(this.uniqueProject);
@@ -563,6 +570,15 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
         { name: 'Cobre', symbol: 'Cu', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico,
         { name: 'Zinco', symbol: 'Zn', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico
     ];
+    public selectedElements: string[] = [];
+
+    public onElementosChange(elementsArray: string[]): void {
+        if (!this.object?.form) return;
+        this.selectedElements = elementsArray || [];
+        this.object.form.elementos = this.selectedElements.join(',');
+        this.onTouched();
+        this.onChange(this.object);
+    }
 
     isElementSelected(symbol: string): boolean {
         if (!this.object.form.elementos) return false;
