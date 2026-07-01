@@ -26,6 +26,7 @@ import { SolicitationAmostra } from '../../solicitation/model/solicitation-amost
 import { SolicitationFormGradiente } from '../../solicitation/model/solicitation-form-gradiente.model';
 import { Solicitation } from '../../solicitation/model/solicitation.model';
 import { SolicitationService } from '../../solicitation/solicitation.service';
+import { ElementoQuimico } from '../../../components/periodic-table/periodic-table-element/elemento-quimico.interface';
 
 @Component({
     selector: 'solicitar-formulario-template',
@@ -54,6 +55,13 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
     set object(value: Solicitation) {
         this._innerObject = value;
         if (ObjectUtils.isNotEmpty(value)) {
+
+            if (value.form?.elementos) {
+                this.selectedElements = value.form.elementos.split(',').map(s => s.trim()).filter(s => s !== '');
+            } else {
+                this.selectedElements = [];
+            }
+
             this.responsavel = value.responsavel;
             if (this.uniqueProject) {
                 this.onChangeProject(this.uniqueProject);
@@ -226,6 +234,7 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
 
     public onChangeDescarteOrganico(): void {
         if (!this.habilitarChanges) return;
+        
         for (const amostra of this.object.form.amostras) {
             if (amostra.descarteOrganico != this.OPCAO_OUTRO) {
                 amostra.descarteOrganicoOutro = null;
@@ -235,6 +244,7 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
 
     public onChangeDescarteInorganico(): void {
         if (!this.habilitarChanges) return;
+        
         for (const amostra of this.object.form.amostras) {
             if (amostra.descarteInorganico != this.OPCAO_OUTRO) {
                 amostra.descarteInorganicoOutro = null;
@@ -242,10 +252,32 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
         }
     }
 
+    // Tira seleção de lixo comum quando o item é tóxico
+    public onChangeToxic(amostra: SolicitationAmostra): void {
+        if (!this.habilitarChanges) return;
+
+        console.log({
+            value: amostra.toxic,
+            type: typeof amostra.toxic,
+        });
+
+        if (amostra.toxic === 'TRUE' && amostra.descarteUsuario === 'LX') {
+            amostra.descarteUsuario = null;
+            amostra.descarteUsuarioOutro = null;
+            this.toastrService.showWarn('Atenção', 'Amostras tóxicas não podem ser descartadas em lixo comum.');
+        }
+    }
+
     public onChangeDescarteUsuario(): void {
         if (!this.habilitarChanges) return;
+
         for (const amostra of this.object.form.amostras) {
-            if (amostra.descarteOrganico != this.OPCAO_OUTRO) {
+            if (amostra.toxic === 'TRUE' && amostra.descarteUsuario === 'LX') {
+                amostra.descarteUsuario = null;
+                this.toastrService.showWarn('Atenção', 'Amostras tóxicas não podem ser descartadas em lixo comum.');
+            }
+
+            if (amostra.descarteUsuario != this.OPCAO_OUTRO) {
                 amostra.descarteUsuarioOutro = null;
             }
         }
@@ -530,4 +562,42 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
         }
     }
 
+    public elementosDisponiveis: ElementoQuimico[] = [
+        { name: 'Sódio', symbol: 'Na', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico,
+        { name: 'Crômio', symbol: 'Cr', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico,
+        { name: 'Manganês', symbol: 'Mn', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico,
+        { name: 'Ferro', symbol: 'Fe', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico,
+        { name: 'Cobre', symbol: 'Cu', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico,
+        { name: 'Zinco', symbol: 'Zn', selected: false, visible: true, disabled: false, blocked: false } as ElementoQuimico
+    ];
+    public selectedElements: string[] = [];
+
+    public onElementosChange(elementsArray: string[]): void {
+        if (!this.object?.form) return;
+        this.selectedElements = elementsArray || [];
+        this.object.form.elementos = this.selectedElements.join(',');
+        this.onTouched();
+        this.onChange(this.object);
+    }
+
+    isElementSelected(symbol: string): boolean {
+        if (!this.object.form.elementos) return false;
+        return this.object.form.elementos.split(',').includes(symbol);
+    }
+
+    toggleElement(symbol: string): void {
+        let current = this.object.form.elementos ? this.object.form.elementos.split(',') : [];
+
+        current = current.filter(s => s.trim() !== '');
+        
+        const index = current.indexOf(symbol);
+
+        if (index > -1) {
+            current.splice(index, 1);
+        } else {
+            current.push(symbol);
+        }
+
+        this.object.form.elementos = current.join(',');
+    }
 }

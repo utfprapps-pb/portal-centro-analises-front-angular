@@ -21,38 +21,26 @@ import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
         CompCtrlContainer.PROVIDER(ComboboxComponent)
     ],
 })
-export class ComboboxComponent extends CompCtrlContainer implements ControlValueAccessor{
+export class ComboboxComponent extends InputBaseComponent{
 
     @ViewChild('input') component: Dropdown;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
-    @Input() name: string = Guid.raw();
-    @Input() label: string = null;
-    @Input() placeholder: string = null;
-    @Input() class: string = 'w-100';
     @Input() defaultValue: string = null;
     @Input() filterBy: string = null;
     @Input() columns: string = null;
     @Input() filterOptions: (options: any[]) => any[];
     // @Input() optionLabel: string = 'value';
 
-    @Input('showClear') showClear: boolean = true;
-
-    @Output('onChange') onChangeEventEmitter: EventEmitter<any> = new EventEmitter();
-
     public displayValue: string = null;
     public mappedDisplayValues: Map<any, string> = new Map();
 
     private _innerObject: any;
-    private _innerValue: string = null;
-    private _disabled: boolean = null;
-    private _required: boolean = false;
-    public invalidCause: string[] = null;
     public _enum: string = null;
     public _options: any[] = [];
 
-    constructor(protected readonly convertUtilsService: ConvertUtilsService) {
-        super();
+    constructor(protected override readonly convertUtilsService: ConvertUtilsService) {
+        super(convertUtilsService);
     }
 
     @Input('enum') set enum(name: string) {
@@ -87,40 +75,6 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
             }
         }
         return opcoes;
-    }
-
-    // Função chamada quando o valor interno muda
-    private onChange: (value: any) => void = () => { };
-
-    // Função chamada quando o componente é tocado (tocado no DOM)
-    private onTouched: () => void = () => { };
-
-    // Registra a função a ser chamada quando o valor interno muda
-    registerOnChange(fn: (value: any) => void): void {
-        this.onChange = fn;
-    }
-
-    // Registra a função a ser chamada quando o componente é tocado
-    registerOnTouched(fn: () => void): void {
-        this.onTouched = fn;
-    }
-
-    @Input() set disabled(value: any) {
-        this._disabled = this.convertUtilsService.getBoolean(value, false);
-    }
-
-    get disabled() {
-        if (this.internalDisabled != null) {
-            return this.internalDisabled
-        }
-        return this._disabled;
-    }
-
-    @Input() set required(value: any) {
-        this._required = this.convertUtilsService.getBoolean(value, false);
-    }
-    get required() {
-        return this._required;
     }
 
     get innerObject(): any {
@@ -171,20 +125,6 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
         }
     }
 
-    // Obtém o valor do modelo
-    get innerValue(): any {
-        return this._innerValue;
-    }
-
-    // Define o valor do modelo e chama a função de callback
-    set innerValue(value: any) {
-        if (value !== this.innerValue) {
-            this._innerValue = value;
-            this.onChange(value);
-            this.onChangeEventEmitter.emit(value);
-        }
-    }
-
     public onChangeDropdown(value: any): void {
         if (ObjectUtils.isEmpty(value)) {
             this.innerObject = null;
@@ -198,7 +138,7 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
     }
 
     @Debounce(100)
-    writeValue(value: any): void {
+    override writeValue(value: any): void {
         if (value !== this.innerObject) {
             if (this._options.length == 0) {
                 setTimeout(() => {
@@ -246,58 +186,15 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
             }
         }
     }
-
-    public addClass(value: string) {
-        const classes: string[] = this.class.split(' ');
-        for (var i = 0; i < classes.length; i++) {
-            if (classes[i] == value) {
-                return;
-            }
-        }
-        classes.push(value);
-        this.class = classes.join(' ');
-    }
-
-    public removeClass(value: string) {
-        const classes: string[] = this.class.split(' ');
-        for (var i = 0; i < classes.length; i++) {
-            if (classes[i] == value) {
-                classes.splice(i, 1);
-                break;
-            }
-        }
-        this.class = classes.join(' ');
-    }
-
+    
     override setDisabledState(value: boolean): void {
-        if (this.class.includes('not-disabled') && value) {
+        if (this.class?.includes('not-disabled') && value) {
             value = false;
         }
         this.internalDisabled = value;
     }
 
-    override setRequiredState(value: boolean): void {
-        this.required = value;
-    }
-
-    override getValue(): any {
-        return this.innerValue;
-    }
-
-    override getLabel(): string {
-        return this.label;
-    }
-
-    override validate(): string[] {
-        const causes: string[] = [];
-        return causes;
-    }
-
-    override setInvalidCause(value: string[]): void {
-        this.invalidCause = value;
-    }
-
-    public forceClear(): void {
+    override forceClear(): void {
         this.innerObject = null;
         this.innerValue = null;
     }
@@ -307,7 +204,7 @@ export class ComboboxComponent extends CompCtrlContainer implements ControlValue
     }
 
     override setFocus() {
-        if (!!this.invalidInfoComponent) {
+        if (this.invalidInfoComponent) {
             this.invalidInfoComponent.show();
         }
         setTimeout(() => {

@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { Checkbox } from 'primeng/checkbox';
 
 import { CompCtrlContainer } from '../../core/directives/compctrl/compctrl.container';
 import { ConvertUtilsService } from '../../utils/convert-utils.service';
@@ -9,29 +8,33 @@ import { InputBaseComponent } from '../inputs/input-base/input-base.component';
 import { InvalidInfoComponent } from '../invalid-info/invalid-info.component';
 
 @Component({
-    selector: 'checkbox',
-    templateUrl: './checkbox.component.html',
-    styleUrl: './checkbox.component.scss',
+    selector: 'checkbox-group',
+    templateUrl: './checkbox-group.component.html',
+    styleUrl: './checkbox-group.component.scss',
     providers: [
-        InputBaseComponent.CONTROL(CheckBoxComponent),
-        CompCtrlContainer.PROVIDER(CheckBoxComponent)
+        InputBaseComponent.CONTROL(CheckBoxGroupComponent),
+        CompCtrlContainer.PROVIDER(CheckBoxGroupComponent)
     ],
 })
-export class CheckBoxComponent extends CompCtrlContainer<any> implements ControlValueAccessor {
+export class CheckBoxGroupComponent extends CompCtrlContainer<any[]> implements ControlValueAccessor{
 
-    @ViewChild('input') component: Checkbox;
+    @ViewChild('groupContainer') groupContainer: ElementRef;
     @ViewChild('invalid') invalidInfoComponent: InvalidInfoComponent;
 
     @Input() name: string = Guid.raw();
     @Input() label: string = null;
-    @Input() placeholder: string = '';
     @Input() class: string = 'd-contents';
     @Input() vertical: boolean = true;
 
-    @Output('onChange') onChangeEventEmitter: EventEmitter<number> = new EventEmitter();
+    @Input() options: any[] = [];
+    @Input() labelKey: string = 'label';
+    @Input() valueKey: string = 'value';
+    @Input() showSymbolInLabel: boolean = false;
+
+    @Output('onChange') onChangeEventEmitter: EventEmitter<any[]> = new EventEmitter();
     
-    private _innerObject: any;
-    private _innerValue: string = null;
+    private _innerObject: any[] = [];
+    private _innerValue: any[] = [];
     private _disabled: boolean = false;
     private _required: boolean = false;
     public invalidCause: string[] = null;
@@ -69,7 +72,7 @@ export class CheckBoxComponent extends CompCtrlContainer<any> implements Control
     get disabled() {
         if (this.internalDisabled != null) {
             if (this.class.includes('not-disabled')) {
-                return false
+                return false;
             }
             return this.internalDisabled
         }
@@ -84,29 +87,29 @@ export class CheckBoxComponent extends CompCtrlContainer<any> implements Control
         return this._required;
     }
 
-    get innerObject(): any {
+    get innerObject(): any[] {
         return this._innerObject;
     }
 
-    set innerObject(value: any) {
-        if (value !== this.innerObject) {
-            this._innerObject = value;
-            this.innerValue = value?.key;
+    set innerObject(value: any[]) {
+        if (value !== this._innerObject) {
+            this._innerObject = value || [];
+            this.innerValue = this._innerObject;
         }
     }
 
     // Obtém o valor do modelo
-    get innerValue(): any {
+    get innerValue(): any[] {
         return this._innerValue;
     }
 
     // Define o valor do modelo e chama a função de callback
-    set innerValue(value: any) {
+    set innerValue(value: any[]) {
         if (value !== this._innerValue) {
-            this._innerValue = value;
+            this._innerValue = value || [];
             
-            this.onChange(value);
-            this.onChangeEventEmitter.emit(value);
+            this.onChange(this._innerValue);
+            this.onChangeEventEmitter.emit(this._innerValue);
             
             if (this.onValidatorChange) {
                 this.onValidatorChange();
@@ -118,14 +121,14 @@ export class CheckBoxComponent extends CompCtrlContainer<any> implements Control
 
     // Escreve o valor do modelo para o componente
     writeValue(value: any): void {
-        if (value !== this.innerObject) {
-            if (typeof (value) == 'string') {
-                this.innerObject = value == 'true';
-            } else {
-                this.innerObject = value;
-            }
-            this.innerValue = !!this.innerObject;
+        if (Array.isArray(value)) {
+            this._innerObject = value;
+            this._innerValue = value;
+        } else {
+            this._innerObject = [];
+            this._innerValue = [];
         }
+        this.markForCheck();
     }
 
     public addClass(value: string) {
@@ -164,7 +167,7 @@ export class CheckBoxComponent extends CompCtrlContainer<any> implements Control
         this.required = value;
     }
 
-    override getValue(): any {
+    override getValue(): any[] {
         return this.innerValue;
     }
 
@@ -174,8 +177,8 @@ export class CheckBoxComponent extends CompCtrlContainer<any> implements Control
 
     override getValidationMessage(): string[] {
         const causes: string[] = [];
-        if (this.required && !this.innerValue) {
-            causes.push('Não assinalado');
+        if (this.required && (!this.innerValue || this.innerValue.length === 0)) {
+            causes.push('Selecione pelo menos uma opção.');
         }
         return causes;
     }
@@ -185,18 +188,45 @@ export class CheckBoxComponent extends CompCtrlContainer<any> implements Control
     }
 
     public forceClear(): void {
-        this.innerObject = null;
-        this.innerValue = null;
+        this.innerObject = [];
+        this.innerValue = [];
     }
 
     override getContainer(): any {
-        return this.component.inputViewChild;
+        return this.groupContainer;
     }
 
     override setFocus() {
         if (!!this.invalidInfoComponent) {
             this.invalidInfoComponent.show();
         }
-        this.component.inputViewChild.nativeElement.focus();
+        const firstInput = this.groupContainer?.nativeElement?.querySelector('input[type="checkbox"]');
+        if (firstInput) {
+            firstInput.focus();
+        }
+    }
+
+    public isOptionSelected(option: any): boolean {
+        const val = option[this.valueKey];
+        return this.innerValue ? this.innerValue.includes(val) : false;
+    }
+
+    public onToggleOption(option: any, event: Event): void {
+        if (this.disabled) return;
+
+        const checkbox = event.target as HTMLInputElement;
+        const val = option[this.valueKey];
+        let currentSelections = [...this.innerValue];
+
+        if (checkbox.checked) {
+            if (!currentSelections.includes(val)) {
+                currentSelections.push(val);
+            }
+        } else {
+            currentSelections = currentSelections.filter(item => item !== val);
+        }
+
+        this.onTouched();
+        this.innerValue = currentSelections;
     }
 }
