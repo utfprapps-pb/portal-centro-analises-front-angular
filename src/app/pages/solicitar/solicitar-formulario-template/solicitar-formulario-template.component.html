@@ -87,14 +87,32 @@
             </div>
         </div>
 
-        <div class="row mb-2">
+        <!-- <div class="row mb-2">
             <div class="col-24">
                 <periodic-table label="Elementos para analisar" compCtrl required
                     [(ngModel)]="object.form.elementos">
                 </periodic-table>
             </div>
-        </div>
+        </div> -->
 
+        <div class="row mb-2">
+            <div class="col-24">
+                <checkbox-group
+                    compCtrl="elementos"
+                    label="Elementos para analisar"
+                    [options]="elementosDisponiveis"
+                    labelKey="name"
+                    valueKey="symbol"
+                    [showSymbolInLabel]="true"
+                    [disabled]="disableForm"
+                    [vertical]="false"
+                    [required]="true"
+                    [ngModel]="selectedElements"
+                    (ngModelChange)="onElementosChange($event)">
+                </checkbox-group>
+            </div>
+        </div>
+        
         <div class="row mb-2">
             <div class="col-24">
                 <label class="form-label bold">Curva de concentrações padrões.</label>

@@ -37,6 +37,7 @@ import { ToastrService } from '../core/services/toastr.service';
 import { ToasterService } from '../core/toaster/toaster.service';
 import { UtilsModule } from '../utils/utils.module';
 import { CheckBoxComponent } from './checkbox/checkbox.component';
+import { CheckBoxGroupComponent } from '././checkbox-group/checkbox-group.component';
 import { ComboboxComponent } from './combobox/combobox.component';
 import {
     BooleanColumnTemplateComponent,
@@ -112,6 +113,7 @@ import { FormReportComponent } from './form-report/form-report.component';
         InputTextComponent,
         InputTextAreaComponent,
         CheckBoxComponent,
+        CheckBoxGroupComponent,
         InputPasswordComponent,
         InputEmailComponent,
         ComboboxComponent,
@@ -162,6 +164,7 @@ import { FormReportComponent } from './form-report/form-report.component';
         InputTextComponent,
         InputTextAreaComponent,
         CheckBoxComponent,
+        CheckBoxGroupComponent,
         InputMaskModule,
         InputPasswordComponent,
         InputEmailComponent,
