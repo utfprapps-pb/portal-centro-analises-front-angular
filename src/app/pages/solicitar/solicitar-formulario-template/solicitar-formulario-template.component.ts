@@ -55,6 +55,11 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
     set object(value: Solicitation) {
         this._innerObject = value;
         if (ObjectUtils.isNotEmpty(value)) {
+            if (value.project) {
+                this.hasProjeto = 'TRUE';
+            } else if (value.id) {
+                this.hasProjeto = 'FALSE';
+            }
 
             if (value.form?.elementos) {
                 this.selectedElements = value.form.elementos.split(',').map(s => s.trim()).filter(s => s !== '');
@@ -63,9 +68,14 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
             }
 
             this.responsavel = value.responsavel;
-            if (this.uniqueProject) {
+            if (this.uniqueProject && this.hasProjeto !== 'FALSE') {
                 this.onChangeProject(this.uniqueProject);
+            } else if (this.hasProjeto === 'FALSE' && !value.id) {
+                this.responsavel = this.authentication.getUserLogged();
+                this.object.responsavel = new User();
+                this.object.responsavel.id = this.responsavel.id;
             }
+
             if (this.openAll) {
                 this.openAllAccordions();
             }
@@ -119,6 +129,12 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
     private solicitationService: SolicitationService = inject(SolicitationService);
     private toastrService: ToastrService = inject(ToastrService);
 
+    public hasProjeto: string = 'TRUE';
+    public hasProjetoOptions: any[] = [
+        { label: 'Sim', value: 'TRUE' },
+        { label: 'Não', value: 'FALSE' }
+    ];
+
     public isAdmin: boolean = false;
 
     constructor() {
@@ -126,6 +142,9 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
             this.projetos = data;
             if (data.length == 1) {
                 this.uniqueProject = data[0];
+                if (this.object && this.hasProjeto !== 'FALSE' && !this.object.project) {
+                    this.onChangeProject(this.uniqueProject);
+                }
             }
         });
 
@@ -177,23 +196,52 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
         return ObjectUtils.isNotEmpty(this.object) && ObjectUtils.isNotEmpty(this.object.id);
     }
 
+    public onChangeHasProjeto(): void {
+        if (!this.habilitarChanges) return;
+
+        if (this.hasProjeto === 'FALSE') {
+            this.object.project = null;
+            this.object.projectNature = null;
+            this.object.otherProjectNature = null;
+
+            // Automatically associate the logged-in user to responsavel
+            this.responsavel = this.authentication.getUserLogged();
+            if (!this.object.responsavel) {
+                this.object.responsavel = new User();
+            }
+            this.object.responsavel.id = this.responsavel.id;
+        } else {
+            if (this.uniqueProject && !this.object.project) {
+                this.onChangeProject(this.uniqueProject);
+            }
+        }
+    }
+
     @Debounce(100)
     public onChangeProject(project: Project): void {
         if (!this.habilitarChanges) return;
-        if (this.uniqueProject && project == null) {
+        
+        if (this.hasProjeto === 'TRUE' && this.uniqueProject && project == null) {
             project = this.uniqueProject;
         }
 
         this.object.responsavel = null;
         this.responsavel = this.authentication.getUserLogged();
 
-        this.object.project = project;
-        this.object.projectNature = project?.projectNature;
-        this.object.otherProjectNature = project?.otherProjectNature;
+        if (this.hasProjeto === 'TRUE') {
+            this.object.project = project;
+            this.object.projectNature = project?.projectNature;
+            this.object.otherProjectNature = project?.otherProjectNature;
 
-        if (ObjectUtils.isNotEmpty(project)) {
-            this.responsavel = project.user;
+            if (ObjectUtils.isNotEmpty(project)) {
+                this.responsavel = project.user;
+            }
+        } else {
+            this.object.project = null;
+            this.object.projectNature = null;
+            this.object.otherProjectNature = null;
         }
+
         this.object.responsavel = new User();
         this.object.responsavel.id = this.responsavel.id;
     }

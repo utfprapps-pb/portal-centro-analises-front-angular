@@ -4,14 +4,23 @@
 <ng-container #formPrincipal>
     <div class="row mb-2">
         <div class="col-24" [ngClass]="{'col-16': objectUpdating()}">
-            <combobox label="Projeto" compCtrl required [filterBy]="'id,subject,description,user.name'"
-                [options]="projetos" [(ngModel)]="object.project" (onChange)="onChangeProject($event)"
-                [disabled]="objectUpdating()">
-            </combobox>
+            <radio-button label="Possui vínculo com projeto da universidade?" compCtrl required
+                [(ngModel)]="hasProjeto" [options]="hasProjetoOptions" [vertical]="false"
+                (ngModelChange)="onChangeHasProjeto()" [disabled]="objectUpdating()">
+            </radio-button>
         </div>
         <div class="col-8" *ngIf="objectUpdating()">
             <combobox label="Status" compCtrl required disabled [(ngModel)]="object.status"
                 [enum]="'SolicitationStatus'">
+            </combobox>
+        </div>
+    </div>
+
+    <div class="row mb-2" *ngIf="hasProjeto === 'TRUE'">
+        <div class="col-24">
+            <combobox label="Projeto" compCtrl required [filterBy]="'id,subject,description,user.name'"
+                [options]="projetos" [(ngModel)]="object.project" (onChange)="onChangeProject($event)"
+                [disabled]="objectUpdating()">
             </combobox>
         </div>
     </div>
@@ -24,7 +33,7 @@
         </div>
     </div>
 
-    <div class="row mb-2">
+    <div class="row mb-2" *ngIf="hasProjeto === 'TRUE'">
         <div class="col-24">
             <combobox label="Natureza do Projeto" [(ngModel)]="object.projectNature"
                 [disabled]="objectUpdating()" enum="SolicitationProjectNature" compCtrl required
@@ -33,7 +42,7 @@
         </div>
     </div>
 
-    <div class="row mb-2" *ngIf="object.projectNature == OPCAO_OUTRO">
+    <div class="row mb-2" *ngIf="hasProjeto === 'TRUE' && object.projectNature == OPCAO_OUTRO">
         <div class="ms-auto col-23">
             <input-text label="Outra Natureza" compCtrl required [(ngModel)]="object.otherProjectNature"
                 [disabled]="objectUpdating()">
