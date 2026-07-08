@@ -9,7 +9,10 @@
                 (ngModelChange)="onChangeHasProjeto()" [disabled]="objectUpdating()">
             </radio-button>
         </div>
-        <div class="col-8" *ngIf="objectUpdating()">
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-24" *ngIf="objectUpdating()">
             <combobox label="Status" compCtrl required disabled [(ngModel)]="object.status"
                 [enum]="'SolicitationStatus'">
             </combobox>
