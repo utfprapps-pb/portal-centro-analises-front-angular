@@ -22,8 +22,8 @@ export class LoginFormComponent extends FormBase {
 
     @ViewChild('formView') public override formView: FormBaseComponent;
 
-    public readonly PF: String = 'PF';
-    public readonly PJ: String = 'PJ';
+    public readonly PF: string = 'PF';
+    public readonly PJ: string = 'PJ';
     public cpf: string = '';
     public cnpj: string = '';
 
@@ -82,11 +82,11 @@ export class LoginFormComponent extends FormBase {
             case 'register':
                 try {
                     if (!this.buscouEmailsAcademicos) {
-                        await this.service.findParceirosAcademicos().then(async (data) => {
-                            this.emailsAcademicos = data;
-                            this.buscouEmailsAcademicos = true;
-                        })
+                        this.emailsAcademicos = await this.service.findParceirosAcademicos();
+                        this.buscouEmailsAcademicos = true;
                     }
+                } catch (error) {
+                    this.toastrService.showError(this.formTitle, 'Erro ao carregar domínios acadêmicos.');
                 } finally {
                     this.formTitle = 'Criar nova Conta';
                     this.subtitle = 'Seja bem-vindo, registre-se para acessar o sistema!';
@@ -103,7 +103,8 @@ export class LoginFormComponent extends FormBase {
     }
 
     public requerRA(): boolean {
-        return ObjectUtils.isNotEmpty(this.newUser.email) && this.emailsAcademicos.find(email => this.newUser.email.endsWith(email)) != undefined;
+    if (!this.newUser?.email) return false;
+        return this.emailsAcademicos.some(email => this.newUser.email.endsWith(email));
     }
 
     public onClickButton(): void {
@@ -124,7 +125,11 @@ export class LoginFormComponent extends FormBase {
     }
 
     public requestEmailCode(): void {
-        const email = this.formView.compCtrlDirectiveService.getDirectives().find(it => it.compCtrl == 'Email');
+        const email = this.formView.compCtrlDirectiveService.getDirectives().find(it => it.compCtrl === 'userEmailInput');
+        if (!email) {
+            console.warn('Diretiva do campo de e-mail não encontrada.');
+            return;
+        }
         if (!email.validate(true)) {
             return;
         }
@@ -171,6 +176,7 @@ export class LoginFormComponent extends FormBase {
         if (this.validateForm()) {
             this.blockForm();
             const codigo = this.formView.compCtrlDirectiveService.getDirectives().find(it => it.compCtrl == 'Código');
+
             this.loginService.recoverPassword(this.passwordRecover).then(data => {
                 this.toastrService.showSuccess(this.formTitle, data.message);
                 this.changeTemplate('login');
@@ -181,17 +187,28 @@ export class LoginFormComponent extends FormBase {
                 this.releaseForm();
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
-                    if (!!error.message && error.message == 'Código inválido') {
-                        codigo.valid = false;
-                        codigo.compCtrlContainer.setInvalidCause([error.message]);
-                        codigo.setClassInvalid();
-                        codigo.setFocus();
+                    if (!!error.error?.message && error.error.message === 'Código inválido') {
+                        if (codigo) {
+                            codigo.valid = false;
+                            codigo.compCtrlContainer.setInvalidCause([error.error.message]);
+                            codigo.setClassInvalid();
+                            codigo.setFocus();
+                        }
                     }
                 } else {
                     this.toastrService.showError(this.formTitle, 'Erro ao solicitar nova senha, tente novamente mais tarde!');
                 }
             });
         }
+    }
+
+    public onCodeChange(value: string): void {
+        if (!value) {
+            if (this.passwordRecover) this.passwordRecover.code = '';
+            return;
+        }
+        const cleanValue = value.replace(/\D/g, '').substring(0, 6);
+        this.passwordRecover.code = cleanValue;
     }
 
     private onClickRequestValidation(): void {
@@ -245,5 +262,4 @@ export class LoginFormComponent extends FormBase {
         this.cpf = '';
         this.cnpj = '';
     }
-
 }

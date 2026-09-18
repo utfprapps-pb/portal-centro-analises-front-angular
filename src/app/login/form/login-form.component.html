@@ -50,7 +50,7 @@
                         <ng-container *ngIf="template == 'password'">
                             <div>
                                 <div class="my-auto">
-                                    <input-email label="E-mail" compCtrl required
+                                    <input-email label="E-mail" compCtrl="userEmailInput" required
                                         [(ngModel)]="passwordRecover.email" [minlength]="4"
                                         [maxlength]="255"></input-email>
                                     <div class="row">
@@ -64,8 +64,10 @@
                                     </div>
                                 </div>
                                 <div class="my-auto">
-                                    <input-number label="Código" compCtrl required [maxlength]="6"
-                                        [(ngModel)]="passwordRecover.code"></input-number>
+                                    <input-text label="Código" compCtrl required [maxlength]="20"
+                                            [ngModel]="passwordRecover.code"
+                                            (ngModelChange)="onCodeChange($event)">
+                                    </input-text>
                                     <div class="row">
                                         <div class="col-12 p-0">
                                             <p class="small-text pt-1 link cursor-pointer"
