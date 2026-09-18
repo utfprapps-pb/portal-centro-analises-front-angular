@@ -200,18 +200,23 @@ export abstract class FormBase implements OnDestroy {
         }
 
         const errObj = error.error || error;
-        
-        const errosCompCtrl: any = errObj.erros || errObj.validationErrors || errObj.errors;
+        const errosCompCtrl: Record<string, string> = errObj.erros || errObj.validationErrors || errObj.errors;
         
         let message: string = errObj.message;
+        
         if (!message && ObjectUtils.isNotEmpty(errosCompCtrl)) {
             message = Object.values(errosCompCtrl)[0] as string;
         }
 
         if (ObjectUtils.isNotEmpty(errosCompCtrl)) {
+            const fields = this.getFieldsCompCtrl();
+            let firstInvalidField: CompCtrlDirective | null = null;
+
             for (const key in errosCompCtrl) {
-                const field = this.getFieldsCompCtrl()
-                    ?.find(it => it.compCtrl == key || it.compCtrl.toLocaleLowerCase().replaceAll(' ', '') == key);
+                const normalizedKey = key.toLocaleLowerCase().replaceAll(' ', '');
+                const field = fields?.find(it => 
+                    it.compCtrl === key || it.compCtrl.toLocaleLowerCase().replaceAll(' ', '') === normalizedKey
+                );
                 
                 if (field) {
                     field.valid = false;
@@ -221,10 +226,14 @@ export abstract class FormBase implements OnDestroy {
                     if (typeof field.setClassInvalid === 'function') {
                         field.setClassInvalid();
                     }
-                    if (typeof field.setFocus === 'function') {
-                        field.setFocus();
+                    if (!firstInvalidField) {
+                        firstInvalidField = field;
                     }
                 }
+            }
+
+            if (firstInvalidField && typeof firstInvalidField.setFocus === 'function') {
+                firstInvalidField.setFocus();
             }
         }
 

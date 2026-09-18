@@ -203,12 +203,43 @@ export class LoginFormComponent extends FormBase {
     }
 
     public onCodeChange(value: string): void {
+        if (!this.passwordRecover) return;
+
         if (!value) {
-            if (this.passwordRecover) this.passwordRecover.code = '';
+            this.passwordRecover.code = '';
             return;
         }
-        const cleanValue = value.replace(/\D/g, '').substring(0, 6);
-        this.passwordRecover.code = cleanValue;
+
+        this.passwordRecover.code = value
+            .normalize('NFKC')
+            .replace(/\D/g, '')
+            .substring(0, 6);
+    }
+
+    public onPasteCode(event: ClipboardEvent): void {
+        event.preventDefault();
+        const clipboardData = event.clipboardData || (window as any).clipboardData;
+        const pastedText = clipboardData?.getData('text') || '';
+
+        const cleanValue = pastedText
+            .normalize('NFKC')
+            .replace(/\D/g, '')
+            .substring(0, 6);
+
+        if (this.passwordRecover) {
+            this.passwordRecover.code = cleanValue;
+        }
+    }
+
+    public onKeyDownCode(event: KeyboardEvent): void {
+        const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'Home', 'End'];
+        if (allowedKeys.includes(event.key) || event.ctrlKey || event.metaKey) {
+            return;
+        }
+        
+        if (!/^[0-9]$/.test(event.key)) {
+            event.preventDefault();
+        }
     }
 
     private onClickRequestValidation(): void {

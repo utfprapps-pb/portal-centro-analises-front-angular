@@ -65,8 +65,11 @@
                                 </div>
                                 <div class="my-auto">
                                     <input-text label="Código" compCtrl required [maxlength]="20"
-                                            [ngModel]="passwordRecover.code"
-                                            (ngModelChange)="onCodeChange($event)">
+                                        inputmode="numeric"
+                                        [(ngModel)]="passwordRecover.code"
+                                        (ngModelChange)="onCodeChange($event)"
+                                        (keydown)="onKeyDownCode($event)"
+                                        (paste)="onPasteCode($event)">
                                     </input-text>
                                     <div class="row">
                                         <div class="col-12 p-0">
