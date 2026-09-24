@@ -193,32 +193,52 @@ export abstract class FormBase implements OnDestroy {
     public errorHandler(error: any, title?: string): void {
         if (!this.hasErrorMapped(error)) {
             return;
-        } else {
-            if (ObjectUtils.isEmpty(title)) {
-                title = this.getTitle();
-            }
+        }
 
-            let message: string = '';
-            let errosCompCtrl: any = null;
-            if ((ObjectUtils.isNotEmpty(error.error) && !!error.error.mapped)) {
-                message = error.error.message;
-                errosCompCtrl = error.error.erros;
-            } else {
-                message = error.message;
-                errosCompCtrl = error.errors;
-            }
+        if (ObjectUtils.isEmpty(title)) {
+            title = this.getTitle();
+        }
 
-            if (ObjectUtils.isNotEmpty(message)) {
-                this.toastrService.showError(title, message);
-            } else if (ObjectUtils.isNotEmpty(errosCompCtrl)) {
-                for (const key in errosCompCtrl) {
-                    this.getFieldsCompCtrl()
-                        ?.find(it => it.compCtrl == key || it.compCtrl.toLocaleLowerCase().replaceAll(' ', '') == key)
-                        ?.invalidate(errosCompCtrl[key]);
+        const errObj = error.error || error;
+        const errosCompCtrl: Record<string, string> = errObj.erros || errObj.validationErrors || errObj.errors;
+        
+        let message: string = errObj.message;
+        
+        if (!message && ObjectUtils.isNotEmpty(errosCompCtrl)) {
+            message = Object.values(errosCompCtrl)[0] as string;
+        }
+
+        if (ObjectUtils.isNotEmpty(errosCompCtrl)) {
+            const fields = this.getFieldsCompCtrl();
+            let firstInvalidField: CompCtrlDirective | null = null;
+
+            for (const key in errosCompCtrl) {
+                const normalizedKey = key.toLocaleLowerCase().replaceAll(' ', '');
+                const field = fields?.find(it => 
+                    it.compCtrl === key || it.compCtrl.toLocaleLowerCase().replaceAll(' ', '') === normalizedKey
+                );
+                
+                if (field) {
+                    field.valid = false;
+                    if (field.compCtrlContainer) {
+                        field.compCtrlContainer.setInvalidCause([errosCompCtrl[key]]);
+                    }
+                    if (typeof field.setClassInvalid === 'function') {
+                        field.setClassInvalid();
+                    }
+                    if (!firstInvalidField) {
+                        firstInvalidField = field;
+                    }
                 }
-            } else {
-                console.error('Erro não mapeado:', error);
             }
+
+            if (firstInvalidField && typeof firstInvalidField.setFocus === 'function') {
+                firstInvalidField.setFocus();
+            }
+        }
+
+        if (ObjectUtils.isNotEmpty(message)) {
+            this.toastrService.showError(title, message);
         }
     }
 }
