@@ -543,10 +543,14 @@
                                 </input-text>
                             </td>
                             <td>
-                                <input-text compCtrl="Faixa de Varredura Final (3° - 70°)" required
-                                    [(ngModel)]="amostra.faixaVarredura" [maxlength]="255"
-                                    [placeholder]="'3° - XXX'">
-                                </input-text>
+                                <input-number compCtrl="Faixa de Varredura Final (3° - 70°)" 
+                                    required
+                                    [(ngModel)]="amostra.faixaVarredura"
+                                    [min]="3"
+                                    [max]="70"
+                                    suffix="°"
+                                    placeholder="(3° - 70°)">
+                                </input-number>
                             </td>
                             <td>
                                 <radio-button compCtrl="Step" required enum="DRXStep"

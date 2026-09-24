@@ -25,6 +25,9 @@ export class InputNumber extends InputBaseComponent {
     @Input('minFractionDigits') minFractionDigits: number = 0;
     @Input('maxFractionDigits') maxFractionDigits: number = 0;
 
+    @Input('showButtons') showButtons: boolean = false;
+    @Input('suffix') suffix: string = '';
+
     override getContainer(): any {
         return this.component;
     }
