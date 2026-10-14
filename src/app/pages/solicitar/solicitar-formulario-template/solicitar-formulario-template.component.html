@@ -504,7 +504,7 @@
                             <th class="min-250">Identificação</th>
                             <th class="min-250">Descrição</th>
                             <th class="min-180 text-center">Faixa de Varredura Final<br>
-                                <div class="text-center">(3° - 70°)</div>
+                                <div class="text-center">(3° - 145°)</div>
                             </th>
                             <th class="min-180">Step</th>
                             <th *ngIf="object.form.modoAnalise == MODO_ANALISE_CN"
@@ -543,13 +543,13 @@
                                 </input-text>
                             </td>
                             <td>
-                                <input-number compCtrl="Faixa de Varredura Final (3° - 70°)" 
+                                <input-number compCtrl="Faixa de Varredura Final (3° - 145°)" 
                                     required
                                     [(ngModel)]="amostra.faixaVarredura"
                                     [min]="3"
-                                    [max]="70"
+                                    [max]="145"
                                     suffix="°"
-                                    placeholder="(3° - 70°)">
+                                    placeholder="'3° - XXX'">
                                 </input-number>
                             </td>
                             <td>
@@ -938,7 +938,7 @@
                         <tr>
                             <th class="min-250">Identificação</th>
                             <th class="min-250">Descrição</th>
-                            <th class="min-250">Faixa de Varredura Final (3° - 70°)</th>
+                            <th class="min-250">Faixa de Varredura Final (3° - 145°)</th>
                             <th class="min-180">Step</th>
                             <th *ngIf="object.form.modoAnalise == MODO_ANALISE_CN" class="min-250">
                                 Velocidade de Varredura (°/min)
@@ -960,7 +960,7 @@
                                 </input-text>
                             </td>
                             <td>
-                                <input-text compCtrl="Faixa de Varredura Final (3° - 70°)" required
+                                <input-text compCtrl="Faixa de Varredura Final (3° - 145°)" required
                                     [ngModel]="amostra.faixaVarredura" disabled [placeholder]="'3° - XXX'">
                                 </input-text>
                             </td>
