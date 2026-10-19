@@ -49,6 +49,15 @@ export class RadioButtonComponent extends InputBaseComponent {
         }
     };
 
+    @Input('boolean') set isBoolean(val: boolean | string) {
+        if (val === true || val === '' || val === 'true') {
+            this._options = [
+                { guid: Guid.raw(), key: true, value: 'Sim' },
+                { guid: Guid.raw(), key: false, value: 'Não' }
+            ];
+        }
+    }
+
     get options(): any[] {
         if (ObjectUtils.isEmpty(this.ignore)) {
             return this._options;
@@ -85,7 +94,8 @@ export class RadioButtonComponent extends InputBaseComponent {
                 }
                 this.innerObject = val;
             } else {
-                this.innerObject = value;
+                let val = this._options.find(it => it.key === value);
+                this.innerObject = val !== undefined ? val : value;
             }
         }
     }
