@@ -343,8 +343,8 @@
                 </input-text>
             </div>
             <div class="col-12">
-                <input-number label="Resolucao (cm⁻¹)" compCtrl required [(ngModel)]="object.form.resolucao"
-                    [maxlength]="4">
+                <input-number label="Resolução (cm⁻¹)" compCtrl required [(ngModel)]="object.form.resolucao"
+                    [maxlength]="4"> 
                 </input-number>
             </div>
         </div>
@@ -638,7 +638,7 @@
                             </td>
                             <td>
                                 <input-number compCtrl="Massa (3 - 150mg)" required
-                                    [(ngModel)]="amostra.massa" [min]="3" [max]="150" [maxlength]="3"
+                                    [(ngModel)]="amostra.massa" [min]="3" [max]="150" [suffix]="'mg'"
                                     [placeholder]="'(3 - 150mg)'">
                                 </input-number>
                             </td>
@@ -654,14 +654,14 @@
                             </td>
                             <td>
                                 <input-number compCtrl="Fluxo de Gás (10 - 100 mL/min)" required
-                                    [(ngModel)]="amostra.fluxoGas" [min]="10" [max]="100" [maxlength]="3"
+                                    [(ngModel)]="amostra.fluxoGas" [min]="10" [max]="100" [suffix]="' mL/min'"
                                     [placeholder]="'(10 - 100 mL/min)'">
                                 </input-number>
                             </td>
                             <td>
                                 <input-number compCtrl="Taxa de aquecimento (0,5 - 100 °C/min)" required
-                                    [(ngModel)]="amostra.taxaAquecimento" [min]="0.5" [max]="100"
-                                    [maxlength]="6" [maxFractionDigits]="1"
+                                    [(ngModel)]="amostra.taxaAquecimento" [min]="0.5" [max]="100" [minFractionDigits]="1"
+                                    [maxFractionDigits]="1" [suffix]="' °C/min'"
                                     [placeholder]="'(0,5 - 100 °C/min)'">
                                 </input-number>
                             </td>
@@ -1032,7 +1032,7 @@
                             </td>
                             <td>
                                 <input-number compCtrl="Massa (3 - 150mg)" required disabled
-                                    [ngModel]="amostra.massa" [min]="3" [max]="150" [maxlength]="3"
+                                    [ngModel]="amostra.massa" [min]="3" [max]="150" [suffix]="'mg'"
                                     [placeholder]="'(3 - 150mg)'">
                                 </input-number>
                             </td>
@@ -1048,14 +1048,14 @@
                             </td>
                             <td>
                                 <input-number compCtrl="Fluxo de Gás (10 - 100 mL/min)" required disabled
-                                    [ngModel]="amostra.fluxoGas" [min]="10" [max]="100" [maxlength]="3"
+                                    [ngModel]="amostra.fluxoGas" [min]="10" [max]="100" [suffix]="' mL/min'"
                                     [placeholder]="'(10 - 100 mL/min)'">
                                 </input-number>
                             </td>
                             <td>
-                                <input-number compCtrl="Taxa de aquecimento (0,5 - 100 °C/min)" required
-                                    disabled [ngModel]="amostra.taxaAquecimento" [min]="0.5" [max]="100"
-                                    [maxlength]="6" [maxFractionDigits]="1"
+                                <input-number compCtrl="Taxa de aquecimento (0,5 - 100 °C/min)" required disabled
+                                    [(ngModel)]="amostra.taxaAquecimento" [min]="0.5" [max]="100" [minFractionDigits]="1"
+                                    [maxFractionDigits]="1" [suffix]="' °C/min'"
                                     [placeholder]="'(0,5 - 100 °C/min)'">
                                 </input-number>
                             </td>
