@@ -624,7 +624,7 @@
                                 </input-text>
                             </td>
                             <td>
-                                <radio-button compCtrl="Expande" [(ngModel)]="amostra.expande" enum="Boolean"
+                                <radio-button compCtrl="Expande" [(ngModel)]="amostra.expande" boolean
                                     required>
                                 </radio-button>
                             </td>
@@ -995,7 +995,8 @@
                             <th class="min-180">Expande</th>
                             <th class="min-180">Libera Gás</th>
                             <th class="min-180 text-center">Massa (3 - 150mg)</th>
-                            <th class="min-180">Técnica DSC</th>
+                            <th class="min-180" *ngIf="['DSC'].includes(getSolicitationType())">Técnica DSC
+                            </th>
                             <th class="min-180 text-center">Atmosfera</th>
                             <th class="min-180 text-center">Fluxo de Gás (10 - 100 mL/min)
                             </th>
@@ -1017,7 +1018,7 @@
                                 </input-text>
                             </td>
                             <td>
-                                <radio-button compCtrl="Expande" [ngModel]="amostra.expande" enum="Boolean"
+                                <radio-button compCtrl="Expande" [(ngModel)]="amostra.expande" boolean
                                     required disabled>
                                 </radio-button>
                             </td>
@@ -1036,9 +1037,9 @@
                                     [placeholder]="'(3 - 150mg)'">
                                 </input-number>
                             </td>
-                            <td>
-                                <radio-button compCtrl="Técnica DSC" required disabled enum="DSCTecnica"
-                                    [ngModel]="amostra.tecnica">
+                            <td *ngIf="['DSC'].includes(getSolicitationType())">
+                                <radio-button compCtrl="Técnica DSC" required enum="DSCTecnica"
+                                    [(ngModel)]="amostra.tecnica">
                                 </radio-button>
                             </td>
                             <td>
