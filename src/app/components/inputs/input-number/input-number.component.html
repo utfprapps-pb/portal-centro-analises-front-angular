@@ -6,7 +6,8 @@
             [maxlength]="maxlength" [placeholder]="placeholder" [disabled]="disabled" [readonly]="disabled"
             [showClear]="showClear && !disabled" [(ngModel)]="innerValue" [max]="max" [min]="min"
             [class]="class" [inputStyleClass]="class" (onClear)="forceClear()"
-            [minFractionDigits]="minFractionDigits" [maxFractionDigits]="maxFractionDigits"/>
+            [minFractionDigits]="minFractionDigits" [maxFractionDigits]="maxFractionDigits" 
+            [showButtons]="showButtons" [suffix]="suffix"/>
         <invalid-info #invalid class="mr-icon-1" [causes]="invalidCause"></invalid-info>
     </div>
 </div>

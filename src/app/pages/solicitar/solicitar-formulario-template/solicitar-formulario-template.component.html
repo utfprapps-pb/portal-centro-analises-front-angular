@@ -343,8 +343,8 @@
                 </input-text>
             </div>
             <div class="col-12">
-                <input-number label="Resolucao (cm⁻¹)" compCtrl required [(ngModel)]="object.form.resolucao"
-                    [maxlength]="4">
+                <input-number label="Resolução (cm⁻¹)" compCtrl required [(ngModel)]="object.form.resolucao"
+                    [maxlength]="4"> 
                 </input-number>
             </div>
         </div>
@@ -504,7 +504,7 @@
                             <th class="min-250">Identificação</th>
                             <th class="min-250">Descrição</th>
                             <th class="min-180 text-center">Faixa de Varredura Final<br>
-                                <div class="text-center">(3° - 70°)</div>
+                                <div class="text-center">(3° - 145°)</div>
                             </th>
                             <th class="min-180">Step</th>
                             <th *ngIf="object.form.modoAnalise == MODO_ANALISE_CN"
@@ -543,10 +543,14 @@
                                 </input-text>
                             </td>
                             <td>
-                                <input-text compCtrl="Faixa de Varredura Final (3° - 70°)" required
-                                    [(ngModel)]="amostra.faixaVarredura" [maxlength]="255"
-                                    [placeholder]="'3° - XXX'">
-                                </input-text>
+                                <input-number compCtrl="Faixa de Varredura Final (3° - 145°)" 
+                                    required
+                                    [(ngModel)]="amostra.faixaVarredura"
+                                    [min]="3"
+                                    [max]="145"
+                                    suffix="°"
+                                    placeholder="'3° - XXX'">
+                                </input-number>
                             </td>
                             <td>
                                 <radio-button compCtrl="Step" required enum="DRXStep"
@@ -634,7 +638,7 @@
                             </td>
                             <td>
                                 <input-number compCtrl="Massa (3 - 150mg)" required
-                                    [(ngModel)]="amostra.massa" [min]="3" [max]="150" [maxlength]="3"
+                                    [(ngModel)]="amostra.massa" [min]="3" [max]="150" [suffix]="'mg'"
                                     [placeholder]="'(3 - 150mg)'">
                                 </input-number>
                             </td>
@@ -650,14 +654,14 @@
                             </td>
                             <td>
                                 <input-number compCtrl="Fluxo de Gás (10 - 100 mL/min)" required
-                                    [(ngModel)]="amostra.fluxoGas" [min]="10" [max]="100" [maxlength]="3"
+                                    [(ngModel)]="amostra.fluxoGas" [min]="10" [max]="100" [suffix]="' mL/min'"
                                     [placeholder]="'(10 - 100 mL/min)'">
                                 </input-number>
                             </td>
                             <td>
                                 <input-number compCtrl="Taxa de aquecimento (0,5 - 100 °C/min)" required
-                                    [(ngModel)]="amostra.taxaAquecimento" [min]="0.5" [max]="100"
-                                    [maxlength]="6" [maxFractionDigits]="1"
+                                    [(ngModel)]="amostra.taxaAquecimento" [min]="0.5" [max]="100" [minFractionDigits]="1"
+                                    [maxFractionDigits]="1" [suffix]="' °C/min'"
                                     [placeholder]="'(0,5 - 100 °C/min)'">
                                 </input-number>
                             </td>
@@ -934,7 +938,7 @@
                         <tr>
                             <th class="min-250">Identificação</th>
                             <th class="min-250">Descrição</th>
-                            <th class="min-250">Faixa de Varredura Final (3° - 70°)</th>
+                            <th class="min-250">Faixa de Varredura Final (3° - 145°)</th>
                             <th class="min-180">Step</th>
                             <th *ngIf="object.form.modoAnalise == MODO_ANALISE_CN" class="min-250">
                                 Velocidade de Varredura (°/min)
@@ -956,7 +960,7 @@
                                 </input-text>
                             </td>
                             <td>
-                                <input-text compCtrl="Faixa de Varredura Final (3° - 70°)" required
+                                <input-text compCtrl="Faixa de Varredura Final (3° - 145°)" required
                                     [ngModel]="amostra.faixaVarredura" disabled [placeholder]="'3° - XXX'">
                                 </input-text>
                             </td>
@@ -1028,7 +1032,7 @@
                             </td>
                             <td>
                                 <input-number compCtrl="Massa (3 - 150mg)" required disabled
-                                    [ngModel]="amostra.massa" [min]="3" [max]="150" [maxlength]="3"
+                                    [ngModel]="amostra.massa" [min]="3" [max]="150" [suffix]="'mg'"
                                     [placeholder]="'(3 - 150mg)'">
                                 </input-number>
                             </td>
@@ -1044,14 +1048,14 @@
                             </td>
                             <td>
                                 <input-number compCtrl="Fluxo de Gás (10 - 100 mL/min)" required disabled
-                                    [ngModel]="amostra.fluxoGas" [min]="10" [max]="100" [maxlength]="3"
+                                    [ngModel]="amostra.fluxoGas" [min]="10" [max]="100" [suffix]="' mL/min'"
                                     [placeholder]="'(10 - 100 mL/min)'">
                                 </input-number>
                             </td>
                             <td>
-                                <input-number compCtrl="Taxa de aquecimento (0,5 - 100 °C/min)" required
-                                    disabled [ngModel]="amostra.taxaAquecimento" [min]="0.5" [max]="100"
-                                    [maxlength]="6" [maxFractionDigits]="1"
+                                <input-number compCtrl="Taxa de aquecimento (0,5 - 100 °C/min)" required disabled
+                                    [(ngModel)]="amostra.taxaAquecimento" [min]="0.5" [max]="100" [minFractionDigits]="1"
+                                    [maxFractionDigits]="1" [suffix]="' °C/min'"
                                     [placeholder]="'(0,5 - 100 °C/min)'">
                                 </input-number>
                             </td>
