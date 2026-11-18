@@ -858,7 +858,7 @@
                             <td>
                                 <combobox [compCtrl]="'Amostra ' + amostraIndex + 1 + ' - Equipamento'"
                                     required [filterBy]="'id,name,shortname'"
-                                    [options]="analise.id == null ? equipamentosDisponiveis : equipamentos"
+                                    [options]="equipamentos"
                                     [(ngModel)]="analise.equipment"
                                     [disabled]="analise.id != null || !isAdmin">
                                 </combobox>

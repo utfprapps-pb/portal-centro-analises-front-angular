@@ -83,11 +83,8 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
                 this.habilitarChanges = false;
             }
 
-            this.equipmentService.findAll().then(async data => {
+            this.equipmentService.findAll().then(data => {
                 data.sort((a, b) => a.id - b.id);
-                if (!this.habilitarChanges) {
-                    this.equipamentosDisponiveis = data.filter(it => it.analise == null);
-                }
                 this.equipamentos = data;
             });
         }
@@ -114,7 +111,6 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
     private uniqueProject: Project = null;
     public projetos: Project[] = [];
     public equipamentos: Equipment[] = [];
-    public equipamentosDisponiveis: Equipment[] = [];
 
     public responsavel: UserLoginDTO = null;
 

@@ -53,16 +53,24 @@ export class ComboboxComponent extends InputBaseComponent{
     }
 
     @Input('options') set options(options: ZModel[]) {
-        this._options = options;
+        this._options = options ?? [];
         this.mappedDisplayValues = new Map();
-        for (const option of options) {
-            let texto: string = (this.columns || this.filterBy).split(',')
+        for (const option of this._options) {
+            const texto = (this.columns || this.filterBy).split(',')
                 .map(field => this.getFieldValue(option, field))
                 .filter(field => ObjectUtils.isNotEmpty(field))
                 .join(' - ');
             this.mappedDisplayValues.set(option.id, texto);
         }
-        this.onChangeDropdown(this.defaultValue);
+
+        const wantedId = this._innerObject?.id ?? this.defaultValue;
+        if (wantedId != null) {
+            const match = this._options.find(it => String(it.id) === String(wantedId));
+            if (match) {
+                this._innerObject = match;
+                this.displayValue = this.mappedDisplayValues.get(match.id);
+            }
+        }
     }
 
 
@@ -113,6 +121,8 @@ export class ComboboxComponent extends InputBaseComponent{
                 this.innerValue = value?.key;
                 this.displayValue = this.mappedDisplayValues.get(value?.key);
             } else {
+                if (this._options.length === 0) { return; }   // ← new guard
+
                 const texto = !!value && !!value.id ? this.mappedDisplayValues.get(value.id) : null;
                 if (ObjectUtils.isEmpty(texto)) {
                     this._innerObject = null;
