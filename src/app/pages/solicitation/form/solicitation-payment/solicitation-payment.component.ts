@@ -56,22 +56,27 @@ export class SolicitationPaymentComponent extends FormCrud<Solicitation> {
                 amostra.analises.forEach(analise => {
                     if (analise.equipment) {
                         const equipmentPrice = this.equipmentPrices.get(analise.equipment.id);
-                        if (analise.dataini && analise.datafin) {
-                            const seconds = (analise.datafin.getTime() - analise.dataini.getTime()) / 1000;
-                            const hours = seconds / 3600;
+                        
+                        const dateIni = analise.dataini ? new Date(analise.dataini) : null;
+                        const dateFin = analise.datafin ? new Date(analise.datafin) : null;
+
+                        if (dateIni && dateFin && !isNaN(dateIni.getTime()) && !isNaN(dateFin.getTime())) {
+                            const seconds = (dateFin.getTime() - dateIni.getTime()) / 1000;
+                            const hours = Math.max(0, seconds / 3600);
+                            
                             if (equipmentPrice) {
                                 equipmentPrice.hoursTotal += hours;
                                 equipmentPrice.sampleTotal++;
                             } else {
-                                const value = new EquipmentPrices();
-                                value.id = analise.equipment.id;
-                                value.name = analise.equipment.name;
-                                value.hourPrice = analise.equipment['valueHour' + userType] || 0;
-                                value.samplePrice = analise.equipment['valueSample' + userType] || 0;
-                                value.hoursTotal = hours;
-                                value.sampleTotal = 1;
-                                value.calculateByHours = value.total == 0;
-                                this.equipmentPrices.set(analise.equipment.id, value);
+                                const eqPrice = new EquipmentPrices();
+                                eqPrice.id = analise.equipment.id;
+                                eqPrice.name = analise.equipment.name;
+                                eqPrice.hourPrice = analise.equipment['valueHour' + userType] || 0;
+                                eqPrice.samplePrice = analise.equipment['valueSample' + userType] || 0;
+                                eqPrice.hoursTotal = hours;
+                                eqPrice.sampleTotal = 1;
+                                eqPrice.calculateByHours = eqPrice.total == 0;
+                                this.equipmentPrices.set(analise.equipment.id, eqPrice);
                             }
                         }
                     }
