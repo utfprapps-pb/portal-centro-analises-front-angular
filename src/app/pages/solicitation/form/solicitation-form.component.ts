@@ -224,6 +224,9 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
             if (!ignoreFeedbackMessage) {
                 this.toastrService.showSuccess(this.title, 'Status atualizado com sucesso!');
             }
+            setTimeout(() => {
+                window.location.reload();
+            }, 800);
         }, error => {
             if (!ignoreFeedbackMessage) {
                 if (this.hasErrorMapped(error)) {
