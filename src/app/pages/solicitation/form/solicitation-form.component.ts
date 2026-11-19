@@ -168,8 +168,11 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
         this.isVisibleSendToPayment = true;
     }
 
-    public onClickCloseModalPayment(): void {
+    public onClickCloseModalPayment(success?: boolean): void {
         this.isVisibleSendToPayment = false;
+        if (success) {
+            window.location.reload();
+        }
     }
 
     private dialogAction(newStatus: SolicitationStatus, statusExtras?: SolicitationStatus[]): void {
@@ -220,19 +223,20 @@ export class SolicitationFormComponent extends FormCrud<Solicitation> {
 
         this.blockForm();
         return this.service.atualizarStatus(status).then((data) => {
-            // this.updateObject(data);
             if (!ignoreFeedbackMessage) {
                 this.toastrService.showSuccess(this.title, 'Status atualizado com sucesso!');
             }
+            
             setTimeout(() => {
                 window.location.reload();
             }, 800);
+
         }, error => {
             if (!ignoreFeedbackMessage) {
                 if (this.hasErrorMapped(error)) {
                     this.errorHandler(error);
                 } else {
-                    this.toastrService.showError(this.title, 'Erro ao atualziar status!');
+                    this.toastrService.showError(this.title, 'Erro ao atualizar status!');
                 }
             }
         }).finally(() => this.releaseForm());
