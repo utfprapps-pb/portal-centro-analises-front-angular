@@ -34,7 +34,7 @@ export class SolicitationAmostra extends ZModel {
     descarteUsuarioOutro: string = null;
 
     // DRX
-    faixaVarredura: number = null;
+    faixaVarredura: string = null;
     step: DRXStep | string = '_002';
     velocidadeVarredura: number = null;
     tempoPasso: number = null;
