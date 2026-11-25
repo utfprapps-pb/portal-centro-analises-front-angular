@@ -1,6 +1,6 @@
 <form-crud #formView>
     <modal-component [(visible)]="isVisibleSendToPayment" [header]="'Cadastrar Cobrança'" [width]="'90vw'" [height]="'90vh'">
-        <solicitation-payment [solicitacao]="solicitationPaymentObject" (onChangeComplete)="onClickCloseModalPayment()">
+        <solicitation-payment [solicitacao]="solicitationPaymentObject" (onChangeComplete)="onClickCloseModalPayment($event)">
         </solicitation-payment>
     </modal-component>
 
