@@ -55,5 +55,8 @@ export class Finance extends ZModelCrud {
 
     attachments: Attachment[] = [];
 
+    adjustmentValue?: number = 0;
+
+    adjustmentReason?: string;
 }
 
