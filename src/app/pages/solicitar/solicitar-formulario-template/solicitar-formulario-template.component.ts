@@ -568,7 +568,7 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
     public onClickFinalizarAmostra(amostra: SolicitationAmostra): void {
         const sweetAlertOptions: SweetAlertOptions = {
             title: 'Atenção',
-            html: `Deseja realmente <br>${amostra.concluida ? 'Retomar' : 'Concluir'}</b> a atualização desta amostra?`,
+            html: `Deseja realmente <br>${amostra.concluida ? 'Retomar' : 'Concluir'} a atualização desta amostra?`,
             icon: DialogType.QUESTION,
             focusConfirm: false,
             focusCancel: true,
@@ -585,6 +585,11 @@ export class SolicitarFormularioTemplateComponent implements ControlValueAccesso
                 this.blockForm();
                 this.solicitationService.finalizarAmostra(amostra).then(() => {
                     this.toastrService.showSuccess(this.getTitle(), 'Registro salvo com sucesso!');
+                    
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 800);
+
                 }, error => {
                     if (this.hasErrorMapped(error)) {
                         this.errorHandler(error);

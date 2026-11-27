@@ -14,6 +14,8 @@ import { FinanceDetails } from '../../../financeiro/model/financedetails.model';
 import { Solicitation } from '../../model/solicitation.model';
 import { SolicitationService } from '../../solicitation.service';
 
+export type TipoAlteracao = 'NONE' | 'DISCOUNT' | 'ADDITION';
+
 export class EquipmentPrices {
     id: number;
     name: string;
@@ -24,9 +26,10 @@ export class EquipmentPrices {
     sampleTotal?: number = 0;
 
     get total(): number {
-        return this.calculateByHours
+        const t = this.calculateByHours
             ? this.hoursTotal * this.hourPrice
             : this.sampleTotal * this.samplePrice;
+        return Math.round(t * 100) / 100;
     }
 }
 
@@ -44,6 +47,12 @@ export class SolicitationPaymentComponent extends FormCrud<Solicitation> {
         this.object = value;
         if (value) {
             this.responsavel_pagamento = this.convertUtilsService.cloneObject(value.responsavel);
+
+            // resets the adjustment whenever a new solicitation is received
+            this.tipoAlteracao = 'NONE';
+            this.valorAlteracao = null;
+            this.motivoAlteracao = '';
+
             let userType = 'Utfpr';
             if (value.responsavel.role == Roles.ROLE_EXTERNAL) {
                 userType = 'External';
@@ -56,22 +65,27 @@ export class SolicitationPaymentComponent extends FormCrud<Solicitation> {
                 amostra.analises.forEach(analise => {
                     if (analise.equipment) {
                         const equipmentPrice = this.equipmentPrices.get(analise.equipment.id);
-                        if (analise.dataini && analise.datafin) {
-                            const seconds = (analise.datafin.getTime() - analise.dataini.getTime()) / 1000;
-                            const hours = seconds / 3600;
+
+                        const dateIni = analise.dataini ? new Date(analise.dataini) : null;
+                        const dateFin = analise.datafin ? new Date(analise.datafin) : null;
+
+                        if (dateIni && dateFin && !isNaN(dateIni.getTime()) && !isNaN(dateFin.getTime())) {
+                            const seconds = (dateFin.getTime() - dateIni.getTime()) / 1000;
+                            const hours = Math.max(0, seconds / 3600);
+
                             if (equipmentPrice) {
                                 equipmentPrice.hoursTotal += hours;
                                 equipmentPrice.sampleTotal++;
                             } else {
-                                const value = new EquipmentPrices();
-                                value.id = analise.equipment.id;
-                                value.name = analise.equipment.name;
-                                value.hourPrice = analise.equipment['valueHour' + userType] || 0;
-                                value.samplePrice = analise.equipment['valueSample' + userType] || 0;
-                                value.hoursTotal = hours;
-                                value.sampleTotal = 1;
-                                value.calculateByHours = value.total == 0;
-                                this.equipmentPrices.set(analise.equipment.id, value);
+                                const eqPrice = new EquipmentPrices();
+                                eqPrice.id = analise.equipment.id;
+                                eqPrice.name = analise.equipment.name;
+                                eqPrice.hourPrice = analise.equipment['valueHour' + userType] || 0;
+                                eqPrice.samplePrice = analise.equipment['valueSample' + userType] || 0;
+                                eqPrice.hoursTotal = hours;
+                                eqPrice.sampleTotal = 1;
+                                eqPrice.calculateByHours = eqPrice.total == 0;
+                                this.equipmentPrices.set(analise.equipment.id, eqPrice);
                             }
                         }
                     }
@@ -86,6 +100,11 @@ export class SolicitationPaymentComponent extends FormCrud<Solicitation> {
     public get equipmentPricesList(): EquipmentPrices[] {
         return Array.from(this.equipmentPrices.values());
     }
+
+    // manual adjustment (alteração) applied on top of the calculated value
+    public tipoAlteracao: TipoAlteracao = 'NONE';
+    public valorAlteracao: number = null;
+    public motivoAlteracao: string = '';
 
     constructor(
         protected override readonly injector: Injector,
@@ -109,12 +128,52 @@ export class SolicitationPaymentComponent extends FormCrud<Solicitation> {
         }
     }
 
-    public getTotalValores(): number {
+    /** Sum of all lines, before any adjustment. */
+    public get valorCalculado(): number {
         let total = 0;
-        this.equipmentPrices.forEach(value => {
-            total += value.total;
-        });
+        this.equipmentPrices.forEach(value => total += value.total);
         return total;
+    }
+
+    /** Signed adjustment: negative for a discount, positive for an addition. */
+    public get alteracao(): number {
+        const v = Number(this.valorAlteracao) || 0;
+        switch (this.tipoAlteracao) {
+            case 'DISCOUNT': return -v;
+            case 'ADDITION': return v;
+            default: return 0;
+        }
+    }
+
+    /** Final price = calculated + adjustment. */
+    public getTotalValores(): number {
+        return this.valorCalculado + this.alteracao;
+    }
+
+    public onChangeTipoAlteracao(): void {
+        if (this.tipoAlteracao == 'NONE') {
+            this.valorAlteracao = null;
+            this.motivoAlteracao = '';
+        }
+    }
+
+    private validarAlteracao(): boolean {
+        if (this.tipoAlteracao == 'NONE') {
+            return true;
+        }
+        if (!this.valorAlteracao || this.valorAlteracao <= 0) {
+            this.toastrService.showError(this.title, 'Informe um valor de alteração maior que zero!');
+            return false;
+        }
+        if (!this.motivoAlteracao?.trim()) {
+            this.toastrService.showError(this.title, 'Informe o motivo da alteração!');
+            return false;
+        }
+        if (this.getTotalValores() < 0) {
+            this.toastrService.showError(this.title, 'O desconto não pode ser maior que o valor calculado!');
+            return false;
+        }
+        return true;
     }
 
     public override showButtons(button: string): boolean {
@@ -143,30 +202,35 @@ export class SolicitationPaymentComponent extends FormCrud<Solicitation> {
 
     public override async onSave(object: any): Promise<void> {
         object = this.convertUtilsService.cloneObject(this.solicitacao);
-        if (this.validateForm()) {
-            if (this.equipmentPricesList.find(it => it.total == 0)) {
-                const sweetAlertOptions: SweetAlertOptions = {
-                    title: 'Atenção',
-                    html: `Existem valores com <strong class="text-danger">Total: R$ 0,00</strong><br>Deseja continuar com o processo?`,
-                    icon: DialogType.QUESTION,
-                    focusConfirm: false,
-                    focusCancel: true,
-                    showConfirmButton: true,
-                    confirmButtonColor: '#0dcaf0',
-                    confirmButtonText: 'Sim',
-                    showCancelButton: true,
-                    cancelButtonColor: '#ccc',
-                    cancelButtonText: 'Cancelar',
-                };
+        if (!this.validateForm() || !this.validarAlteracao()) {
+            return;
+        }
 
-                Swal.mixin(sweetAlertOptions).fire().then(async (result) => {
-                    if (result.isConfirmed) {
-                        this.concluirSave(object);
-                    }
-                });
-            } else {
-                this.concluirSave(object);
-            }
+        const temValorZerado = this.getTotalValores() == 0
+            || !!this.equipmentPricesList.find(it => it.total == 0);
+
+        if (temValorZerado) {
+            const sweetAlertOptions: SweetAlertOptions = {
+                title: 'Atenção',
+                html: `Existem valores com <strong class="text-danger">Total: R$ 0,00</strong><br>Deseja continuar com o processo?`,
+                icon: DialogType.QUESTION,
+                focusConfirm: false,
+                focusCancel: true,
+                showConfirmButton: true,
+                confirmButtonColor: '#0dcaf0',
+                confirmButtonText: 'Sim',
+                showCancelButton: true,
+                cancelButtonColor: '#ccc',
+                cancelButtonText: 'Cancelar',
+            };
+
+            Swal.mixin(sweetAlertOptions).fire().then(async (result) => {
+                if (result.isConfirmed) {
+                    this.concluirSave(object);
+                }
+            });
+        } else {
+            this.concluirSave(object);
         }
     }
 
@@ -177,7 +241,9 @@ export class SolicitationPaymentComponent extends FormCrud<Solicitation> {
         financeiro.state = 'PENDING';
         financeiro.responsavel = this.object.responsavel;
         financeiro.pagador = this.responsavel_pagamento;
-        financeiro.value = this.getTotalValores();
+        financeiro.value = this.getTotalValores();       // final price (what the payer owes)
+        financeiro.adjustmentValue = this.alteracao;     // signed: -discount / +addition
+        financeiro.adjustmentReason = this.tipoAlteracao == 'NONE' ? null : this.motivoAlteracao.trim();
         financeiro.solicitation = this.object;
         financeiro.description = 'Formulário nº ' + this.object.id;
         financeiro.alterarSaldo = true;
@@ -205,5 +271,4 @@ export class SolicitationPaymentComponent extends FormCrud<Solicitation> {
             }
         }).finally(() => this.releaseForm());
     }
-
 }
