@@ -503,8 +503,8 @@
                             <th *ngIf="!disableForm" class="button-column no-print"></th>
                             <th class="min-250">Identificação</th>
                             <th class="min-250">Descrição</th>
-                            <th class="min-180 text-center">Faixa de Varredura Final<br>
-                                <div class="text-center">(3° - 145°)</div>
+                            <th class="min-180 text-center">Intervalo Faixa de Varredura Final<br>
+                                <div class="text-center">(2° - 145°)</div>
                             </th>
                             <th class="min-180">Step</th>
                             <th *ngIf="object.form.modoAnalise == MODO_ANALISE_CN"
@@ -543,14 +543,10 @@
                                 </input-text>
                             </td>
                             <td>
-                                <input-number compCtrl="Faixa de Varredura Final (3° - 145°)" 
-                                    required
-                                    [(ngModel)]="amostra.faixaVarredura"
-                                    [min]="3"
-                                    [max]="145"
-                                    suffix="°"
-                                    placeholder="'3° - XXX'">
-                                </input-number>
+                               <input-text compCtrl="Intervalo Faixa de Varredura Final (2° - 145°)" required
+                                    [(ngModel)]="amostra.faixaVarredura" [maxlength]="255"
+                                    [placeholder]="'2° - XXX'">
+                                </input-text>
                             </td>
                             <td>
                                 <radio-button compCtrl="Step" required enum="DRXStep"
@@ -938,7 +934,7 @@
                         <tr>
                             <th class="min-250">Identificação</th>
                             <th class="min-250">Descrição</th>
-                            <th class="min-250">Faixa de Varredura Final (3° - 145°)</th>
+                            <th class="min-250">Intervalo Faixa de Varredura Final (2° - 145°)</th>
                             <th class="min-180">Step</th>
                             <th *ngIf="object.form.modoAnalise == MODO_ANALISE_CN" class="min-250">
                                 Velocidade de Varredura (°/min)
@@ -960,7 +956,7 @@
                                 </input-text>
                             </td>
                             <td>
-                                <input-text compCtrl="Faixa de Varredura Final (3° - 145°)" required
+                                <input-text compCtrl="Intervalo Faixa de Varredura Final (2° - 145°)" required
                                     [ngModel]="amostra.faixaVarredura" disabled [placeholder]="'3° - XXX'">
                                 </input-text>
                             </td>
@@ -1061,10 +1057,9 @@
                                 </input-number>
                             </td>
                             <td>
-                                <input-number compCtrl="Intervalo de temperatura (°C)" required disabled
-                                    [ngModel]="amostra.intervaloTemperatura" [min]="30" [maxlength]="6"
-                                    [placeholder]="'30 - XXX'" [maxFractionDigits]="2">
-                                </input-number>
+                                <input-text compCtrl="Intervalo de temperatura (°C)" required disabled
+                                    [ngModel]="amostra.intervaloTemperatura" [placeholder]="'30 - XXX'">
+                                </input-text>
                             </td>
                         </tr>
                         <ng-container
